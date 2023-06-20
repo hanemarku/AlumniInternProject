@@ -1,2 +1,4 @@
-package com.example.AlumniInternProject.entity;public class User {
+package com.example.AlumniInternProject.entity;
+
+public class User {
 }

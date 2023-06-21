@@ -43,6 +43,15 @@ public class User extends IdBaseEntity{
     )
     private Set<Skill> skills = new HashSet<>();
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_interests",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id")
+    )
+    private Set<Interest> interests = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 public class EmploymentHistory extends IdBaseEntity{
 
-    @Column(length = 1000, nullable = false)
+    @Column(length = 1500, nullable = false)
     @Lob
     private String mainActivities;
     @Column(length = 45, nullable = false)

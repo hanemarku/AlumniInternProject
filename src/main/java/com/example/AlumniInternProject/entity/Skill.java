@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 
 @Table(name = "skills")
-public class Skills extends IdBaseEntity{
+public class Skill extends IdBaseEntity{
     @Column(length = 45, nullable = false)
     private String name;
 }

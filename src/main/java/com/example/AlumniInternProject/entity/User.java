@@ -35,6 +35,7 @@ public class User extends IdBaseEntity{
     @Lob
     @Column( length = 1000)
     private String bio;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_skills",

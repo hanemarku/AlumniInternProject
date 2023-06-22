@@ -1,7 +1,9 @@
 package com.example.AlumniInternProject.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 @Table
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EducationHistory extends IdBaseEntity{
     @Column(length = 200, nullable = false)
     private String institutionName;
@@ -36,4 +40,13 @@ public class EducationHistory extends IdBaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
+    public EducationHistory(String institutionName, String fieldOfQualification, String fieldOfStudy, LocalDate startDate, LocalDate endDate, double finalGrade, String website) {
+        this.institutionName = institutionName;
+        this.fieldOfQualification = fieldOfQualification;
+        this.fieldOfStudy = fieldOfStudy;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.finalGrade = finalGrade;
+        this.website = website;
+    }
 }

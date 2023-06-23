@@ -66,8 +66,14 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         var eh = employmentHistoryRepository.findById(id)
                 .orElseThrow(RuntimeException::new);
         /*Update te tjerat*/
+        eh.setMainActivities(edt.getMainActivities());
+        eh.setOccupationPosition(edt.getOccupationPosition());
+        eh.setCompanyName(edt.getCompanyName());
         eh.setDepartment(edt.getDepartment());
-        //eh.setOngoing(edt.isOngoing());
+        eh.setOngoing(edt.isOngoing());
+        eh.setFromDate(edt.getFromDate());
+        eh.setToDate(edt.getToDate());
+
         var saved = employmentHistoryRepository.save(eh);
         return map(saved);
     }

@@ -23,8 +23,8 @@ public class RoleImpl implements RoleService{
                 roleDto.getName(),
                 roleDto.getDescription()
         );
-        var save_role = roleRepository.save(role);
-        return map(save_role);
+        var saveRoe = roleRepository.save(role);
+        return map(saveRoe);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RoleImpl implements RoleService{
         var dto = new RoleGetDto();
         dto.setName(role.getName());
         dto.setDescription(role.getDescription());
-
+        dto.setId(role.getId());
         return dto;
     }
 }

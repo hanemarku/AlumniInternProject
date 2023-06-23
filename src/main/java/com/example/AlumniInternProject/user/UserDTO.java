@@ -1,9 +1,6 @@
 package com.example.AlumniInternProject.user;
 
-import com.example.AlumniInternProject.entity.City;
-import com.example.AlumniInternProject.entity.Interest;
-import com.example.AlumniInternProject.entity.Role;
-import com.example.AlumniInternProject.entity.Skill;
+import com.example.AlumniInternProject.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +19,8 @@ public class UserDTO {
     private LocalDate birthday;
     private String profilePicUrl;
     private String phoneNumber;
-    private City city;
+    private String city;
+    private Country country;
     private String password;
     private String bio;
     private Set<Skill> skills = new HashSet<>();
@@ -33,7 +31,7 @@ public class UserDTO {
 
     }
 
-    public UserDTO(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, City city, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
+    public UserDTO(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -42,10 +40,12 @@ public class UserDTO {
         this.profilePicUrl = profilePicUrl;
         this.phoneNumber = phoneNumber;
         this.city = city;
+        this.country = country;
         this.password = password;
         this.bio = bio;
         this.skills = skills;
         this.interests = interests;
         this.role = role;
     }
+
 }

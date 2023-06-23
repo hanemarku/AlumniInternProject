@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -20,6 +21,7 @@ public class Role extends IdBaseEntity{
     private String description;
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private Set<User> users;
 
 }

@@ -1,4 +1,11 @@
-package com.example.AlumniInternProject.admin.country;
+package com.example.AlumniInternProject.admin.settings.country;
 
-public interface CountryRepository {
+import com.example.AlumniInternProject.entity.Country;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface CountryRepository extends CrudRepository<Country, UUID> {
+    public List<Country> findAllByOrderByNameAsc();
 }

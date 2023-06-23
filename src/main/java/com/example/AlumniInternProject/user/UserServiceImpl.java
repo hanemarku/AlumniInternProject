@@ -4,14 +4,12 @@ import com.example.AlumniInternProject.entity.User;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.*;
-import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -29,6 +27,7 @@ public class UserServiceImpl implements UserService{
             userDto.getProfilePicUrl(),
             userDto.getPhoneNumber(),
             userDto.getCity(),
+            userDto.getCountry(),
             userDto.getPassword(),
             userDto.getBio(),
             userDto.getSkills(),
@@ -55,9 +54,8 @@ public class UserServiceImpl implements UserService{
 //                .findAll();
 //                .findAll(Sort.by()
 //                        .ascending());
-
-        return userRepository.findAll()
-                .stream()
+        List<User> users = userRepository.findAll();
+        return users.stream()
                 .map(user -> map(user))
                 .collect(Collectors.toList());
     }
@@ -74,6 +72,7 @@ public class UserServiceImpl implements UserService{
         dto.setProfilePicUrl(user.getProfilePicUrl());
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
+        dto.setCountry(user.getCountry());
         dto.setPassword(user.getPassword());
         dto.setBio(user.getBio());
         dto.setBirthday(user.getBirthday());

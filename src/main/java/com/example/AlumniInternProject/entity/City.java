@@ -15,4 +15,12 @@ public class City extends IdBaseEntity {
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    public City(String name, Country country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public City() {
+    }
 }

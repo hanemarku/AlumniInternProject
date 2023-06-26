@@ -6,13 +6,20 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import java.util.UUID;
 
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class IdBaseEntity{
+public abstract class IdBaseEntity {
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
+
+    public IdBaseEntity() {
+        this.id = UUID.randomUUID();
+    }
+
+    public IdBaseEntity(UUID id){
+        this.id = id;
+    }
 }

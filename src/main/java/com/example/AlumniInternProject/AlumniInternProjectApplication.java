@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("")
 @RequiredArgsConstructor
+
 public class AlumniInternProjectApplication {
 
 	public static void main(String[] args) {

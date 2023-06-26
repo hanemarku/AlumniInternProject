@@ -4,7 +4,9 @@ import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Table
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Events extends IdBaseEntity {
     @Column(length = 100, nullable = false)
     private String name;
@@ -26,12 +30,14 @@ public class Events extends IdBaseEntity {
     private LocalDate date;
     private boolean limitedMembers;
     private String imgUrl;
-    private UUID createdBy;
+  //  private UUID createdBy;
 
     /* 1 event ka shume user ,
     * por 1 user mund te jete pjese e shume eventeve.
     * Mqs marredhenie shume me shume ath krijojme lidhjen
     * 1 me shume me tabelen UserEvents*/
+    @OneToMany(mappedBy = "event")
+    private List<UserEvents> userEvents;
 
     /* 1 event ka shume lokacione ,
     por ne 1 lokacion ka gjithashtu shume evente  */

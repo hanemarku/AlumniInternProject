@@ -1,11 +1,14 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.Events.Events;
+import com.example.AlumniInternProject.Events.UserEvents;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -56,4 +59,17 @@ public class User extends IdBaseEntity{
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    /*The relationship user-events
+    *
+    *  @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_event",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Events> events;
+    * */
+    @OneToMany(mappedBy = "user")
+    private List<UserEvents> userEvents;
 }

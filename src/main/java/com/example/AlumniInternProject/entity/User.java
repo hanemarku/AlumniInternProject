@@ -70,6 +70,7 @@ public class User extends IdBaseEntity{
     )
     private List<Events> events;
     * */
+
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
 }

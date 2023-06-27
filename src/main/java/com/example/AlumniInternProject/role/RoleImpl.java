@@ -1,9 +1,6 @@
-package com.example.AlumniInternProject.service.role;
+package com.example.AlumniInternProject.role;
 
-import com.example.AlumniInternProject.dto.RoleDto;
-import com.example.AlumniInternProject.dto.RoleGetDto;
 import com.example.AlumniInternProject.entity.Role;
-import com.example.AlumniInternProject.entity.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleImpl implements RoleService{
+public class RoleImpl implements RoleService {
 
     final private RoleRepository roleRepository;
 

@@ -1,7 +1,7 @@
-package com.example.AlumniInternProject.service.education;
+package com.example.AlumniInternProject.education;
 
-import com.example.AlumniInternProject.dto.EducationDto;
-import com.example.AlumniInternProject.dto.EducationGetDto;
+import com.example.AlumniInternProject.education.EducationDto;
+import com.example.AlumniInternProject.education.EducationGetDto;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,9 +1,6 @@
-package com.example.AlumniInternProject.controller;
+package com.example.AlumniInternProject.education;
 
 
-import com.example.AlumniInternProject.dto.EducationDto;
-import com.example.AlumniInternProject.dto.EducationGetDto;
-import com.example.AlumniInternProject.service.education.EducationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

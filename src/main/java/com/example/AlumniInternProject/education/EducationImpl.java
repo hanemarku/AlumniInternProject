@@ -1,9 +1,6 @@
-package com.example.AlumniInternProject.service.education;
+package com.example.AlumniInternProject.education;
 
-import com.example.AlumniInternProject.dto.EducationDto;
-import com.example.AlumniInternProject.dto.EducationGetDto;
 import com.example.AlumniInternProject.entity.EducationHistory;
-import com.example.AlumniInternProject.entity.repository.EducationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EducationImpl implements EducationService{
+public class EducationImpl implements EducationService {
 
     private final EducationRepository educationRepository;
 

@@ -1,7 +1,7 @@
-package com.example.AlumniInternProject.service.role;
+package com.example.AlumniInternProject.role;
 
-import com.example.AlumniInternProject.dto.RoleDto;
-import com.example.AlumniInternProject.dto.RoleGetDto;
+import com.example.AlumniInternProject.role.RoleDto;
+import com.example.AlumniInternProject.role.RoleGetDto;
 
 import java.util.List;
 import java.util.UUID;

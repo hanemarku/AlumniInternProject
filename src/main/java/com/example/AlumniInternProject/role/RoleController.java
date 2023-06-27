@@ -1,9 +1,6 @@
-package com.example.AlumniInternProject.controller;
+package com.example.AlumniInternProject.role;
 
 
-import com.example.AlumniInternProject.dto.RoleDto;
-import com.example.AlumniInternProject.dto.RoleGetDto;
-import com.example.AlumniInternProject.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

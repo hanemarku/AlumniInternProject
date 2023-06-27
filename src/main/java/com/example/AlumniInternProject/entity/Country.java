@@ -1,10 +1,12 @@
 package com.example.AlumniInternProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,5 +20,20 @@ public class Country extends IdBaseEntity {
     private String code;
 
     @OneToMany(mappedBy = "country")
+    @JsonIgnore
     private Set<City> cities;
+
+    public Country(String name, String code) {
+        super();
+        this.name = name;
+        this.code = code;
+    }
+
+    public Country(UUID id){
+        super(id);
+    }
+
+    public Country() {
+
+    }
 }

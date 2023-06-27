@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.dto;
+package com.example.AlumniInternProject.role;
 
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -6,11 +6,9 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 @Setter
 @Getter
-public class RoleGetDto extends RoleDto{
+public class RoleGetDto extends RoleDto {
     @Id
     private UUID id = UUID.randomUUID();
 }

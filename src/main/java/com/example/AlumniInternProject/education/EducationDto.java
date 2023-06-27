@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.dto;
+package com.example.AlumniInternProject.education;
 
 import lombok.Getter;
 import lombok.Setter;

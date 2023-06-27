@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.dto;
+package com.example.AlumniInternProject.role;
 
 
 import lombok.Getter;

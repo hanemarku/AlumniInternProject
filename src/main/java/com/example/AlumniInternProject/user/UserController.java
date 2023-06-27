@@ -24,6 +24,7 @@ public class UserController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list users");
 //        }
 //    }
+
     @GetMapping
     public List<UserGetDto> getAllUsers() {
         return userService.findAll();

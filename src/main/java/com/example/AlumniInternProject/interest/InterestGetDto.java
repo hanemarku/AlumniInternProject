@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.dto.interest;
+package com.example.AlumniInternProject.interest;
 
 import lombok.Getter;
 import lombok.Setter;

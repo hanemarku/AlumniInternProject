@@ -1,9 +1,6 @@
-package com.example.AlumniInternProject.service.skill;
+package com.example.AlumniInternProject.skill;
 
-import com.example.AlumniInternProject.dto.skill.SkillDto;
-import com.example.AlumniInternProject.dto.skill.SkillGetDto;
 import com.example.AlumniInternProject.entity.Skill;
-import com.example.AlumniInternProject.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

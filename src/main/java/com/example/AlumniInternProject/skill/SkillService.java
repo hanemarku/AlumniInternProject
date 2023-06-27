@@ -1,7 +1,4 @@
-package com.example.AlumniInternProject.service.skill;
-
-import com.example.AlumniInternProject.dto.skill.SkillDto;
-import com.example.AlumniInternProject.dto.skill.SkillGetDto;
+package com.example.AlumniInternProject.skill;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,4 @@
-package com.example.AlumniInternProject.service.interest;
-
-import com.example.AlumniInternProject.dto.interest.InterestDto;
-import com.example.AlumniInternProject.dto.interest.InterestGetDto;
+package com.example.AlumniInternProject.interest;
 
 import java.util.List;
 import java.util.UUID;

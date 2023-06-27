@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.dto.skill;
+package com.example.AlumniInternProject.skill;
 
 import lombok.Getter;
 import lombok.Setter;

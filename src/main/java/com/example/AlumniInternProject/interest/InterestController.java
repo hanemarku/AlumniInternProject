@@ -1,8 +1,5 @@
-package com.example.AlumniInternProject.controller;
+package com.example.AlumniInternProject.interest;
 
-import com.example.AlumniInternProject.dto.interest.InterestDto;
-import com.example.AlumniInternProject.dto.interest.InterestGetDto;
-import com.example.AlumniInternProject.service.interest.InterestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.repository;
+package com.example.AlumniInternProject.skill;
 
 import com.example.AlumniInternProject.entity.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;

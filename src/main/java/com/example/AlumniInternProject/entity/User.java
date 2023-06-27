@@ -35,7 +35,7 @@ public class User extends IdBaseEntity{
     @JoinColumn(name = "country_id")
     private Country country;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 //    @JoinColumn(name = "city_id")
 //
 //    private City city;
@@ -89,6 +89,6 @@ public class User extends IdBaseEntity{
 
 //    public boolean isEnabled() {
 //        return enabled;
-//    }
+//}
 
 }

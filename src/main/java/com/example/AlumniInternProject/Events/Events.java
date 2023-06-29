@@ -2,18 +2,18 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
-import com.example.AlumniInternProject.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+
 @Entity
 @Table
 @Getter
@@ -30,6 +30,7 @@ public class Events extends IdBaseEntity {
     private LocalDate date;
     private boolean limitedMembers;
     private String imgUrl;
+    private int maxParticipants;
   //  private UUID createdBy;
 
     /* 1 event ka shume user ,
@@ -48,4 +49,22 @@ public class Events extends IdBaseEntity {
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
     private Set<City> cities = new HashSet<>();
+
+    public Events(String name,
+                  String topic,
+                  String description,
+                  LocalDate date,
+                  boolean limitedMembers,
+                  int maxParticipants,
+                  String imgUrl,
+                  Set<City> cities){
+        this.name = name;
+        this.topic = topic;
+        this.description = description;
+        this.date = date;
+        this.limitedMembers = limitedMembers;
+        this.maxParticipants = maxParticipants;
+        this.imgUrl = imgUrl;
+        this.cities = cities;
+    }
 }

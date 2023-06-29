@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EmploymentHistoryController {
     private final EmploymentHistoryService employmentHistoryService;
-    @PostMapping("savetest")
+    @PostMapping
     public EmploymentGetDto save(@RequestBody EmploymentDto edt){
         return employmentHistoryService.save(edt);
     }

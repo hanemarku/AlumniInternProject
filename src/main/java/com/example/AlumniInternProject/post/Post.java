@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Entity
@@ -30,7 +31,12 @@ public class Post extends IdBaseEntity {
     private Like like;
 
     private String content;
-    private Timestamp dateOfPost;
+    private Date dateOfPost;
     private Integer likesCount;
     private Integer commentsCount;
+    private String keyword;
+    private String category;
+    private String tag;
+
+
 }

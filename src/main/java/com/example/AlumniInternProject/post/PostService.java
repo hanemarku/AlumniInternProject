@@ -1,7 +1,5 @@
 package com.example.AlumniInternProject.post;
 
-import com.example.AlumniInternProject.entity.User;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +10,7 @@ public interface PostService {
 
     PostGetDto getPostById(UUID id);
 
-    List<PostDto> getPostsByUser(User user);
+    List<PostGetDto> getPostsByUser(UUID user_id);
 
     PostGetDto createPost(PostDto postDto);
 
@@ -20,13 +18,13 @@ public interface PostService {
 
     void deletePost(UUID id);
 
-    List<PostDto> searchPostsByKeyword(String keyword);
+    List<PostGetDto> searchPostsByKeyword(String keyword);
 
-    List<PostDto> getPostsByCategory(String category);
+    List<PostGetDto> getPostsByCategory(String category);
 
-    List<PostDto> getPostsByTag(String tag);
+    List<PostGetDto> getPostsByTag(String tag);
 
-    List<PostDto> getPostsByDateRange(Date startDate, Date endDate);
+    List<PostGetDto> getPostsByDateRange(Date startDate, Date endDate);
 
 }
 

@@ -1,12 +1,9 @@
 package com.example.AlumniInternProject.post;
 
 
-import com.example.AlumniInternProject.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +20,7 @@ public class PostImpl implements PostService{
 
     @Override
     public List<PostGetDto> getAllPosts() {
-        List<PostGetDto> collect = postRepository.findAll(
+        return  postRepository.findAll()
                 .stream()
                 .map(post -> map(post))
                 .collect(Collectors.toList()
@@ -32,15 +29,15 @@ public class PostImpl implements PostService{
 
     @Override
     public PostGetDto getPostById(UUID id) {
-        var optional = postRepository.findAllById(Collections.singleton(id));
-        if (!(optional.isEmpty())){
-            return ModelMapper.map(optional.get());
+        var optional = postRepository.findById(id);
+        if (optional.isPresent()){
+            return map(optional.get());
         }throw new RuntimeException("Posti i kerkuar nuk gjendet!");
     }
 
     @Override
-    public List<PostDto> getPostsByUser(User user) {
-        return postRepository.findByUser(user);
+    public List<PostGetDto> getPostsByUser(UUID user_id) {
+        return postRepository.findByUser(user_id);
     }
 
     @Override
@@ -51,14 +48,15 @@ public class PostImpl implements PostService{
                 postDto.getContent(),
                 postDto.getDateOfPost(),
                 postDto.getLikesCount(),
-                postDto.getCommentsCount()
+                postDto.getCommentsCount(),
+                postDto.getKeyword(),
+                postDto.getCategory(),
+                postDto.getTag()
         );
         var saved = postRepository.save(post);
-        return map(saved);
+        return  map(saved);
     }
 
-    //private PostGetDto map(Post saved) {
-    //}
 
     @Override
     public PostGetDto updatePost(UUID id, PostDto postDto) {
@@ -71,7 +69,7 @@ public class PostImpl implements PostService{
         optional.setCommentsCount(postDto.getCommentsCount());
 
         var save = postRepository.save(optional);
-        return map(save);
+        return  map(save);
     }
 
     @Override
@@ -81,24 +79,37 @@ public class PostImpl implements PostService{
     }
 
     @Override
-    public List<PostDto> searchPostsByKeyword(String keyword) {
-        return postRepository.findByTitleContainingIgnoreCase(keyword);
+    public List<PostGetDto> searchPostsByKeyword(String keyword) {
+        return postRepository.findPostsByKeyword(keyword);
     }
 
     @Override
-    public List<PostDto> getPostsByCategory(String category) {
+    public List<PostGetDto> getPostsByCategory(String category) {
         return postRepository.findByCategory(category);
     }
 
     @Override
-    public List<PostDto> getPostsByTag(String tag) {
-        return postRepository.findByTagsContainingIgnoreCase(tag);
+    public List<PostGetDto> getPostsByTag(String tag) {
+        return postRepository.findByTagContainingIgnoreCase(tag);
     }
 
     @Override
-    public List<PostDto> getPostsByDateRange(Date startDate, Date endDate) {
+    public List<PostGetDto> getPostsByDateRange(Date startDate, Date endDate) {
+
         return null;
+    }
+
+    public static PostGetDto map(Post post) {
+        var postDTO = new PostGetDto();
+        postDTO.setUserId(post.getUser().getId());
+        postDTO.setLikeId(post.getLike().getId());
+        postDTO.setContent(post.getContent());
+        postDTO.setDateOfPost(post.getDateOfPost());
+        postDTO.setLikesCount(post.getLikesCount());
+        postDTO.setCommentsCount(post.getCommentsCount());
+        return postDTO;
     }
 
 
 }
+

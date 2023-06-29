@@ -1,8 +1,5 @@
 package com.example.AlumniInternProject.skill;
 
-import com.example.AlumniInternProject.skill.SkillDto;
-import com.example.AlumniInternProject.skill.SkillGetDto;
-import com.example.AlumniInternProject.skill.SkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +37,7 @@ public class SkillController {
     public void delete(@PathVariable UUID id){
         skillService.delete(id);
     }
+
+
 
 }

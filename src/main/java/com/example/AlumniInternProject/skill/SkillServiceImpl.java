@@ -18,7 +18,8 @@ public class SkillServiceImpl implements SkillService{
     @Override
     public SkillGetDto save(SkillDto skillDto){
         var skill = new Skill(
-                skillDto.getName()
+                skillDto.getName(),
+                skillDto.getCount()
         );
 
         var saved = skillRepository.save(skill);
@@ -59,6 +60,7 @@ public class SkillServiceImpl implements SkillService{
         var dto = new SkillGetDto();
         dto.setId(skill.getId());
         dto.setName(skill.getName());
+        dto.setCount(skill.getCount());
         return dto;
     }
 

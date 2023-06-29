@@ -8,4 +8,5 @@ import lombok.Setter;
 
 public class SkillDto {
     private String name;
+    private int count;
 }

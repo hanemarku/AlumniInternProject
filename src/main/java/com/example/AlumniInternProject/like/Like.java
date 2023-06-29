@@ -11,8 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -33,5 +32,5 @@ public class Like extends IdBaseEntity {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    private Timestamp dateOfLike;
+    private Date dateOfLike;
 }

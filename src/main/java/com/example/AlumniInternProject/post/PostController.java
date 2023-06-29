@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequestMapping("api/v1/posts")
 public class PostController {
 
-    private final PostService postService;
+    /*private final PostService postService;
 
     @GetMapping
     public List<PostGetDto> getAllPosts(){
@@ -66,6 +66,8 @@ public class PostController {
     public PostGetDto getPostByDateRange(@RequestBody Date startDate, @RequestBody Date endDate){
         return  null;
     }
+
+     */
 
 
 

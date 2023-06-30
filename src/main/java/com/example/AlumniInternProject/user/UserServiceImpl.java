@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
 import com.example.AlumniInternProject.entity.Country;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
@@ -131,6 +133,11 @@ public class UserServiceImpl implements UserService{
         } catch (NoSuchElementException e) {
             throw new UserNotFoundException("User with id " + id + " does not exist");
         }
+    }
+
+    @Override
+    public void updateEnabledStatus(UUID id, boolean status) {
+        userRepository.updateEnabledStatus(id, status);
     }
 
     @Override

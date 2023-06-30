@@ -67,6 +67,14 @@ public class UserController {
         userService.delete(id);
     }
 
+    @GetMapping("{id}/enabled/{status}")
+    public String updateEnabledStatus(@PathVariable("id") UUID id, @PathVariable("status") boolean status) {
+        userService.updateEnabledStatus(id, status);
+        String statuss = status ? "enabled" : "disabled";
+        String message = "The user id " + id + " has been " + statuss;
+        return message;
+    }
+
 
 //    @PostMapping
 //    public ResponseEntity<String> save(@RequestBody UserDTO dto) {

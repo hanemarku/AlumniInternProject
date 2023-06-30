@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -29,6 +29,6 @@ public class Comment extends IdBaseEntity {
     private Post post;
 
     private String content;
-    private Timestamp commmentCreation;
+    private Date commmentCreation;
 
 }

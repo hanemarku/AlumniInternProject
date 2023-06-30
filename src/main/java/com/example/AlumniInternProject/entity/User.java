@@ -93,8 +93,12 @@ public class User extends IdBaseEntity{
     public User() {
     }
 
-//    public boolean isEnabled() {
-//        return enabled;
-//}
+    @Transient
+    public String getImagePath() {
+        if (super.getId() == null) return "/images/image-thumbnail.png";
+
+        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
+    }
+
 
 }

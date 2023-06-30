@@ -1,16 +1,22 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.entity.Country;
 import com.example.AlumniInternProject.entity.Interest;
 import com.example.AlumniInternProject.entity.Skill;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @RestController
@@ -35,9 +41,20 @@ public class UserController {
 
 
 
-    @PostMapping
-    public UserGetDto save(@RequestBody UserDTO dto) {
-        List<Country> countries = userService.listAllCountries();
+    @PostMapping("signup")
+    public UserGetDto save(@RequestParam UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
+        if(!multipartFile.isEmpty()){
+            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            dto.setProfilePicUrl(filename);
+            UserDTO savedUser = userService.save(dto);
+            String uploadDir = "user-photos/" + savedUser.getFirstname();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+
+        }else {
+            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
+            userService.save(dto);
+        }
         return userService.save(dto);
     }
 

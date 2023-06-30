@@ -57,6 +57,16 @@ public class UserController {
         return userService.update(id, user);
     }
 
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable("id") UUID id) throws UserNotFoundException {
+        try {
+            userService.get(id);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
+        userService.delete(id);
+    }
+
 
 //    @PostMapping
 //    public ResponseEntity<String> save(@RequestBody UserDTO dto) {

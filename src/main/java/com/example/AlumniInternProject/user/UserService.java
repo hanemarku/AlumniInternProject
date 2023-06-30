@@ -12,7 +12,7 @@ public interface UserService {
     List<UserGetDto> findAll();
     User findById(UUID id);
     UserGetDto update(UUID id, UserDTO dto);
-    void delete(UUID id);
+    void delete(UUID id) throws UserNotFoundException;
     List<Country> listAllCountries();
     boolean isEmailUnique(UUID id, String email);
     User get(UUID id) throws UserNotFoundException;

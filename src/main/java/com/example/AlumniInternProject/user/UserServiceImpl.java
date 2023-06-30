@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
     private final CountryRepository countryRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -134,7 +134,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws UserNotFoundException {
+        var countById = userRepository.countUserById(id);
+        var user = userRepository.findById(id).get();
+        if (countById == 0) {
+            throw new UserNotFoundException("User with id " + id + " does not exist");
+        }
+        user.getInterests().clear();
+        user.getSkills().clear();
+        userRepository.save(user);
+        userRepository.deleteById(id);
 
     }
 

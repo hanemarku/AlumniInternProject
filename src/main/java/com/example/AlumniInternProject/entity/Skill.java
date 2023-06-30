@@ -16,10 +16,10 @@ import lombok.Setter;
 public class Skill extends IdBaseEntity{
     @Column(length = 45, nullable = false)
     private String name;
-    private int count;
 
-    public Skill(String name, int count){
+    private Integer count;
+    public Skill(String name){
         this.name = name;
-        this.count = count;
     }
+
 }

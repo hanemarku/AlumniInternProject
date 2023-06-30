@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class SkillDto {
+public class TopSkillGetDto {
     private String name;
+    private Integer count;
 }

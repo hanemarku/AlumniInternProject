@@ -38,6 +38,8 @@ public class SkillController {
         skillService.delete(id);
     }
 
-
-
+    @GetMapping("/top-skills")
+    public List<TopSkillGetDto> getTopSkills(){
+        return skillService.getTopSkills();
+    }
 }

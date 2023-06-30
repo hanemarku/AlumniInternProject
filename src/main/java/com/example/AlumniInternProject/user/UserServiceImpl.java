@@ -1,12 +1,19 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.admin.settings.city.CityRepository;
+import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
+import com.example.AlumniInternProject.entity.Country;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -15,9 +22,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
+    private final CountryRepository countryRepository;
+    private final PasswordEncoder passwordEncoder;
+
     private ModelMapper modelMapper = new ModelMapper();
     @Override
     public UserGetDto save(UserDTO userDto) {
+       String encodedPassword = encodePassword(userDto.getPassword());
         var user = new User(
             userDto.getFirstname(),
             userDto.getLastname(),
@@ -28,7 +39,7 @@ public class UserServiceImpl implements UserService{
             userDto.getPhoneNumber(),
             userDto.getCity(),
             userDto.getCountry(),
-            userDto.getPassword(),
+            encodedPassword,
             userDto.getBio(),
             userDto.getSkills(),
             userDto.getInterests(),
@@ -43,17 +54,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserGetDto> findAll() {
-//
-//            List<User> users = userRepository.findAll();
-//            return users.stream()
-//                    .map(user -> modelMapper.map(user, UserGetDto.class))
-//                    .collect(Collectors.toList());
-
-
-//        return (List<UserDTO>) userRepository
-//                .findAll();
-//                .findAll(Sort.by()
-//                        .ascending());
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(user -> map(user))
@@ -82,18 +82,63 @@ public class UserServiceImpl implements UserService{
         return dto;
     }
 
+    public List<Country> listAllCountries() {
+        return (List<Country>) countryRepository.findAll();
+    }
+
+    @Override
+    public boolean isEmailUnique(UUID id, String email) {
+        User existingUser = userRepository.findByEmail(email);
+        if (existingUser != null && existingUser.getId().equals(id)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public User findById(UUID id) {
         return null;
     }
 
     @Override
-    public User update(UUID id, User dto) {
-        return null;
+    public UserGetDto update(UUID id, UserDTO dto) {
+        try {
+            var user = userRepository.findById(id).get();
+            user.setFirstname(dto.getFirstname());
+            user.setLastname(dto.getLastname());
+            user.setEmail(dto.getEmail());
+            user.setEnabled(dto.isEnabled());
+            user.setBirthday(dto.getBirthday());
+            user.setProfilePicUrl(dto.getProfilePicUrl());
+            user.setPhoneNumber(dto.getPhoneNumber());
+            user.setCity(dto.getCity());
+            user.setCountry(dto.getCountry());
+            user.setPassword(dto.getPassword());
+            user.setBio(dto.getBio());
+            user.setSkills(dto.getSkills());
+            user.setInterests(dto.getInterests());
+            user.setRole(dto.getRole());
+            var savedUser = userRepository.save(user);
+            return map(savedUser);
+        } catch (NoSuchElementException e) {
+            throw new UsernameNotFoundException("User with id " + id + " does not exist");
+        }
+    }
+
+    public User get(UUID id) throws UserNotFoundException {
+        try {
+            return userRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
+            throw new UserNotFoundException("User with id " + id + " does not exist");
+        }
     }
 
     @Override
     public void delete(UUID id) {
 
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

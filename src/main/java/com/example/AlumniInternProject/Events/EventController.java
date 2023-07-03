@@ -1,4 +1,4 @@
-//package com.example.AlumniInternProject.Events;
-//
-//public class EventController {
-//}
+package com.example.AlumniInternProject.Events;
+
+public class EventController {
+}

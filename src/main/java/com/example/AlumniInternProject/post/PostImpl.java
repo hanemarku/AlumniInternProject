@@ -1,11 +1,8 @@
 package com.example.AlumniInternProject.post;
 
 
-import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.AlumniInternProject.user.UserService;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PostImpl implements PostService{
+public class PostImpl implements PostService {
 
     PostRepository postRepository;
 
@@ -31,25 +28,38 @@ public class PostImpl implements PostService{
                 .collect(Collectors.toList());
     }
 
-    private PostGetDto map(Post post) {
-        return null;
-    }
+    /*private PostGetDto map(Post post) {
+        //make a mapper
+        var mapedPost = new PostGetDto();
+        mapedPost.setUser(post.getUser());
+        mapedPost.setLike(post.getLike());
+        mapedPost.setContent(post.getContent());
+        mapedPost.setDateOfPost(post.getDateOfPost());
+        mapedPost.setLikesCount(post.getLikesCount());
+        mapedPost.setCommentsCount(post.getCommentsCount());
+        mapedPost.setKeyword(post.getKeyword());
+        mapedPost.setCategory(post.getCategory());
+        mapedPost.setTag(post.getTag());
+        return mapedPost;
+    }*/
 
 
     @Override
     public PostGetDto getPostById(UUID id) {
         var optional = postRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             return map(optional.get());
-        }throw new RuntimeException("Posti me kete id nuk ekziston!");
+        }
+        throw new RuntimeException("Posti me kete id nuk ekziston!");
     }
 
     @Override
     public List<PostGetDto> getPostsByUser(UUID userId) {
         var optional = postRepository.findById(userId);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             return (List<PostGetDto>) map(optional.get());
-        }throw new RuntimeException("Posti me kete id nuk ekziston!");
+        }
+        throw new RuntimeException("Posti me kete id nuk ekziston!");
     }
 
     @Override
@@ -91,8 +101,19 @@ public class PostImpl implements PostService{
     }
 
     @Override
-    public Optional<Post> findPostByDateRange(Date startDate, Date endDate) {
-        return Optional.empty();
+    public Optional<Post> findPostByDateRange(Date dateOfPost, Date startDate, Date endDate) {
+        // TODO Auto-generated method stub
+        var opt = postRepository.
     }
+
+
+    PostMapper postMapper;
+
+    public PostGetDto map(Post post) {
+        return postMapper.postToPostGetDto(post);
+    }
+
 }
+
+
 

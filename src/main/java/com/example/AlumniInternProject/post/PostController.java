@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -13,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("api/v1/posts")
 public class PostController {
 
-    /*private final PostService postService;
+    private final PostService postService;
 
     @GetMapping
     public List<PostGetDto> getAllPosts(){
@@ -47,27 +48,14 @@ public class PostController {
         postService.deletePost(id);
     }
 
-    @GetMapping("/{keyword}")
-    public List<PostGetDto> searchPostsByKeyword(@PathVariable @RequestBody String keyword){
-        return postService.searchPostsByKeyword(keyword);
+
+
+    @GetMapping("/find/byDate")
+    public Optional<Post> findPostByDateRange(@RequestBody Date startDate, @RequestBody Date endDate){
+        return postService.findPostByDateRange(startDate, endDate);
     }
 
-    @GetMapping("/{category}")
-    public List<PostGetDto> getPostsByCategory(@PathVariable @RequestBody String category){
-        return postService.getPostsByCategory(category);
-    }
 
-    @GetMapping("/{tag}")
-    public List<PostGetDto> getPostByTag(@PathVariable @RequestBody String tag){
-        return postService.getPostsByTag(tag);
-    }
-
-    @GetMapping("")
-    public PostGetDto getPostByDateRange(@RequestBody Date startDate, @RequestBody Date endDate){
-        return  null;
-    }
-
-     */
 
 
 

@@ -9,6 +9,7 @@ import com.example.AlumniInternProject.user.UserService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,78 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostImpl implements PostService{
 
+    PostRepository postRepository;
 
+    @Override
+    public List<PostGetDto> getAllPosts() {
+        return postRepository.findAll()
+                .stream()
+                .map(post -> map(post))
+                .collect(Collectors.toList());
+    }
+
+    private PostGetDto map(Post post) {
+        return null;
+    }
+
+
+    @Override
+    public PostGetDto getPostById(UUID id) {
+        var optional = postRepository.findById(id);
+        if (optional.isPresent()){
+            return map(optional.get());
+        }throw new RuntimeException("Posti me kete id nuk ekziston!");
+    }
+
+    @Override
+    public List<PostGetDto> getPostsByUser(UUID userId) {
+        var optional = postRepository.findById(userId);
+        if (optional.isPresent()){
+            return (List<PostGetDto>) map(optional.get());
+        }throw new RuntimeException("Posti me kete id nuk ekziston!");
+    }
+
+    @Override
+    public PostGetDto createPost(PostDto postDto) {
+        var post = new Post(
+                postDto.getUser(),
+                postDto.getLike(),
+                postDto.getContent(),
+                postDto.getDateOfPost(),
+                postDto.getLikesCount(),
+                postDto.getCommentsCount(),
+                postDto.getKeyword(),
+                postDto.getCategory(),
+                postDto.getTag()
+        );
+        var savePost = postRepository.save(post);
+        return map(savePost);
+    }
+
+    @Override
+    public PostGetDto updatePost(UUID id, PostDto postDto) {
+        var optional = postRepository.findById(id).orElseThrow(RuntimeException::new);
+        optional.setUser(postDto.getUser());
+        optional.setTag(postDto.getTag());
+        optional.setCategory(postDto.getCategory());
+        optional.setDateOfPost(postDto.getDateOfPost());
+        optional.setKeyword(postDto.getKeyword());
+        optional.setLike(postDto.getLike());
+        optional.setContent(postDto.getContent());
+
+        var savePost = postRepository.save(optional);
+        return map(savePost);
+    }
+
+    @Override
+    public void deletePost(UUID id) {
+        postRepository.deleteById(id);
+
+    }
+
+    @Override
+    public Optional<Post> findPostByDateRange(Date startDate, Date endDate) {
+        return Optional.empty();
+    }
 }
 

@@ -1,10 +1,7 @@
 package com.example.AlumniInternProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +22,7 @@ public class Role extends IdBaseEntity{
     @Column(length = 150, nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<User> users;
 

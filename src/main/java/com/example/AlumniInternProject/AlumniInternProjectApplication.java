@@ -1,15 +1,21 @@
 package com.example.AlumniInternProject;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
-@RequestMapping("")
-@RequiredArgsConstructor
+//@RestController
+//@RequestMapping("")
+//@RequiredArgsConstructor
+//@EntityScan({"com.example.AlumniInternProject.entity"})
+@OpenAPIDefinition(info = @Info(title = "Alumni Intern Project API", version = "1.0", description = "Alumni Intern Project API v1.0"))
 
 public class AlumniInternProjectApplication {
 
@@ -17,8 +23,14 @@ public class AlumniInternProjectApplication {
 		SpringApplication.run(AlumniInternProjectApplication.class, args);
 	}
 
-	@RequestMapping("")
-	public String hello() {
+
+	@RequestMapping("homepage")
+	public String helloWorld() {
 		return "Hello World";
+	}
+
+	@RequestMapping("homepage2")
+	public String helloWorld2() {
+		return "Hello World 2";
 	}
 }

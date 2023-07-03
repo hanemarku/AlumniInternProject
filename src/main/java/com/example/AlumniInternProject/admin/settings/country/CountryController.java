@@ -9,21 +9,22 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/countries")
 public class CountryController {
     private final CountryRepository countryRepository;
 
-    @GetMapping("/countries/list")
+    @GetMapping("list")
     public List<Country> listAll(){
         return countryRepository.findAllByOrderByNameAsc();
     }
 
-    @PostMapping("countries/save")
+    @PostMapping("save")
     public String save(@RequestBody Country country){
         Country savedCountry = countryRepository.save(country);
         return String.valueOf(savedCountry.getId());
     }
 
-    @GetMapping("/countries/delete/{id}")
+    @GetMapping("delete/{id}")
     public void delete(@PathVariable("id") UUID id){
         countryRepository.deleteById(id);
     }

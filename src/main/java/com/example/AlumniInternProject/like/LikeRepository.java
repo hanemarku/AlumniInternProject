@@ -12,7 +12,4 @@ import java.util.UUID;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, UUID> {
 
-
-    //@Query("select s from userLike  where s.post = ?1")
-    Optional<Like> findLikeByPost(Post post);
 }

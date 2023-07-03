@@ -1,12 +1,7 @@
 package com.example.AlumniInternProject.like;
 
-import com.example.AlumniInternProject.comment.CommentDto;
-import com.example.AlumniInternProject.comment.CommentGetDto;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface LikeService {
@@ -20,4 +15,6 @@ public interface LikeService {
     LikeGetDto update(UUID id, LikeDto likeDto);
 
     void delete(UUID id);
+
+    Optional<Like> findLikeByPost(UUID post_id);
 }

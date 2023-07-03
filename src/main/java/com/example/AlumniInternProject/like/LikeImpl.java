@@ -1,11 +1,10 @@
 package com.example.AlumniInternProject.like;
 
-import com.example.AlumniInternProject.comment.Comment;
-import com.example.AlumniInternProject.comment.CommentGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -70,5 +69,10 @@ public class LikeImpl implements LikeService{
         dto.setDateOfLike(like.getDateOfLike());
 
         return dto;
+    }
+
+    @Override
+    public Optional<Like> findLikeByPost(UUID post_id) {
+        return likeRepository.findById(post_id);
     }
 }

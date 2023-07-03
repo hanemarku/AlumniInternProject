@@ -11,11 +11,12 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/cities")
 public class CityController {
 
     private final CityRepository cityRepository;
 
-    @GetMapping("/cities/list_by_country/{id}")
+    @GetMapping("list_by_country/{id}")
     public List<CityDto> listByCountry(@PathVariable("id") UUID countryId) {
         List<City> listCities = cityRepository.findByCountryOrderByNameAsc(new Country(countryId));
         List<CityDto> result = new ArrayList<>();
@@ -26,13 +27,13 @@ public class CityController {
         return result;
     }
 
-    @PostMapping("/cities/save")
+    @PostMapping("save")
     public String save(@RequestBody City city) {
         City savedCity = cityRepository.save(city);
         return String.valueOf(savedCity.getId());
     }
 
-    @GetMapping("/cities/delete/{id}")
+    @GetMapping("delete/{id}")
     public void delete(@PathVariable("id") UUID id) {
         cityRepository.deleteById(id);
     }

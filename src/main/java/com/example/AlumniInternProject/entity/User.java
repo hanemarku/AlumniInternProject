@@ -17,17 +17,23 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 public class User extends IdBaseEntity{
+
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstname;
 
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastname;
+
     @Column(length = 128, nullable = false, unique = true)
     private String email;
+
     private boolean  enabled;
+
     private LocalDate birthday;
+
     @Column(length = 64)
     private String profilePicUrl;
+
     @Column(length = 15)
     private String phoneNumber;
 
@@ -63,7 +69,7 @@ public class User extends IdBaseEntity{
     )
     private Set<Interest> interests = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id")
     private Role role;
 
@@ -89,9 +95,13 @@ public class User extends IdBaseEntity{
     public User() {
     }
 
-//    public boolean isEnabled() {
-//        return enabled;
-//}
+    @Transient
+    public String getImagePath() {
+        if (super.getId() == null) return "/images/image-thumbnail.png";
+
+        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
+    }
+
 
 
     @OneToMany(mappedBy = "user")

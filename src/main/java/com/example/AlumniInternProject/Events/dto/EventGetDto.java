@@ -8,5 +8,4 @@ import java.util.UUID;
 @Setter
 public class EventGetDto extends  EventDto {
     private UUID id;
-
 }

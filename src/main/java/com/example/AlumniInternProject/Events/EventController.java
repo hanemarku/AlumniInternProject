@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.Events;
 
+import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/events")
 public class EventController {
     private final EventsService eventsService;
-
     @PostMapping
     public EventGetDto save(@RequestBody EventDto eventDto){
         return eventsService.save(eventDto);
@@ -33,6 +33,14 @@ public class EventController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable UUID id){
         eventsService.delete(id);
+    }
+
+    /*
+        TO BE FIXED
+    this is conflicting with the other get method*/
+    @GetMapping("{keyWord}")
+    public List<EventGetDto> findByKeyWord(@PathVariable String keyWord,@RequestBody List<EventGetDto> eventDtos){
+        return eventsService.findByKeyWord(keyWord, eventDtos);
     }
 
 }

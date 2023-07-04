@@ -4,7 +4,9 @@ import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventsServiceImplement implements EventsService {
 
-    public final EventsRepository eventsRepository;
+    private final EventsRepository eventsRepository;
 
     private EventGetDto map(Events e){
         var dto = new EventGetDto();
@@ -31,18 +33,17 @@ public class EventsServiceImplement implements EventsService {
 
     //public Events save(Events event) {        return null;    }
     @Override
-    public EventGetDto save(EventDto eventDto) {
-        var eDto = new Events(
-                eventDto.getName(),
-                eventDto.getTopic(),
-                eventDto.getDescription(),
-                eventDto.getDate(),
-                eventDto.isLimitedMembers(),
-                eventDto.getMaxParticipants(),
-                eventDto.getImgUrl(),
-                eventDto.getCities()
-        );
-        var saved = eventsRepository.save(eDto);
+    public EventGetDto save(EventDto edto) {
+        var e = new Events();
+        e.setName(edto.getName());
+        e.setTopic(edto.getTopic());
+        e.setDescription(edto.getDescription());
+        e.setDate(edto.getDate());
+        e.setLimitedMembers(edto.isLimitedMembers());
+        e.setMaxParticipants(edto.getMaxParticipants());
+        e.setImgUrl(edto.getImgUrl());
+        e.setCities(edto.getCities());
+        var saved = eventsRepository.save(e);
         return map(saved);
     }
 
@@ -84,6 +85,26 @@ public class EventsServiceImplement implements EventsService {
     @Override
     public void delete(UUID id) {
         eventsRepository.deleteById(id);
+    }
+
+    /*
+    * When searching for the keyword we need to go through every event saved ,
+    * thats why we take the List of events as a parameter. Also we might return
+    * more than one Event that contains the keyword searched.*/
+    @Override
+    public List<EventGetDto> findByKeyWord(String keyWord, List<EventGetDto> eventDtos){
+        List<EventGetDto> containmentApproved = new ArrayList<>();
+        /*Check if the List contains elements*/
+        if(eventDtos.isEmpty()){
+            throw new IllegalArgumentException("The list is null");
+        }
+        int i = 0;
+        while (!eventDtos.isEmpty()){
+            if(eventDtos.get(i).toString().contains(keyWord)){
+                containmentApproved.add(eventDtos.get(i));
+            }
+        }
+        return containmentApproved;
     }
 
 }

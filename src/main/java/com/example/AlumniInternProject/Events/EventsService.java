@@ -1,16 +1,28 @@
 package com.example.AlumniInternProject.Events;
 
-import com.example.AlumniInternProject.Employment.Dto.EmploymentDto;
-import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
+import com.example.AlumniInternProject.Events.dto.EventDto;
+import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface EventsService {
-    /*Do ishte mire te krijoje nje dto demo qe te testoje*/
-    Events save(Events event);
-    List<Events> findAll();
-    Events findById(UUID id);
-    Events update(UUID id , Events edt);
+    //Events save(Events event);
+    public EventGetDto save(EventDto eventDto);
+    List<EventGetDto> findAll();
+    EventGetDto findById(UUID id);
+    EventGetDto update(UUID id, EventDto edto);
     void delete(UUID id);
+    /*When a user searches with a keyword it returns all the events that include
+    * that specific keyword*/
+    List<EventGetDto> findByKeyWord (String keyWord, List<EventGetDto> eventDtos);
+
+    // TO DO
+    /*User to register himself on an event */
+    /*User to be able to unregister himself from the event*/
+    /*The creator to be able to change the roles of a member*/
+    /*The crator to be able to calculate events statistic*/
+    /*The crator to be able to generate events statistic*/
+
 }

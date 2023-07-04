@@ -9,6 +9,7 @@ public interface SkillService {
     SkillGetDto findById(UUID id);
     SkillGetDto update(UUID id, SkillDto dto);
     void delete(UUID id);
+    List<TopSkillGetDto> getTopSkills();
 
 
 }

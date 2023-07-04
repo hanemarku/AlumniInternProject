@@ -17,7 +17,9 @@ public class Skill extends IdBaseEntity{
     @Column(length = 45, nullable = false)
     private String name;
 
+    private Integer count;
     public Skill(String name){
         this.name = name;
     }
+
 }

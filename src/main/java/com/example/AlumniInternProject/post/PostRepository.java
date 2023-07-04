@@ -12,5 +12,7 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
     @Query("SELECT p FROM Post p WHERE p.dateOfPost BETWEEN ?1 AND ?2")
-    Optional<Post> findPostsByDateOfPost(Date dateOfPost, Date startDate, Date endDate);
+    Optional<Post> findPostsByDateOfPost(Date startDate, Date endDate);
+
+    void addLikeToPost(UUID postId, UUID likeId);
 }

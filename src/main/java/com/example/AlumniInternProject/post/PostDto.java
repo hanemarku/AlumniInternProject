@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.like.Like;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -21,5 +22,6 @@ public class PostDto {
     private String keyword;
     private String category;
     private String tag;
-
+    private Set<User> sharedByUsers;
+    private Set<User> sharedWithUsers;
 }

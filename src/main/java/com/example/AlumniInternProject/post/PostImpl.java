@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.post;
 
 
+import com.example.AlumniInternProject.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,9 @@ public class PostImpl implements PostService {
                 postDto.getCommentsCount(),
                 postDto.getKeyword(),
                 postDto.getCategory(),
-                postDto.getTag()
+                postDto.getTag(),
+                postDto.getSharedUsers(),
+                postDto.getSharingUser()
         );
         var savePost = postRepository.save(post);
         return map(savePost);
@@ -101,11 +104,55 @@ public class PostImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> findPostByDateRange(Date dateOfPost, Date startDate, Date endDate) {
-        // TODO Auto-generated method stub
-        var opt = postRepository.
+    public Optional<Post> findPostByDateRange(Date startDate, Date endDate) {
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            Date postDate = post.getDateOfPost(); // Assuming the post object has a method to get its date
+
+            // Check if the post date is within the specified range
+            if (postDate.after(startDate) && postDate.before(endDate)) {
+                    return Optional.of(post);
+            }
+        }
+
+        // If no post is found within the range or with the specified date, return an empty Optional
+        return Optional.empty();
     }
 
+    @Override
+    public void addLikeToPost(UUID postId, UUID likeId) {
+        var optional = postRepository.findById(postId).orElseThrow(RuntimeException::new);
+        optional.setLikeId(likeId);
+        var savePost = postRepository.save(optional);
+        map(savePost);
+    }
+
+    @Override
+    public void removeLikeFromPost(UUID postId, UUID likeId) {
+        var optional = postRepository.findById(postId).orElseThrow(RuntimeException::new);
+        optional.setLikeId(null);
+        var savePost = postRepository.save(optional);
+        map(savePost);
+    }
+
+    @Override
+    public void sharePost(UUID postId, User sharingUser, List<User> sharedUsers) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            // Add the sharingUser to the post's sharedByUsers collection
+            post.getSharedByUsers().add(sharingUser);
+
+            // Add the targetUsers to the post's sharedWithUsers collection
+            post.getSharedWithUsers().addAll(sharedUsers);
+
+            postRepository.save(post);
+        } else {
+            // Handle post not found error
+            throw new IllegalArgumentException("Post not found");
+        }
+    }
 
     PostMapper postMapper;
 

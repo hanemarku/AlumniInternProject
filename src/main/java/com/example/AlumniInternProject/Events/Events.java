@@ -55,8 +55,8 @@ public class Events extends IdBaseEntity {
                   String description,
                   LocalDate date,
                   boolean limitedMembers,
-                  int maxParticipants,
                   String imgUrl,
+                  int maxParticipants,
                   Set<City> cities){
         this.name = name;
         this.topic = topic;

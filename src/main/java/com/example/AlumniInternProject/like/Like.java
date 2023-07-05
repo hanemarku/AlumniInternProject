@@ -3,7 +3,7 @@ package com.example.AlumniInternProject.like;
 import com.example.AlumniInternProject.comment.Comment;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.post.Post;
+import com.example.AlumniInternProject.post.PostEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -28,7 +28,7 @@ public class Like extends IdBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private PostEntity post;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")

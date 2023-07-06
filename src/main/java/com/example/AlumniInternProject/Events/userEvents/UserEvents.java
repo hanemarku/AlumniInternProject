@@ -1,5 +1,7 @@
-package com.example.AlumniInternProject.Events;
+package com.example.AlumniInternProject.Events.userEvents;
 
+import com.example.AlumniInternProject.Events.Events;
+import com.example.AlumniInternProject.Events.MembershipRole;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.User;
 import jakarta.persistence.*;

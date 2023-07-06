@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEvents extends IdBaseEntity {
-    @Column(length = 32, columnDefinition = "varchar(32) default 'Member'")
+    @Column(length = 32, columnDefinition = "varchar(32)")
     @Enumerated(value = EnumType.STRING)
    private MembershipRole membershipRole;
 
@@ -33,7 +33,6 @@ public class UserEvents extends IdBaseEntity {
                       UUID userId,
                       UUID eventId) {
         this.membershipRole = membershipRole;
-
         this.getUser().getId();
         this.getEvent().getId();
     }

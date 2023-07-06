@@ -2,7 +2,9 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.user.UserGetDto;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,5 +26,7 @@ public interface EventsService {
     /*The creator to be able to change the roles of a member*/
     /*The crator to be able to calculate events statistic*/
     /*The crator to be able to generate events statistic*/
+
+    List<UserGetDto> getUsersByEventId(@PathVariable Long eventId);
 
 }

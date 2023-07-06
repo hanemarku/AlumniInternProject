@@ -1,8 +1,5 @@
 package com.example.AlumniInternProject.skill;
 
-import com.example.AlumniInternProject.skill.SkillDto;
-import com.example.AlumniInternProject.skill.SkillGetDto;
-import com.example.AlumniInternProject.skill.SkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,4 +38,8 @@ public class SkillController {
         skillService.delete(id);
     }
 
+    @GetMapping("/top-skills")
+    public List<TopSkillGetDto> getTopSkills(){
+        return skillService.getTopSkills();
+    }
 }

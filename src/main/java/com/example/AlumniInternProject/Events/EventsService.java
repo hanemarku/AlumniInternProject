@@ -25,6 +25,5 @@ public interface EventsService{
     /*The creator to be able to change the roles of a member*/
     /*The crator to be able to calculate events statistic*/
     /*The crator to be able to generate events statistic*/
-    /*To track event status*/
 
 }

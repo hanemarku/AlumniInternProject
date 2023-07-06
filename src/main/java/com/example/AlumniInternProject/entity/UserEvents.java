@@ -1,8 +1,10 @@
-package com.example.AlumniInternProject.Events;
+package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.entity.IdBaseEntity;
-import com.example.AlumniInternProject.entity.User;
-import jakarta.persistence.*;
+import com.example.AlumniInternProject.Events.MembershipRole;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

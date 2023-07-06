@@ -3,6 +3,7 @@ package com.example.AlumniInternProject.Events;
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.City;
+import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +108,7 @@ public class EventsServiceImplement implements EventsService {
         return matched;
     }
 
+
     /*Return true when it matches the city*/
     public boolean isCity(String city, EventGetDto eventDtos){
         Set<City> cityEvent = eventDtos.getCities();
@@ -125,4 +127,5 @@ public class EventsServiceImplement implements EventsService {
     public List<Events> findByKeyword(String keyword) {
         return eventsRepository.findByKeyword(keyword);
     }*/
+
 }

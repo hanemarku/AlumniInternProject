@@ -1,13 +1,10 @@
-package com.example.AlumniInternProject.Events;
+package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.entity.City;
-import com.example.AlumniInternProject.entity.IdBaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;

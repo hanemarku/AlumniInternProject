@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface UserEventsService {
     List<UserGetDto> getUsersByEventId(@PathVariable Long eventId);
+    UserEventGetDto save(UserEventDto eventDto);
 }

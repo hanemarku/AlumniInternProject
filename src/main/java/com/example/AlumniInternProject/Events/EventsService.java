@@ -9,8 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 @Service
 public interface EventsService{
-    //Events save(Events event);
-    public EventGetDto save(EventDto eventDto);
+    EventGetDto save(EventDto eventDto);
     List<EventGetDto> findAll();
     EventGetDto findById(UUID id);
     EventGetDto update(UUID id, EventDto edto);

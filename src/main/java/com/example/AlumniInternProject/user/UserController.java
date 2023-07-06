@@ -43,18 +43,20 @@ public class UserController {
 
     @PostMapping("signup")
     public UserGetDto save(@RequestParam UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
-        if(!multipartFile.isEmpty()){
-            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            dto.setProfilePicUrl(filename);
-            UserDTO savedUser = userService.save(dto);
-            String uploadDir = "user-photos/" + savedUser.getFirstname();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-
-        }else {
-            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
-            userService.save(dto);
-        }
+//        if(!multipartFile.isEmpty()){
+//            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            dto.setProfilePicUrl(filename);
+//            UserDTO savedUser = userService.save(dto);
+//            String uploadDir = "user-photos/" + savedUser.getFirstname();
+//            FileUploadUtil.cleanDir(uploadDir);
+//            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+//
+//        }else {
+//            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
+//
+//            userService.save(dto);
+//        }
+//        dto.setProfilePicUrl("https://i.pravatar.cc/300");
         return userService.save(dto);
     }
 

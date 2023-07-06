@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventsRepository extends JpaRepository<Events , UUID> {
-    List<Events> findByKeyword (String keyWord);
+    //List<Events> findByKeyword (String keyWord);
 }

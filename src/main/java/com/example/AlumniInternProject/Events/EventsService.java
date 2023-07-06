@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 @Service
 public interface EventsService{
@@ -16,7 +17,7 @@ public interface EventsService{
     void delete(UUID id);
     /*When a user searches with a keyword it returns all the events that include
     * that specific keyword*/
-    //List<Events> findByKeyword (String keyWord);
+    Set<EventGetDto> findByKeyword (String keyWord , Set<EventGetDto> eventDtos);
 
     // TO DO
     /*User to register himself on an event */

@@ -2,11 +2,11 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.entity.City;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,6 +86,39 @@ public class EventsServiceImplement implements EventsService {
     public void delete(UUID id) {
         eventsRepository.deleteById(id);
     }
+
+    /*Searching by keyword. String elements :
+     * Name , Topic and Description. I am searching for
+     * the city in another method */
+    @Override
+    public Set<EventGetDto> findByKeyword(String keyWord, Set<EventGetDto> eventDtos) {
+        Set<EventGetDto> matched = new HashSet<>();
+
+        for(EventGetDto eventDto : eventDtos){
+            if(
+                    eventDto.getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || eventDto.getTopic().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || eventDto.getDescription().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || isCity(keyWord, eventDto) == true
+            ){
+                matched.add(eventDto);
+            }
+        }
+        return matched;
+    }
+
+    /*Return true when it matches the city*/
+    public boolean isCity(String city, EventGetDto eventDtos){
+        Set<City> cityEvent = eventDtos.getCities();
+        for(City c : cityEvent){
+            if (c.getName().toLowerCase().contains(city.toLowerCase(Locale.ROOT))){
+                return true;
+            }
+        }
+        // ? , sepse do e kthej gjithsesi nje false ne fund
+        return false;
+    }
+
 
     /*
     *  @Override

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -39,5 +40,10 @@ public class EventController {
     public List<Events> searchKeyword (@PathVariable("keyword") String keyword){
         return eventsService.findByKeyword(keyword);
     }*/
+    @GetMapping("/findBy/{keyword}")
+    public Set<EventGetDto> findByKeyword(@PathVariable("keyword") String keyWord,
+                                          @RequestBody Set<EventGetDto> eventDtos){
+        return eventsService.findByKeyword(keyWord, eventDtos);
+    }
 }
 

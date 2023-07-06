@@ -4,12 +4,16 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -29,6 +33,31 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
 
     @Bean
+    public UserDetailsService userDetailsService(){
+        return new AlumniUserDetailsService();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    public DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+
+    // override a configure method to configure the authentication manager builder
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+
+    @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
            http.authorizeHttpRequests(requests -> requests
@@ -41,12 +70,25 @@ public class WebSecurityConfig {
                                .ignoringRequestMatchers(matchers("/api/v1/**"))
                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
                    });
+
+
+//        http.csrf((csrf) -> csrf.disable())
+//                .authorizeHttpRequests(requests -> requests
+//                        .requestMatchers("/homepage").authenticated()
+//                        .requestMatchers("/api/v1/**").permitAll())
+//                .formLogin(login -> login
+//                        .usernameParameter("email")
+//                        .defaultSuccessUrl("/homepage")
+//                        .permitAll()
+//                )
+//                .httpBasic(Customizer.withDefaults())
+//                .authenticationProvider(authenticationProvider());
+
            return http.build();
 
 
     }
 
-    // create the above method to permit all requests
     private CharacterEncodingFilter characterEncodingFilter() {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
@@ -58,38 +100,16 @@ public class WebSecurityConfig {
         return new AntPathRequestMatcher(pattern);
     }
 
+
+
+
 //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/homepage").authenticated() // Requires authentication for /homepage
-//                .antMatchers("/homepage2", "/countries/save").permitAll() // Permits access without authentication for /homepage2 and /countries/save
-//                .anyRequest().authenticated() // Requires authentication for any other request
-//                .and()
-//                .formLogin() // Enables form-based authentication
-//                .and()
-//                .httpBasic(); // Enables Basic Authentication
+//    public void configure(WebSecurity web) {
+//        web
+//                .ignoring()
+//                .antMatchers("/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/webjars/**");
 //    }
 
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("12345")
-//                .authorities("admin")
-//                .build();
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("12345")
-//                .authorities("read")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 
 }

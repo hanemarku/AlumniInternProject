@@ -3,7 +3,6 @@ package com.example.AlumniInternProject.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 
 @Table(name = "reviews")
 public class Recommendation extends IdBaseEntity {
@@ -30,12 +28,10 @@ public class Recommendation extends IdBaseEntity {
     @JoinColumn(name = "recommended_user_id")
     private User recommendedUser;
 
-
-
     public Recommendation(User recommender, User recommendedUser, String comment, LocalDateTime timestamp) {
         this.recommender = recommender;
         this.recommendedUser = recommendedUser;
         this.comment = comment;
-        this.timestamp = timestamp;
+        this.timestamp = LocalDateTime.now();
     }
 }

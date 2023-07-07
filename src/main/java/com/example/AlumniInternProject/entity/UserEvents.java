@@ -14,12 +14,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserEvents extends IdBaseEntity {
-    @Column(length = 32, columnDefinition = "varchar(32)")
-    @Enumerated(value = EnumType.STRING)
+   // @Column(length = 32, columnDefinition = "varchar(32)")
+   // @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
    private MembershipRole membershipRole;
-
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -30,10 +29,19 @@ public class UserEvents extends IdBaseEntity {
     private Events event;
 
     public UserEvents(MembershipRole membershipRole,
+                      User user,
+                      Events event) {
+        this.membershipRole = membershipRole;
+        this.user = user;
+        this.event = event;
+    }
+
+/*
+*     public UserEvents(MembershipRole membershipRole,
                       UUID userId,
                       UUID eventId) {
         this.membershipRole = membershipRole;
-        this.getUser().getId();
+        this.getUser().setId(userId);
         this.getEvent().getId();
-    }
+    }*/
 }

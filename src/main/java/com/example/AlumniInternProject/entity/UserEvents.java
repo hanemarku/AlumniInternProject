@@ -35,13 +35,4 @@ public class UserEvents extends IdBaseEntity {
         this.user = user;
         this.event = event;
     }
-
-/*
-*     public UserEvents(MembershipRole membershipRole,
-                      UUID userId,
-                      UUID eventId) {
-        this.membershipRole = membershipRole;
-        this.getUser().setId(userId);
-        this.getEvent().getId();
-    }*/
 }

@@ -11,5 +11,5 @@ import java.util.UUID;
 
 public interface UserEventsRepository extends JpaRepository<UserEvents, UUID> {
     @Query("SELECT u FROM User u INNER JOIN UserEvents ue ON u.id = ue.user.id WHERE ue.event.id = :eventId")
-    List<User> findUsersByEventId(@Param("eventId") Long eventId);
+    List<User> findUsersByEventId(@Param("eventId") UUID eventId);
 }

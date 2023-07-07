@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.MembershipRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,14 @@ public class UserEvents extends IdBaseEntity {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Events event;
+    @JoinColumn(name = "eventSpecifics")
+    private EventSpecifics eventSpecifics;
 
     public UserEvents(MembershipRole membershipRole,
                       User user,
-                      Events event) {
+                      EventSpecifics eventSpecifics) {
         this.membershipRole = membershipRole;
         this.user = user;
-        this.event = event;
+        this.eventSpecifics = eventSpecifics;
     }
 }

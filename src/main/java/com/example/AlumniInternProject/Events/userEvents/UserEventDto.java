@@ -13,6 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserEventDto {
     public UUID userId;
-    public UUID eventId;
+    public UUID eventSpecificsId;
 //    public MembershipRole membershipRole;
 }

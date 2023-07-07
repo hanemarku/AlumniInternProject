@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.Events;
+package com.example.AlumniInternProject.entity;
 
 import lombok.Getter;
 

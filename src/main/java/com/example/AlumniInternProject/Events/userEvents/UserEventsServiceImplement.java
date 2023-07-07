@@ -1,7 +1,7 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventsRepository;
-import com.example.AlumniInternProject.Events.MembershipRole;
+import com.example.AlumniInternProject.entity.MembershipRole;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;

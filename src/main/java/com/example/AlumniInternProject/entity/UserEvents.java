@@ -1,6 +1,5 @@
 package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.Events.MembershipRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,8 @@ import lombok.Setter;
 public class UserEvents extends IdBaseEntity {
    // @Column(length = 32, columnDefinition = "varchar(32)")
    // @Enumerated(value = EnumType.STRING)
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "membership_role")
    private MembershipRole membershipRole;
 
     @ManyToOne

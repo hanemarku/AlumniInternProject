@@ -1,5 +1,7 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
 import com.example.AlumniInternProject.Events.EventsRepository;
 import com.example.AlumniInternProject.entity.MembershipRole;
 import com.example.AlumniInternProject.entity.Events;
@@ -21,12 +23,12 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     private final UserEventsRepository userEventsRepository;
     private final UserRepository userRepository;
-    private final EventsRepository eventsRepository;
+    private final EventSpecificsRepository eventSpecificsRepository;
     private UserEventGetDto mapUserEvent(UserEvents userEvents){
         var dto = new UserEventGetDto();
         dto.setId(userEvents.getId());
         dto.setUserId(userEvents.getUser().getId());
-        dto.setEventId(userEvents.getEvent().getId());
+        dto.setEventSpecificsId(userEvents.getEventSpecifics().getId());
         return dto;
     }
 
@@ -41,18 +43,16 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     @Override
     public UserEventGetDto save(UserEventDto eventDto) {
-//        MembershipRole membershipRole = eventDto.getMembershipRole();
-//        MembershipRole membershipRole = eventDto.setMembershipRole(MembershipRole.Creator);
-
-        // Retrieve the User entity by user ID
         User user = userRepository.findById(eventDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + eventDto.getUserId()));
 
-        // Retrieve the Event entity by event ID
-        Events event = eventsRepository.findById(eventDto.getEventId())
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: " + eventDto.getEventId()));
-
-        UserEvents userEvents = new UserEvents(MembershipRole.Creator, user, event);
+        EventSpecifics eventSpecifics =
+                eventSpecificsRepository.findById(eventDto.getEventSpecificsId())
+                         .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "
+                                        + eventDto.getEventSpecificsId()));
+    /*When crating the event by default the one creating it is the creator*/
+        UserEvents userEvents = new UserEvents(MembershipRole.Creator,
+                                                        user, eventSpecifics);
         UserEvents saved = userEventsRepository.save(userEvents);
 
         return mapUserEvent(saved);

@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.Events.dto;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.entity.City;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +21,7 @@ public class EventDto {
     private String Name;
     private  String Topic;
     private String Description;
-    private LocalDateTime Date;
     private int maxParticipants;
     private String imgUrl;
-    private Set<City> cities = new HashSet<>();
-    private UUID createdBy;
-
+    private Set<EventSpecifics> eventSpecifics = new HashSet<>();
 }

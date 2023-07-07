@@ -2,7 +2,6 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
-import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,8 @@ public class EventsServiceImplement implements EventsService {
         dto.setName(e.getName());
         dto.setTopic(e.getTopic());
         dto.setDescription(e.getDescription());
-        dto.setDate(e.getDate());
         dto.setMaxParticipants(e.getMaxParticipants());
         dto.setImgUrl(e.getImgUrl());
-        dto.setCities(e.getCities());
         return dto;
     }
 
@@ -39,10 +36,9 @@ public class EventsServiceImplement implements EventsService {
                 edto.getName(),
                 edto.getTopic(),
                 edto.getDescription(),
-                edto.getDate(),
                 edto.getImgUrl(),
                 edto.getMaxParticipants(),
-                edto.getCities()
+                edto.getEventSpecifics()
         );
         /*The part of the code that needs to be done
         * when the login is finished. This is only a dumb
@@ -78,10 +74,8 @@ public class EventsServiceImplement implements EventsService {
         e.setName(edto.getName());
         e.setTopic(edto.getTopic());
         e.setDescription(edto.getDescription());
-        e.setDate(edto.getDate());
         e.setMaxParticipants(edto.getMaxParticipants());
         e.setImgUrl(edto.getImgUrl());
-        e.setCities(edto.getCities());
         var saved = eventsRepository.save(e);
         return map(saved);
     }
@@ -102,9 +96,7 @@ public class EventsServiceImplement implements EventsService {
             if(
                     eventDto.getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
                             || eventDto.getTopic().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                            || eventDto.getDescription().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                            || isCity(keyWord, eventDto) == true
-            ){
+                            || eventDto.getDescription().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))){
                 matched.add(eventDto);
             }
         }
@@ -112,7 +104,8 @@ public class EventsServiceImplement implements EventsService {
     }
 
     /*Return true when it matches the city*/
-    public boolean isCity(String city, EventGetDto eventDtos){
+  /*
+  *   public boolean isCity(String city, EventGetDto eventDtos){
         Set<City> cityEvent = eventDtos.getCities();
         for(City c : cityEvent){
             if (c.getName().toLowerCase().contains(city.toLowerCase(Locale.ROOT))){
@@ -121,8 +114,19 @@ public class EventsServiceImplement implements EventsService {
         }
         // ? , sepse do e kthej gjithsesi nje false ne fund
         return false;
+    }*/
+    public boolean eventExists(EventDto eventDto){
+        for (EventGetDto eventGetDto : findAll()){
+            if (eventDto.getName().toLowerCase().
+                    contains(eventGetDto.getName().
+                            toLowerCase(Locale.ROOT)))
+                return true;
+        }
+        return false;
     }
-    @Override
+
+     /*
+   *  @Override
     public List<EventGetDto> orderAsc(Set<EventGetDto> eventDtos) {
         List<EventGetDto> order = eventDtos.stream().
                 sorted(Comparator.comparing(EventGetDto::getDate)).
@@ -137,21 +141,14 @@ public class EventsServiceImplement implements EventsService {
                 collect(Collectors.toList());
         return order;
     }
+   *
+   * */
 
     /*When creating a new event we also need to make sure
-    * that the event is not dublicated.
-    *   1. Event name must be different
-    * (if the event name is the same we can add
-    * only date and city)
+     * that the event is not dublicated.
+     *   1. Event name must be different
+     * (if the event name is the same we can add
+     * only date and city)
      */
-    public boolean eventExists(EventDto eventDto){
-        for (EventGetDto eventGetDto : findAll()){
-            if (eventDto.getName().toLowerCase().
-                    contains(eventGetDto.getName().
-                            toLowerCase(Locale.ROOT)))
-                return true;
-        }
-        return false;
-    }
 
 }

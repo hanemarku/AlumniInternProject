@@ -14,5 +14,5 @@ import java.util.UUID;
 public class UserEventDto {
     public UUID userId;
     public UUID eventId;
-    public MembershipRole membershipRole;
+//    public MembershipRole membershipRole;
 }

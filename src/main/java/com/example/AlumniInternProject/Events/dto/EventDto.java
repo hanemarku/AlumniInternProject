@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -18,10 +20,10 @@ public class EventDto {
     private String Name;
     private  String Topic;
     private String Description;
-    private LocalDate Date;
-    private boolean LimitedMembers;
+    private LocalDateTime Date;
     private int maxParticipants;
     private String imgUrl;
     private Set<City> cities = new HashSet<>();
+    private UUID createdBy;
 
 }

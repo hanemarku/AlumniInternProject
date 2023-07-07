@@ -34,16 +34,18 @@ public class EventController {
     public void delete(@PathVariable UUID id){
         eventsService.delete(id);
     }
-    /*
-    *
-    @GetMapping("/findBy/{keyword}")
-    public List<Events> searchKeyword (@PathVariable("keyword") String keyword){
-        return eventsService.findByKeyword(keyword);
-    }*/
     @GetMapping("/findBy/{keyword}")
     public Set<EventGetDto> findByKeyword(@PathVariable("keyword") String keyWord,
                                           @RequestBody Set<EventGetDto> eventDtos){
         return eventsService.findByKeyword(keyWord, eventDtos);
+    }
+    @GetMapping("/dateAsc")
+    public List<EventGetDto> orderAsc(@RequestBody Set<EventGetDto> eventDtos){
+        return eventsService.orderAsc(eventDtos);
+    }
+    @GetMapping("/dateDesc")
+    public List<EventGetDto> orderDesc(@RequestBody Set<EventGetDto> eventDtos){
+        return  eventsService.orderDesc(eventDtos);
     }
 }
 

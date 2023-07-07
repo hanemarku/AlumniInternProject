@@ -17,6 +17,10 @@ public interface EventsService{
     /*When a user searches with a keyword it returns all the events that include
     * that specific keyword*/
     Set<EventGetDto> findByKeyword (String keyWord , Set<EventGetDto> eventDtos);
+    /*Sorting by date ASC*/
+    List<EventGetDto> orderAsc(Set<EventGetDto> eventDtos);
+    /*Sorting by date DESC*/
+    List<EventGetDto> orderDesc(Set<EventGetDto> eventDtos);
 
     // TO DO
     /*User to register himself on an event */

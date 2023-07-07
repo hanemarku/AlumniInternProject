@@ -12,9 +12,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserEvents extends IdBaseEntity {
    // @Column(length = 32, columnDefinition = "varchar(32)")
+<<<<<<< HEAD
    // @Enumerated(value = EnumType.STRING)
     @Enumerated(value = EnumType.STRING)
     @Column(name = "membership_role")
+=======
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "membership_role")
+
+>>>>>>> df95478c947d6f4db1963f68e91db0ec5aeb6546
    private MembershipRole membershipRole;
 
     @ManyToOne

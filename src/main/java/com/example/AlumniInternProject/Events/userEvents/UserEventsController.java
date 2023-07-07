@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/events/{eventId}")
+@RequestMapping("/api/v1/userEvents")
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;
@@ -27,6 +27,16 @@ public class UserEventsController {
                 .map(user -> mapUser(user))
                 .collect(Collectors.toList());
         return userGetDtos;
+    }
+
+    // make a method to print all users by event id
+    @GetMapping("/print/{eventId}")
+    public void printUsersByEventId(@PathVariable UUID eventId) {
+        //print all users in userEventRepository
+        List<User> users = userEventsRepository.findUsersByEventId(eventId);
+        for (User user : users) {
+            System.out.println(user.getFirstname() + " " + user.getLastname());
+        }
     }
 
     @GetMapping("/export/csv")

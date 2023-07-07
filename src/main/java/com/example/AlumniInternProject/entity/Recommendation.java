@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "reviews")
 public class Recommendation extends IdBaseEntity {
 
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private LocalDateTime timestamp;
 
     @Column(length = 1000, nullable = false)
     private String comment;

@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -100,6 +101,8 @@ public class User extends IdBaseEntity{
         return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<UserEvents> userEvents;
 
 
     @OneToMany(mappedBy = "user")

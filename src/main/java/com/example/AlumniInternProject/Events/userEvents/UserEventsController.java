@@ -7,10 +7,7 @@ import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.user.UserGetDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +47,10 @@ public class UserEventsController {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventPdfExporter exporter = new EventPdfExporter();
         exporter.export(listUsers, response);
+    }
+    @PostMapping
+    public UserEventGetDto save(@RequestBody UserEventDto eventDto){
+        return userEventsService.save(eventDto);
     }
 
     private UserGetDto mapUser(User user) {

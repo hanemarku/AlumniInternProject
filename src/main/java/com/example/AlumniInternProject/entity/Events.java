@@ -1,8 +1,5 @@
-package com.example.AlumniInternProject.Events;
+package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.Events.userEvents.UserEvents;
-import com.example.AlumniInternProject.entity.City;
-import com.example.AlumniInternProject.entity.IdBaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -23,15 +22,20 @@ import java.util.Set;
 public class Events extends IdBaseEntity {
     @Column(length = 100, nullable = false)
     private String name;
+
     @Column(length = 100, nullable = false)
     private String topic;
+
     @Column(length = 1500, nullable = false)
     private String description;
-    private LocalDate date;
-    private boolean limitedMembers;
+
+    private LocalDateTime date;
+
     private String imgUrl;
+
     private int maxParticipants;
-  //  private UUID createdBy;
+
+    private UUID createdBy;
 
     /* 1 event ka shume user ,
     * por 1 user mund te jete pjese e shume eventeve.
@@ -53,16 +57,14 @@ public class Events extends IdBaseEntity {
     public Events(String name,
                   String topic,
                   String description,
-                  LocalDate date,
-                  boolean limitedMembers,
-                  int maxParticipants,
+                  LocalDateTime date,
                   String imgUrl,
+                  int maxParticipants,
                   Set<City> cities){
         this.name = name;
         this.topic = topic;
         this.description = description;
         this.date = date;
-        this.limitedMembers = limitedMembers;
         this.maxParticipants = maxParticipants;
         this.imgUrl = imgUrl;
         this.cities = cities;

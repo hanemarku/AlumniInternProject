@@ -2,12 +2,12 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.entity.City;
+import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,26 +23,32 @@ public class EventsServiceImplement implements EventsService {
         dto.setTopic(e.getTopic());
         dto.setDescription(e.getDescription());
         dto.setDate(e.getDate());
-        dto.setLimitedMembers(e.isLimitedMembers());
         dto.setMaxParticipants(e.getMaxParticipants());
         dto.setImgUrl(e.getImgUrl());
         dto.setCities(e.getCities());
         return dto;
     }
 
-    //public Events save(Events event) {        return null;    }
     @Override
     public EventGetDto save(EventDto edto) {
-        var e = new Events();
-        e.setName(edto.getName());
-        e.setTopic(edto.getTopic());
-        e.setDescription(edto.getDescription());
-        e.setDate(edto.getDate());
-        e.setLimitedMembers(edto.isLimitedMembers());
-        e.setMaxParticipants(edto.getMaxParticipants());
-        e.setImgUrl(edto.getImgUrl());
-        e.setCities(edto.getCities());
-        var saved = eventsRepository.save(e);
+        if(eventExists(edto)){
+            throw new
+                    RuntimeException("The event you are trying to create already exists");
+        }
+        var eDto = new Events(
+                edto.getName(),
+                edto.getTopic(),
+                edto.getDescription(),
+                edto.getDate(),
+                edto.getImgUrl(),
+                edto.getMaxParticipants(),
+                edto.getCities()
+        );
+        /*The part of the code that needs to be done
+        * when the login is finished. This is only a dumb
+        * part of code i saw on net :)*/
+       // eDto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication());
+        var saved = eventsRepository.save(eDto);
         return map(saved);
     }
 
@@ -73,7 +79,6 @@ public class EventsServiceImplement implements EventsService {
         e.setTopic(edto.getTopic());
         e.setDescription(edto.getDescription());
         e.setDate(edto.getDate());
-        e.setLimitedMembers(edto.isLimitedMembers());
         e.setMaxParticipants(edto.getMaxParticipants());
         e.setImgUrl(edto.getImgUrl());
         e.setCities(edto.getCities());
@@ -86,23 +91,67 @@ public class EventsServiceImplement implements EventsService {
         eventsRepository.deleteById(id);
     }
 
-    /*
-    * When searching for the keyword we need to go through every event saved ,
-    * thats why we take the List of events as a parameter. Also we might return
-    * more than one Event that contains the keyword searched.*/
+    /*Searching by keyword. String elements :
+     * Name , Topic and Description. I am searching for
+     * the city in another method */
     @Override
-    public List<EventGetDto> findByKeyWord(String keyWord, List<EventGetDto> eventDtos){
-        List<EventGetDto> containmentApproved = new ArrayList<>();
-        /*Check if the List contains elements*/
-        if(eventDtos.isEmpty()){
-            throw new IllegalArgumentException("The list is null");
-        }
-        int i = 0;
-        while (!eventDtos.isEmpty()){
-            if(eventDtos.get(i).toString().contains(keyWord)){
-                containmentApproved.add(eventDtos.get(i));
+    public Set<EventGetDto> findByKeyword(String keyWord, Set<EventGetDto> eventDtos) {
+        Set<EventGetDto> matched = new HashSet<>();
+
+        for(EventGetDto eventDto : eventDtos){
+            if(
+                    eventDto.getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || eventDto.getTopic().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || eventDto.getDescription().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                            || isCity(keyWord, eventDto) == true
+            ){
+                matched.add(eventDto);
             }
         }
-        return containmentApproved;
+        return matched;
     }
+
+    /*Return true when it matches the city*/
+    public boolean isCity(String city, EventGetDto eventDtos){
+        Set<City> cityEvent = eventDtos.getCities();
+        for(City c : cityEvent){
+            if (c.getName().toLowerCase().contains(city.toLowerCase(Locale.ROOT))){
+                return true;
+            }
+        }
+        // ? , sepse do e kthej gjithsesi nje false ne fund
+        return false;
+    }
+    @Override
+    public List<EventGetDto> orderAsc(Set<EventGetDto> eventDtos) {
+        List<EventGetDto> order = eventDtos.stream().
+                sorted(Comparator.comparing(EventGetDto::getDate)).
+                collect(Collectors.toList());
+        return order;
+    }
+
+    @Override
+    public List<EventGetDto> orderDesc(Set<EventGetDto> eventDtos) {
+        List<EventGetDto> order = eventDtos.stream().
+                sorted(Comparator.comparing(EventGetDto::getDate).reversed()).
+                collect(Collectors.toList());
+        return order;
+    }
+
+    /*When creating a new event we also need to make sure
+    * that the event is not dublicated.
+    *   1. Event name must be different
+    * (if the event name is the same we can add
+    * only date and city)
+     */
+    public boolean eventExists(EventDto eventDto){
+        for (EventGetDto eventGetDto : findAll()){
+            if (eventDto.getName().toLowerCase().
+                    contains(eventGetDto.getName().
+                            toLowerCase(Locale.ROOT)))
+                return true;
+        }
+        return false;
+    }
+
 }

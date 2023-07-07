@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/events/{eventId}/users")
+@RequestMapping("/api/v1/events/{eventId}")
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;
-    @GetMapping("/events/{eventId}/users")
+    @GetMapping()
     public List<UserGetDto> getUsersByEventId(@PathVariable Long eventId) {
         List<User> users = userEventsRepository.findUsersByEventId(eventId);
         List<UserGetDto> userGetDtos = users.stream()
@@ -28,21 +28,21 @@ public class UserEventsController {
         return userGetDtos;
     }
 
-    @GetMapping("/events/{eventId}/users/export/csv")
+    @GetMapping("/export/csv")
     public void exportToCSV(HttpServletResponse response, @PathVariable Long eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventCsvExporter exporter = new EventCsvExporter();
         exporter.export(listUsers, response);
     }
 
-    @GetMapping("/events/{eventId}/users/export/excel")
+    @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response, @PathVariable Long eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventExcelExporter exporter = new EventExcelExporter();
         exporter.export(listUsers, response);
     }
 
-    @GetMapping("/events/{eventId}/users/export/pdf")
+    @GetMapping("/export/pdf")
     public void exportToPDF(HttpServletResponse response, @PathVariable Long eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventPdfExporter exporter = new EventPdfExporter();

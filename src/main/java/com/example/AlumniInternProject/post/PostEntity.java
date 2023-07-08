@@ -2,13 +2,13 @@ package com.example.AlumniInternProject.post;
 
 
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.like.Like;
-import com.example.AlumniInternProject.user.UserDTO;
+import com.example.AlumniInternProject.like.LikeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Table(name = "post")
-public class PostEntity implements Serializable {
+public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class PostEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "like_id")
-    private Like likedBy;
+    private LikeEntity likedBy;
 
     private String title;
     private String content;

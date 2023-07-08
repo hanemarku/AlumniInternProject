@@ -1,5 +1,8 @@
 package com.example.AlumniInternProject.post;
 
+import com.example.AlumniInternProject.like.LikeConverter;
+import com.example.AlumniInternProject.user.UserConverter;
+
 public class PostConverter {
 
     public static PostDto convertPostEntityToDto(PostEntity postEntity) {
@@ -15,5 +18,18 @@ public class PostConverter {
         postDto.setDateOfPost(postEntity.getDateOfPost());
 
         return postDto;
+    }
+
+    public static PostEntity convertPostDtoToEntity(PostDto postDto) {
+        PostEntity postEntity = new PostEntity();
+
+        postEntity.setId(postDto.getId());
+        postEntity.setTitle(postDto.getTitle());
+        postEntity.setContent(postDto.getContent());
+        postEntity.setTag(postDto.getTag());
+        postEntity.setKeyword(postDto.getKeyword());
+        postEntity.setDateOfPost(postDto.getDateOfPost());
+
+        return postEntity;
     }
 }

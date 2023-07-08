@@ -2,7 +2,8 @@ package com.example.AlumniInternProject.comment;
 
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.post.Post;
+
+import com.example.AlumniInternProject.post.PostEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,7 +27,7 @@ public class Comment extends IdBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private PostEntity post;
 
     private String content;
     private Date commmentCreation;

@@ -6,15 +6,13 @@ import java.util.UUID;
 
 public interface LikeService {
 
-    LikeGetDto save(LikeDto likeDto);
+    List<LikeDto> getAllLikes();
 
-    List<LikeGetDto> findAll();
+    Optional<LikeDto> getLikeById(Integer id);
 
-    LikeGetDto findById(UUID id);
+    LikeDto addLike(LikeDto likeDto);
 
-    LikeGetDto update(UUID id, LikeDto likeDto);
+    void deleteLike(Integer id);
 
-    void delete(UUID id);
-
-    Optional<Like> findLikeByPost(UUID post_id);
+    LikeDto updateLike(Integer id, LikeDto likeDto);
 }

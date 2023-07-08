@@ -1,9 +1,6 @@
 package com.example.AlumniInternProject.role;
 
 import com.example.AlumniInternProject.entity.Role;
-import com.example.AlumniInternProject.post.Post;
-import com.example.AlumniInternProject.post.PostGetDto;
-import com.example.AlumniInternProject.post.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

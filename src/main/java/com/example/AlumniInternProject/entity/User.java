@@ -1,12 +1,10 @@
 package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.like.Like;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.AlumniInternProject.like.LikeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -105,13 +103,13 @@ public class User extends IdBaseEntity{
 
 
     @OneToMany(mappedBy = "user")
-    private Collection<Like> like;
+    private Collection<LikeEntity> like;
 
-    public Collection<Like> getLike() {
+    public Collection<LikeEntity> getLike() {
         return like;
     }
 
-    public void setLike(Collection<Like> like) {
+    public void setLike(Collection<LikeEntity> like) {
         this.like = like;
     }
 }

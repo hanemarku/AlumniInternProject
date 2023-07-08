@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PostService {
 
-    PostDto getPost(Integer id);
+    PostDto getPostById(Integer id);
 
     List<PostDto> getAllPosts();
 

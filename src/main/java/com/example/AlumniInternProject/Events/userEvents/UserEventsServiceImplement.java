@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +33,7 @@ public class UserEventsServiceImplement implements UserEventsService{
     }
 
     @Override
-    public List<UserGetDto> getUsersByEventId(Long eventId) {
+    public List<UserGetDto> getUsersByEventId(UUID eventId) {
         List<User> users = userEventsRepository.findUsersByEventId(eventId);
         return users.stream()
                 .sorted(Comparator.comparing(User::getFirstname))

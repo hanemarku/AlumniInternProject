@@ -30,13 +30,13 @@ public class LikeServiceImplementation implements LikeService{
 
     @Override
     public LikeDto addLike(LikeDto likeDto) {
-        var likeEntity = new LikeEntity(
-                likeDto.getId(),
-                likeDto.getUser(),
-                likeDto.getPost(),
-                likeDto.getComment(),
-                likeDto.getDateOfLike()
-        );
+        var likeEntity = new LikeEntity();
+                likeDto.setId(likeEntity.getId());
+                likeDto.setUser(likeEntity.getUser());
+                likeDto.setPost(likeEntity.getPost());
+                likeDto.setDateOfLike(likeEntity.getDateOfLike());
+                likeDto.setComment(likeEntity.getComment());
+
         return LikeConverter.convertLikeEntityToDto(likeRepository.save(likeEntity));
 
     }

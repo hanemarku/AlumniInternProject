@@ -15,22 +15,22 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public CommentGetDto save(@RequestBody CommentDto commentDto){
+    public CommentDto save(@RequestBody CommentDto commentDto){
         return commentService.save(commentDto);
     }
 
     @GetMapping
-    public List<CommentGetDto> findAll(){
+    public List<CommentDto> findAll(){
         return commentService.findAll();
     }
 
     @GetMapping("{id}")
-    public CommentGetDto findById(@PathVariable UUID id){
+    public CommentDto findById(@PathVariable UUID id){
         return commentService.findById(id);
     }
 
     @PatchMapping("{id}")
-    public CommentGetDto update(@PathVariable UUID id,@RequestBody CommentDto commentDto){
+    public CommentDto update(@PathVariable UUID id,@RequestBody CommentDto commentDto){
         return commentService.update(id, commentDto);
     }
 

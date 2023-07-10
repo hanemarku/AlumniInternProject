@@ -13,4 +13,16 @@ public class CommentConverter {
 
         return commentDto;
     }
+
+    public static Comment convertCommentDtoToEntity(CommentDto commentDto){
+        Comment comment = new Comment();
+
+        comment.setId(commentDto.getId());
+        comment.setUser(commentDto.getUser());
+        comment.setPost(commentDto.getPost());
+        comment.setContent(commentDto.getContent());
+        comment.setCommmentCreation(commentDto.getDateOfCreation());
+
+        return comment;
+    }
 }

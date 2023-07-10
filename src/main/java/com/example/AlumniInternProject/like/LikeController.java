@@ -26,7 +26,7 @@ public class LikeController {
 
     @GetMapping("{id}")
     public LikeDto findLikeById(@PathVariable Integer id){
-        return likeService.getLikeById(id).orElseThrow();
+        return likeService.getLikeById(id);
     }
 
     @PatchMapping("{id}")

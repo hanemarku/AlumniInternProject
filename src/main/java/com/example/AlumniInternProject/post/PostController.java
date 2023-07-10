@@ -1,14 +1,11 @@
 package com.example.AlumniInternProject.post;
 
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("api/v1/posts")
-//@RequiredArgsConstructor
 @RestController
 public class PostController {
 
@@ -38,6 +35,16 @@ public class PostController {
     @DeleteMapping("{id}")
     void deletePost(@PathVariable Integer id){
         postService.deletePost(id);
+    }
+
+    @GetMapping("allPosts/{id}")
+    public List<PostDto> getAllUsersPost(@PathVariable Integer id){
+        return postService.getAllUserPosts(id);
+    }
+
+    @GetMapping("likes/{id}")
+    public List<PostDto> getLikesOfPost(@PathVariable Integer id){
+        return postService.getAllLikesOfPost(id);
     }
 
 }

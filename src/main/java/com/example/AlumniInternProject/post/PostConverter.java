@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.post;
 
 import com.example.AlumniInternProject.like.LikeConverter;
+import com.example.AlumniInternProject.like.LikeEntity;
 import com.example.AlumniInternProject.user.UserConverter;
 
 public class PostConverter {
@@ -10,7 +11,7 @@ public class PostConverter {
 
         postDto.setId(postEntity.getId());
         postDto.setAuthor(UserConverter.convertUserEntityToDto(postEntity.getAuthor()));
-        postDto.setLikedBy(LikeConverter.convertLikeEntityToDto(postEntity.getLikedBy()));
+        postDto.setLikedBy(LikeConverter.convertLikeEntityToDto((LikeEntity) postEntity.getLikedBy()));
         postDto.setTitle(postEntity.getTitle());
         postDto.setContent(postEntity.getContent());
         postDto.setTag(postEntity.getTag());

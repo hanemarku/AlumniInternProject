@@ -8,7 +8,7 @@ public interface LikeService {
 
     List<LikeDto> getAllLikes();
 
-    Optional<LikeDto> getLikeById(Integer id);
+    LikeDto getLikeById(Integer id);
 
     LikeDto addLike(LikeDto likeDto);
 

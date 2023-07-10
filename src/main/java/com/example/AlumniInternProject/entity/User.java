@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.like.LikeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
-public class User extends IdBaseEntity{
+public class User extends IdBaseEntity {
 
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstname;

@@ -1,6 +1,10 @@
 package com.example.AlumniInternProject.like;
 
 
+import com.example.AlumniInternProject.comment.CommentConverter;
+import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.post.PostConverter;
+import com.example.AlumniInternProject.user.UserConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +24,26 @@ public class LikeServiceImplementation implements LikeService{
 
     @Override
     public List<LikeDto> getAllLikes() {
-        return likeRepository.findAll().stream().map(LikeConverter::convertLikeEntityToDto).toList();
+        return likeRepository.findAll()
+                .stream()
+                .map(LikeConverter::convertLikeEntityToDto)
+                .toList();
     }
 
     @Override
-    public Optional<LikeDto> getLikeById(Integer id) {
-        return likeRepository.findById(id).map(LikeConverter::convertLikeEntityToDto);
+    public LikeDto getLikeById(Integer id) {
+        var like = likeRepository.findById(id).orElseThrow();
+        return LikeConverter.convertLikeEntityToDto(like);
     }
 
     @Override
     public LikeDto addLike(LikeDto likeDto) {
         var likeEntity = new LikeEntity();
-                likeDto.setId(likeEntity.getId());
-                likeDto.setUser(likeEntity.getUser());
-                likeDto.setPost(likeEntity.getPost());
-                likeDto.setDateOfLike(likeEntity.getDateOfLike());
-                likeDto.setComment(likeEntity.getComment());
+                likeDto.setId(likeDto.getId());
+                likeDto.setUser(likeDto.getUser());
+                likeDto.setPost(likeDto.getPost());
+                likeDto.setDateOfLike(likeDto.getDateOfLike());
+                likeDto.setComment(likeDto.getComment());
 
         return LikeConverter.convertLikeEntityToDto(likeRepository.save(likeEntity));
 
@@ -49,13 +57,15 @@ public class LikeServiceImplementation implements LikeService{
 
     @Override
     public LikeDto updateLike(Integer id, LikeDto likeDto) {
-        var like = likeRepository.findById(id).orElseThrow(RuntimeException::new);
+        var like = likeRepository.findById(id).get();
 
-        like.setUser(likeDto.getUser());
-        like.setPost(likeDto.getPost());
-        like.setComment(likeDto.getComment());
+        like.setUser(UserConverter.convertUserDtoToEntity(likeDto.getUser()));
+        like.setPost(PostConverter.convertPostDtoToEntity(likeDto.getPost()));
+        like.setComment(CommentConverter.convertCommentDtoToEntity(likeDto.getComment()));
         like.setDateOfLike(likeDto.getDateOfLike());
-        return LikeConverter.convertLikeEntityToDto(likeRepository.save(like));
+
+        likeRepository.save(like);
+        return LikeConverter.convertLikeEntityToDto(like);
 
     }
 }

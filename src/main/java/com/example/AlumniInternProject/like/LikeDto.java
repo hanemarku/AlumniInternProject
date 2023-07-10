@@ -1,9 +1,8 @@
 package com.example.AlumniInternProject.like;
 
-
-import com.example.AlumniInternProject.comment.Comment;
-import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.post.PostEntity;
+import com.example.AlumniInternProject.comment.CommentDto;
+import com.example.AlumniInternProject.post.PostDto;
+import com.example.AlumniInternProject.user.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 public class LikeDto {
     private Integer id;
-    private User user;
-    private PostEntity post;
-    private Comment comment;
+    private UserDTO user;
+    private PostDto post;
+    private CommentDto comment;
     private LocalDateTime dateOfLike;
 }

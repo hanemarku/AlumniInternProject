@@ -13,4 +13,8 @@ public interface PostService {
     PostDto updatePost(Integer id, PostDto postDto);
 
     void deletePost(Integer id);
+
+    List<PostDto> getAllUserPosts(Integer id);
+
+    List<PostDto> getAllLikesOfPost(Integer id);
 }

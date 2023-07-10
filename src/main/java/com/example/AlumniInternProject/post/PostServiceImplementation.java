@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j // this is for logging
@@ -46,7 +47,6 @@ public class PostServiceImplementation implements PostService{
     @Override
     public PostDto updatePost(Integer id, PostDto postDto) {
         var optional = postRepository.findById(id).get();
-
         optional.setTitle(postDto.getTitle());
         optional.setContent(postDto.getContent());
         optional.setTag(postDto.getTag());
@@ -59,5 +59,24 @@ public class PostServiceImplementation implements PostService{
     @Override
     public void deletePost(Integer id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PostDto> getAllUserPosts(Integer id) {
+        return postRepository.findAll()
+                .stream()
+                .filter(postEntity -> postEntity.getAuthor().getId().equals(id))
+                .map(PostConverter::convertPostEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDto> getAllLikesOfPost(Integer id) {
+        return postRepository.findAll()
+                .stream()
+                .filter(postEntity -> postEntity.getLikedBy()
+                        .stream().anyMatch(likeEntity -> likeEntity.getId().equals(id)))
+                .map(PostConverter::convertPostEntityToDto)
+                .collect(Collectors.toList());
     }
 }

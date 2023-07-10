@@ -27,9 +27,9 @@ public class PostEntity {
     @JoinColumn(name = "user_id")
     private User author;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "like_id")
-    private LikeEntity likedBy;
+    private List<LikeEntity> likedBy;
 
     private String title;
     private String content;

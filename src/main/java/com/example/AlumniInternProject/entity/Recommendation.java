@@ -34,4 +34,6 @@ public class Recommendation extends IdBaseEntity {
         this.comment = comment;
         this.timestamp = LocalDateTime.now();
     }
+
+    //git delete
 }

@@ -20,10 +20,10 @@ public class RecommendationServiceImpl implements RecommendationService{
     @Override
     public RecommendationGetDto save(RecommendationDto recommendationDto) {
         User recommendedUser = userRepository.findById(recommendationDto.getRecommendedUser())
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + (recommendationDto.getRecommendedUser()) + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + (recommendationDto.getRecommendedUser()) + " was not found"));
 
         User recommender = userRepository.findById(recommendationDto.getRecommender())
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + (recommendationDto.getRecommender()) + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + (recommendationDto.getRecommender()) + " was not found"));
         var recommendation = new Recommendation(
                 recommender,
                 recommendedUser,

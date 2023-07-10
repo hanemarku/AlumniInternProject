@@ -1,7 +1,7 @@
 package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.like.LikeEntity;
-import com.example.AlumniInternProject.like.Like;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

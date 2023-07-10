@@ -67,7 +67,7 @@ public class SkillServiceImpl implements SkillService{
         List<TopSkillGetDto> topSkills = frequencyMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .map(entry -> mapTopSkills(entry.getKey(), entry.getValue()))
+                .map(entry -> mapTopSkills(entry.getKey()))
                 .collect(Collectors.toList());
 
         return topSkills;
@@ -80,10 +80,9 @@ public class SkillServiceImpl implements SkillService{
         return dto;
     }
 
-    private TopSkillGetDto mapTopSkills(String skillName, int frequency) {
+    private TopSkillGetDto mapTopSkills(String skillName) {
         var dto = new TopSkillGetDto();
         dto.setName(skillName);
-        dto.setCount(frequency);
         return dto;
     }
 

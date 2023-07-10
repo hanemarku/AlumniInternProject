@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.like.LikeEntity;
+import com.example.AlumniInternProject.like.Like;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -100,6 +102,8 @@ public class User extends IdBaseEntity{
         return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<UserEvents> userEvents;
 
 
     @OneToMany(mappedBy = "user")
@@ -112,4 +116,11 @@ public class User extends IdBaseEntity{
     public void setLike(Collection<LikeEntity> like) {
         this.like = like;
     }
+
+    @OneToMany(mappedBy = "recommender")
+    private Set<Recommendation> recommender;
+
+    @OneToMany(mappedBy = "recommendedUser")
+    private Set<Recommendation> recommendedUser;
+
 }

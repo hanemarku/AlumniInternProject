@@ -1,13 +1,8 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
-import com.example.AlumniInternProject.entity.Country;
-import com.example.AlumniInternProject.entity.Interest;
-import com.example.AlumniInternProject.entity.Skill;
-import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -16,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @RestController
@@ -42,22 +36,55 @@ public class UserController {
 
 
 
-    @PostMapping("signup")
-    public UserGetDto save(@RequestParam UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
-        if(!multipartFile.isEmpty()){
-            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            dto.setProfilePicUrl(filename);
-            UserDTO savedUser = userService.save(dto);
-            String uploadDir = "user-photos/" + savedUser.getFirstname();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
 
-        }else {
-            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
-            userService.save(dto);
+//    @PostMapping("signup")
+//    public UserGetDto save(@RequestParam UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
+//
+//        if (!multipartFile.isEmpty()) {
+//            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            dto.setProfilePicUrl(filename);
+//            UserDTO savedUser = userService.save(dto);
+//            String uploadDir = "user-photos/" + savedUser.getFirstname();
+//            FileUploadUtil.cleanDir(uploadDir);
+//            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+//
+//        } else {
+//            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
+//
+//
+//            userService.save(dto);
+//        }
+//            return userService.save(dto);
+//
+//    }
+
+    @PostMapping
+    public ResponseEntity<String> save(@RequestBody UserDTO dto) {
+        UserGetDto savedUser = userService.save(dto);
+        if (savedUser != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("User saved successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save user");
         }
-        return userService.save(dto);
     }
+
+//    @PostMapping("shtoFoto")
+//
+//
+//    public String save( @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
+//
+//        if (!multipartFile.isEmpty()) {
+//            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            String uploadDir = "user-photos/" + "test";
+//            FileUploadUtil.cleanDir(uploadDir);
+//            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+//
+//        } else {
+//            return "failed";
+//        }
+//        return multipartFile.getName();
+
+//    }
 
     @PostMapping("check_unique_email")
     public String isEmailUnique( @RequestParam String email) {
@@ -94,13 +121,5 @@ public class UserController {
     }
 
 
-//    @PostMapping
-//    public ResponseEntity<String> save(@RequestBody UserDTO dto) {
-//        UserGetDto savedUser = userService.save(dto);
-//        if (savedUser != null) {
-//            return ResponseEntity.status(HttpStatus.CREATED).body("User saved successfully");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save user");
-//        }
-//    }
+
 }

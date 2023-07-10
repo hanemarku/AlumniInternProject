@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean isEmailUnique(UUID id, String email) {
-        User existingUser = userRepository.findByEmail(email);
+        User existingUser = userRepository.findUserByEmail(email);
         if (existingUser != null && existingUser.getId().equals(id)) {
             return false;
         }

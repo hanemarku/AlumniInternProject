@@ -24,4 +24,25 @@ public class UserConverter {
 
         return userDto;
     }
+
+    public static User convertDtoToEntity(UserDTO author) {
+        User user = new User();
+
+        user.setFirstname(author.getFirstname());
+        user.setLastname(author.getLastname());
+        user.setEmail(author.getEmail());
+        user.setPassword(author.getPassword());
+        user.setRole(author.getRole());
+        user.setBirthday(author.getBirthday());
+        user.setBio(author.getBio());
+        user.setCity(author.getCity());
+        user.setCountry(author.getCountry());
+        user.setEnabled(author.isEnabled());
+        user.setPhoneNumber(author.getPhoneNumber());
+        user.setProfilePicUrl(author.getProfilePicUrl());
+        user.setSkills(author.getSkills());
+        user.setInterests(author.getInterests());
+
+        return user;
+    }
 }

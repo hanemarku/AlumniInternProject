@@ -1,30 +1,29 @@
 package com.example.AlumniInternProject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Date;
+import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment extends IdBaseEntity {
+@Getter
+@Setter
+@Table(name = "comment")
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID comment_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userComments;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Post postComments;
 
     private String content;
-
 }

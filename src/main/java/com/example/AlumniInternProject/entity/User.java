@@ -83,6 +83,8 @@ public class User extends IdBaseEntity{
         this.like = like;
     }
 
+
+
     @OneToMany(mappedBy = "recommender")
     private Set<Recommendation> recommender;
 

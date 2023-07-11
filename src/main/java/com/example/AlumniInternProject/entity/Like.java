@@ -6,25 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
+import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "likes")
-public class Like extends IdBaseEntity{
+@Getter
+@Setter
+@Table(name = "Likes")
+public class Like {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID like_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userLikes;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
-
-
-    private LocalDateTime dateOfLike;
+    private Post postLikes;
 }

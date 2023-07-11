@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.user.Filter;
+package com.example.AlumniInternProject.user.filter;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

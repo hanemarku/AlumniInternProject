@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.UserEvents;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class EventSpecifics extends IdBaseEntity {
     private City city;
 
     @OneToMany(mappedBy = "eventSpecifics")
+    @JsonIgnore
     private Set<UserEvents> userEvents;
 
  public EventSpecifics(LocalDateTime date,
@@ -38,7 +40,6 @@ public class EventSpecifics extends IdBaseEntity {
                           UUID cityId) {
         this.date = date;
     }
-
     public EventSpecifics(LocalDateTime date,
                           Events events,
                           City city) {

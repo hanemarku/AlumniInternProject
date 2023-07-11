@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -37,5 +38,9 @@ public class EmploymentHistoryController {
     {
         employmentHistoryService.delete(id);
     }
-
+    @GetMapping("/findBy/{keyWord}")
+    Set<EmploymentGetDto> findByKeyword(@PathVariable("keyWord") String keyWord,
+                                        @RequestBody Set<EmploymentGetDto> employmentGetDtos){
+        return employmentHistoryService.findByKeyword(keyWord,employmentGetDtos);
+    }
 }

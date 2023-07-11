@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
 import com.example.AlumniInternProject.Events.EventsRepository;
 import com.example.AlumniInternProject.Events.MembershipRole;
+import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
@@ -12,9 +13,7 @@ import com.example.AlumniInternProject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,41 +40,32 @@ public class UserEventsServiceImplement implements UserEventsService{
                 .collect(Collectors.toList());
     }
 
+    /*This save is as a register that the user makes*/
     @Override
     public UserEventGetDto save(UserEventDto eventDto) {
+        /*Needs to be changed the way that we get the user id
+        * Should get the user that is loged in*/
         User user = userRepository.findById(eventDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + eventDto.getUserId()));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: "
+                                                                + eventDto.getUserId()));
 
         EventSpecifics eventSpecifics =
                 eventSpecificsRepository.findById(eventDto.getEventSpecificsId())
                          .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "
-                                        + eventDto.getEventSpecificsId()));
-    /*When crating the event by default the one creating it is the creator*/
-        UserEvents userEvents = new UserEvents(MembershipRole.Creator,
+                                                                         + eventDto.getEventSpecificsId()));
+        /*When registering in the event by default the
+        one registering is a member*/
+        UserEvents userEvents = new UserEvents(MembershipRole.Member,
                                                         user, eventSpecifics);
         UserEvents saved = userEventsRepository.save(userEvents);
-
         return mapUserEvent(saved);
     }
 
-    /*
-    *     @Override
-        public UserEventGetDto save(UserEventDto eventDto) {
-           var dto = new UserEvents(
-                   eventDto.getMembershipRole(),
-                   eventDto.getUserId(),
-                   eventDto.getEventId()
-           );
-           var saved = userEventsRepository.save(dto);
-           return mapUserEvent(saved);
-        }
-    */
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         return dto;
     }
-
 
 }

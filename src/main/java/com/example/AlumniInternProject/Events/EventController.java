@@ -39,15 +39,6 @@ public class EventController {
                                           @RequestBody Set<EventGetDto> eventDtos){
         return eventsService.findByKeyword(keyWord, eventDtos);
     }
-/*
-*     @GetMapping("/dateAsc")
-    public List<EventGetDto> orderAsc(@RequestBody Set<EventGetDto> eventDtos){
-        return eventsService.orderAsc(eventDtos);
-    }
-    @GetMapping("/dateDesc")
-    public List<EventGetDto> orderDesc(@RequestBody Set<EventGetDto> eventDtos){
-        return  eventsService.orderDesc(eventDtos);
-    }
-* */
+
 }
 

@@ -20,19 +20,4 @@ public class EmploymentDto {
     private boolean ongoing;
     private LocalDate fromDate;
     private LocalDate toDate;
-
-    /*
-    *     public  EmploymentDto(String mainActivities,
-                          String occupationPosition,
-                          String companyName,String department,
-                          boolean ongoing, LocalDate fromDate , LocalDate toDate){
-        this.mainActivities = mainActivities;
-        this.occupationPosition = occupationPosition;
-        this.companyName = companyName;
-        this.department = department;
-        this.ongoing = ongoing;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-    }
-*/
 }

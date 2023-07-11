@@ -2,12 +2,12 @@ package com.example.AlumniInternProject.Employment;
 
 import com.example.AlumniInternProject.Employment.Dto.EmploymentDto;
 import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
+import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,5 +81,21 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
     @Override
     public void delete(UUID id) {
         employmentHistoryRepository.deleteById(id);
+    }
+    @Override
+    public Set<EmploymentGetDto> findByKeyword(String keyWord,
+                                               Set<EmploymentGetDto> employmentGetDtos) {
+        Set<EmploymentGetDto> matched = new HashSet<>();
+
+        for(EmploymentGetDto ehDto : employmentGetDtos){
+            if(ehDto.getCompanyName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || ehDto.getDepartment().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || ehDto.getMainActivities().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || ehDto.getOccupationPosition().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                ){
+                matched.add(ehDto);
+            }
+        }
+        return matched;
     }
 }

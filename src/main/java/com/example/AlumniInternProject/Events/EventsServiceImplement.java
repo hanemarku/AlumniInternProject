@@ -125,25 +125,6 @@ public class EventsServiceImplement implements EventsService {
         return false;
     }
 
-     /*
-   *  @Override
-    public List<EventGetDto> orderAsc(Set<EventGetDto> eventDtos) {
-        List<EventGetDto> order = eventDtos.stream().
-                sorted(Comparator.comparing(EventGetDto::getDate)).
-                collect(Collectors.toList());
-        return order;
-    }
-
-    @Override
-    public List<EventGetDto> orderDesc(Set<EventGetDto> eventDtos) {
-        List<EventGetDto> order = eventDtos.stream().
-                sorted(Comparator.comparing(EventGetDto::getDate).reversed()).
-                collect(Collectors.toList());
-        return order;
-    }
-   *
-   * */
-
     /*When creating a new event we also need to make sure
      * that the event is not dublicated.
      *   1. Event name must be different

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -23,7 +24,7 @@ public class EventSpecificsController {
         return eventSpecificsService.update(eventSpecificDto , id);
     }
     @GetMapping
-    private List<String> findAll(){
+    private List<EventSpecificGetDto> findAll(){
         return eventSpecificsService.findAll();
     }
     @GetMapping("{id}")
@@ -33,5 +34,20 @@ public class EventSpecificsController {
     @DeleteMapping("{id}")
     private void delete(@PathVariable UUID id){
         eventSpecificsService.delete(id);
+    }
+
+    @GetMapping("/orderByDate/asc")
+    private List<EventSpecificGetDto> orderAsc(@RequestBody Set<EventSpecificGetDto> eventDtos){
+        return eventSpecificsService.orderAsc(eventDtos);
+    }
+    @GetMapping("/orderByDate/desc")
+    private List<EventSpecificGetDto> orderDesc(@RequestBody Set<EventSpecificGetDto> eventDtos){
+        return eventSpecificsService.orderDesc(eventDtos);
+    }
+
+    @GetMapping("/findBy/{keyword}")
+    private Set<EventSpecificGetDto> findByKeyword(@PathVariable("keyword") String keyWord,
+                                                   @RequestBody Set<EventSpecificGetDto> eventDtos){
+        return eventSpecificsService.findByKeyword(keyWord, eventDtos);
     }
 }

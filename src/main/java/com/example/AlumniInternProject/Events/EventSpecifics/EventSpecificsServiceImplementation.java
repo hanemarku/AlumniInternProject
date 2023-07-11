@@ -2,11 +2,11 @@ package com.example.AlumniInternProject.Events.EventSpecifics;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificDto;
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
+import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +23,6 @@ public class EventSpecificsServiceImplementation implements
         dto.setCity(e.getCity());
         return dto;
     }
-
     @Override
     public EventSpecificGetDto save(EventSpecificDto eventSpecificDto) {
             var eDDto = new EventSpecifics(
@@ -48,9 +47,9 @@ public class EventSpecificsServiceImplementation implements
     }
 
     @Override
-    public List<String> findAll() {
+    public List<EventSpecificGetDto> findAll() {
         return eventSpecificsRepository.findAll().
-                stream().map(eS -> map(eS).getEvents().getName()).
+                stream().map(eS -> map(eS)).
                 collect(Collectors.toList());
     }
 
@@ -68,4 +67,40 @@ public class EventSpecificsServiceImplementation implements
     public void delete(UUID id) {
         eventSpecificsRepository.deleteById(id);
     }
+
+    @Override
+    public List<EventSpecificGetDto> orderAsc(Set<EventSpecificGetDto> eventDtos) {
+        List<EventSpecificGetDto> order = eventDtos.stream().
+                sorted(Comparator.comparing(EventSpecificGetDto::getDate)).
+                collect(Collectors.toList());
+        return order;
+    }
+
+    @Override
+    public List<EventSpecificGetDto> orderDesc(Set<EventSpecificGetDto> eventDtos) {
+        List<EventSpecificGetDto> order = eventDtos.stream().
+                sorted(Comparator.comparing(EventSpecificGetDto::getDate).reversed()).
+                collect(Collectors.toList());
+        return order;
+    }
+    /*Find by keyword*/
+    @Override
+    public Set<EventSpecificGetDto> findByKeyword(String keyWord,
+                                                  Set<EventSpecificGetDto> eventSDtos) {
+        Set<EventSpecificGetDto> matched = new HashSet<>();
+
+        for(EventSpecificGetDto esDto : eventSDtos){
+            if(esDto.getEvents().getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+               || esDto.getEvents().getTopic().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                    || esDto.getEvents().getDescription().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                    || esDto.getCity().getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                    || esDto.getCity().getCountry().getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                    || esDto.getCity().getCountry().getCode().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+            ){
+                matched.add(esDto);
+            }
+        }
+        return matched;
+    }
+
 }

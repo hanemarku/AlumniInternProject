@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class City extends IdBaseEntity {
      * Such as date and event_id that is held.
      * So we establish the relationship one to many*/
     @OneToMany(mappedBy = "city")
+    @JsonIgnore
     private List<EventSpecifics> eventSpecifics;
     public City() {
     }

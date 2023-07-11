@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.Events.EventSpecifics.dto;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.UserEvents;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventSpecificDto {
+public class EventSpecificDto extends EventSpecifics {
     private LocalDateTime date;
     private Events events;
     private City city;

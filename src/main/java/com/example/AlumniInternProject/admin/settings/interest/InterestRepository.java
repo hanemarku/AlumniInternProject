@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.interest;
+package com.example.AlumniInternProject.admin.settings.interest;
 
 import com.example.AlumniInternProject.entity.Interest;
 import org.springframework.data.jpa.repository.JpaRepository;

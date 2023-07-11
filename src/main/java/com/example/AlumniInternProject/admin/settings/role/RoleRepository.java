@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.role;
+package com.example.AlumniInternProject.admin.settings.role;
 
 import com.example.AlumniInternProject.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

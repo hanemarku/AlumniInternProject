@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.comment;
 
+import com.example.AlumniInternProject.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.skill;
+package com.example.AlumniInternProject.admin.settings.skill;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

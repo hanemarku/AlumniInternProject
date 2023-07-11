@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.role;
+package com.example.AlumniInternProject.admin.settings.role;
 
 import jakarta.persistence.Id;
 import lombok.Getter;

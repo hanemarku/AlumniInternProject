@@ -1,28 +1,30 @@
 package com.example.AlumniInternProject.like;
 
+import com.example.AlumniInternProject.entity.Like;
+
 public class LikeConverter {
 
-    public static LikeDto convertLikeEntityToDto(LikeEntity likeEntity) {
+    public static LikeDto convertLikeEntityToDto(Like like) {
         LikeDto likeDto = new LikeDto();
 
-        likeDto.setId(likeEntity.getId());
-        likeDto.setUser(likeEntity.getUser());
-        likeDto.setPost(likeEntity.getPost());
-        likeDto.setComment(likeEntity.getComment());
-        likeDto.setDateOfLike(likeEntity.getDateOfLike());
+        likeDto.setId(like.getId());
+        likeDto.setUser(like.getUser());
+        likeDto.setPost(like.getPost());
+        likeDto.setComment(like.getComment());
+        likeDto.setDateOfLike(like.getDateOfLike());
 
         return likeDto;
     }
 
-    public static LikeEntity convertLikeDtoToEntity(LikeEntity likedBy) {
-        LikeEntity likeEntity = new LikeEntity();
+    public static Like convertLikeDtoToEntity(Like likedBy) {
+        Like like = new Like();
 
-        likeEntity.setId(likedBy.getId());
-        likeEntity.setUser(likedBy.getUser());
-        likeEntity.setPost(likedBy.getPost());
-        likeEntity.setComment(likedBy.getComment());
-        likeEntity.setDateOfLike(likedBy.getDateOfLike());
+        like.setId(likedBy.getId());
+        like.setUser(likedBy.getUser());
+        like.setPost(likedBy.getPost());
+        like.setComment(likedBy.getComment());
+        like.setDateOfLike(likedBy.getDateOfLike());
 
-        return likeEntity;
+        return like;
     }
 }

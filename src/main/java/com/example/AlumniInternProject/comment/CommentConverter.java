@@ -1,5 +1,7 @@
 package com.example.AlumniInternProject.comment;
 
+import com.example.AlumniInternProject.entity.Comment;
+
 public class CommentConverter {
 
     public static CommentDto convertCommentToDto(Comment comment){

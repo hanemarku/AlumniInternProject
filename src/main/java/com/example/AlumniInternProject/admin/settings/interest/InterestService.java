@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.interest;
+package com.example.AlumniInternProject.admin.settings.interest;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.skill;
+package com.example.AlumniInternProject.admin.settings.skill;
 
 import java.util.List;
 import java.util.UUID;

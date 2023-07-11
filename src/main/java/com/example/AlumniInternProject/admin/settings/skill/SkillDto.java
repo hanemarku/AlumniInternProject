@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.skill;
+package com.example.AlumniInternProject.admin.settings.skill;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class TopSkillGetDto {
+public class SkillDto {
     private String name;
 }

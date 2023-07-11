@@ -1,35 +1,36 @@
 package com.example.AlumniInternProject.post;
 
+import com.example.AlumniInternProject.entity.Post;
 import com.example.AlumniInternProject.like.LikeConverter;
 import com.example.AlumniInternProject.user.UserConverter;
 
 public class PostConverter {
 
-    public static PostDto convertPostEntityToDto(PostEntity postEntity) {
+    public static PostDto convertPostEntityToDto(Post post) {
         PostDto postDto = new PostDto();
 
-        postDto.setId(postEntity.getId());
-        postDto.setAuthor(UserConverter.convertUserEntityToDto(postEntity.getAuthor()));
-        postDto.setLikedBy(LikeConverter.convertLikeEntityToDto(postEntity.getLikedBy()));
-        postDto.setTitle(postEntity.getTitle());
-        postDto.setContent(postEntity.getContent());
-        postDto.setTag(postEntity.getTag());
-        postDto.setKeyword(postEntity.getKeyword());
-        postDto.setDateOfPost(postEntity.getDateOfPost());
+        postDto.setId(post.getId());
+        postDto.setAuthor(UserConverter.convertUserEntityToDto(post.getAuthor()));
+        postDto.setLikedBy(LikeConverter.convertLikeEntityToDto(post.getLikedBy()));
+        postDto.setTitle(post.getTitle());
+        postDto.setContent(post.getContent());
+        postDto.setTag(post.getTag());
+        postDto.setKeyword(post.getKeyword());
+        postDto.setDateOfPost(post.getDateOfPost());
 
         return postDto;
     }
 
-    public static PostEntity convertPostDtoToEntity(PostDto postDto) {
-        PostEntity postEntity = new PostEntity();
+    public static Post convertPostDtoToEntity(PostDto postDto) {
+        Post post = new Post();
 
-        postEntity.setId(postDto.getId());
-        postEntity.setTitle(postDto.getTitle());
-        postEntity.setContent(postDto.getContent());
-        postEntity.setTag(postDto.getTag());
-        postEntity.setKeyword(postDto.getKeyword());
-        postEntity.setDateOfPost(postDto.getDateOfPost());
+        post.setId(postDto.getId());
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setTag(postDto.getTag());
+        post.setKeyword(postDto.getKeyword());
+        post.setDateOfPost(postDto.getDateOfPost());
 
-        return postEntity;
+        return post;
     }
 }

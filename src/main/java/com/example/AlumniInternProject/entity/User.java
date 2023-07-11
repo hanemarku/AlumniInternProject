@@ -1,16 +1,11 @@
 package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.like.LikeEntity;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -73,7 +68,38 @@ public class User extends IdBaseEntity{
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserEvents> userEvents;
 
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Like> like;
+
+    public Collection<Like> getLike() {
+        return like;
+    }
+
+    public void setLike(Collection<Like> like) {
+        this.like = like;
+    }
+
+    @OneToMany(mappedBy = "recommender")
+    private Set<Recommendation> recommender;
+
+    @OneToMany(mappedBy = "recommendedUser")
+    private Set<Recommendation> recommendedUser;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @Transient
+    public String getImagePath() {
+        if (super.getId() == null) return "/images/image-thumbnail.png";
+
+        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
+    }
+    public User() {
+    }
 
     public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
         this.firstname = firstname;
@@ -91,36 +117,5 @@ public class User extends IdBaseEntity{
         this.interests = interests;
         this.role = role;
     }
-
-    public User() {
-    }
-
-    @Transient
-    public String getImagePath() {
-        if (super.getId() == null) return "/images/image-thumbnail.png";
-
-        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
-    }
-
-    @OneToMany(mappedBy = "user")
-    private List<UserEvents> userEvents;
-
-
-    @OneToMany(mappedBy = "user")
-    private Collection<LikeEntity> like;
-
-    public Collection<LikeEntity> getLike() {
-        return like;
-    }
-
-    public void setLike(Collection<LikeEntity> like) {
-        this.like = like;
-    }
-
-    @OneToMany(mappedBy = "recommender")
-    private Set<Recommendation> recommender;
-
-    @OneToMany(mappedBy = "recommendedUser")
-    private Set<Recommendation> recommendedUser;
 
 }

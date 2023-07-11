@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.like;
 
 
+import com.example.AlumniInternProject.entity.Like;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class LikeServiceImplementation implements LikeService{
 
     @Override
     public LikeDto addLike(LikeDto likeDto) {
-        var likeEntity = new LikeEntity();
+        var likeEntity = new Like();
                 likeDto.setId(likeEntity.getId());
                 likeDto.setUser(likeEntity.getUser());
                 likeDto.setPost(likeEntity.getPost());

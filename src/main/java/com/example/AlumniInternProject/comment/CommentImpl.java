@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.comment;
 
+import com.example.AlumniInternProject.entity.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

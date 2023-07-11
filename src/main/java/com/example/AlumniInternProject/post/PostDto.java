@@ -1,9 +1,7 @@
 package com.example.AlumniInternProject.post;
 
 
-import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.like.LikeDto;
-import com.example.AlumniInternProject.like.LikeEntity;
 import com.example.AlumniInternProject.user.UserDTO;
 import lombok.*;
 

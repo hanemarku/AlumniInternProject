@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.post;
 
 
+import com.example.AlumniInternProject.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +32,15 @@ public class PostServiceImplementation implements PostService{
 
     @Override
     public PostDto createPost(PostDto postDto) {
-        PostEntity postEntity = new PostEntity();
-        postEntity.setTitle(postDto.getTitle());
-        postEntity.setContent(postDto.getContent());
-        postEntity.setTag(postDto.getTag());
-        postEntity.setKeyword(postDto.getKeyword());
-        postEntity.setDateOfPost(postDto.getDateOfPost());
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setTag(postDto.getTag());
+        post.setKeyword(postDto.getKeyword());
+        post.setDateOfPost(postDto.getDateOfPost());
 
-        postRepository.save(postEntity);
-        return PostConverter.convertPostEntityToDto(postEntity);
+        postRepository.save(post);
+        return PostConverter.convertPostEntityToDto(post);
 
     }
 

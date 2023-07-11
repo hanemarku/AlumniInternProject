@@ -1,7 +1,7 @@
 package com.example.AlumniInternProject.comment;
 
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.post.PostEntity;
+import com.example.AlumniInternProject.entity.Post;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ public class CommentDto {
     private UUID id;
 
     private User user;
-    private PostEntity post;
+    private Post post;
     private String content;
     private Date dateOfCreation;
 }

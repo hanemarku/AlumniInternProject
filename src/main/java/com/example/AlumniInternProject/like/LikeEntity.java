@@ -1,18 +1,16 @@
 package com.example.AlumniInternProject.like;
 
 import com.example.AlumniInternProject.comment.Comment;
-import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.post.Post;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.example.AlumniInternProject.post.PostEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -20,7 +18,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "userLike")
-public class Like extends IdBaseEntity {
+public class LikeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -28,11 +30,11 @@ public class Like extends IdBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private PostEntity post;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    private Date dateOfLike;
+    private LocalDateTime dateOfLike;
 }

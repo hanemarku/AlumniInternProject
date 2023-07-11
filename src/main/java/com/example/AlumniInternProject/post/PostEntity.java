@@ -2,25 +2,38 @@ package com.example.AlumniInternProject.post;
 
 
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.like.LikeDto;
 import com.example.AlumniInternProject.like.LikeEntity;
-import com.example.AlumniInternProject.user.UserDTO;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDto {
+@Builder
+@Table(name = "post")
+public class PostEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private UserDTO author;
-    private LikeDto likedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "like_id")
+    private LikeEntity likedBy;
+
     private String title;
     private String content;
     private String tag;
     private String keyword;
     private LocalDateTime dateOfPost;
-
 }

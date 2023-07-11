@@ -1,10 +1,16 @@
 package com.example.AlumniInternProject.post;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public interface PostService {
 
-}
+    PostDto getPostById(Integer id);
 
+    List<PostDto> getAllPosts();
+
+    PostDto createPost(PostDto postDto);
+
+    PostDto updatePost(Integer id, PostDto postDto);
+
+    void deletePost(Integer id);
+}

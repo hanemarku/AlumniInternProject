@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserEvents extends IdBaseEntity {
    // @Column(length = 32, columnDefinition = "varchar(32)")
-
    // @Enumerated(value = EnumType.STRING)
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "membership_role")
-
+    @Enumerated(value = EnumType.ORDINAL)
    private MembershipRole membershipRole;
 
     @ManyToOne
@@ -24,24 +22,14 @@ public class UserEvents extends IdBaseEntity {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Events event;
-
+    @JoinColumn(name = "eventSpecifics")
+    private EventSpecifics eventSpecifics;
 
     public UserEvents(MembershipRole membershipRole,
                       User user,
-                      Events event) {
+                      EventSpecifics eventSpecifics) {
         this.membershipRole = membershipRole;
         this.user = user;
-        this.event = event;
+        this.eventSpecifics = eventSpecifics;
     }
-
-/*
-*     public UserEvents(MembershipRole membershipRole,
-                      UUID userId,
-                      UUID eventId) {
-        this.membershipRole = membershipRole;
-        this.getUser().setId(userId);
-        this.getEvent().getId();
-    }*/
 }

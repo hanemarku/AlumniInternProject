@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public interface CommentService {
 
-    CommentGetDto save(CommentDto commentDto);
+    CommentDto save(CommentDto commentDto);
 
-    List<CommentGetDto> findAll();
+    List<CommentDto> findAll();
 
-    CommentGetDto findById(UUID id);
+    CommentDto findById(UUID id);
 
-    CommentGetDto update(UUID id, CommentDto commentDto);
+    CommentDto update(UUID id, CommentDto commentDto);
 
     void delete(UUID id);
 }

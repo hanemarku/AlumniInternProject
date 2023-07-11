@@ -1,8 +1,11 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -21,6 +24,11 @@ public class City extends IdBaseEntity {
         this.country = country;
     }
 
+    /*One city can have many specifics.
+     * Such as date and event_id that is held.
+     * So we establish the relationship one to many*/
+    @OneToMany(mappedBy = "city")
+    private List<EventSpecifics> eventSpecifics;
     public City() {
     }
 }

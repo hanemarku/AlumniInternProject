@@ -15,27 +15,27 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping
-    public LikeGetDto saveLike(@RequestBody LikeDto likeDto){
-        return likeService.save(likeDto);
+    public LikeDto saveLike(@RequestBody LikeDto likeDto){
+        return likeService.addLike(likeDto);
     }
 
     @GetMapping
-    public List<LikeGetDto> findAllLikes(){
-        return likeService.findAll();
+    public List<LikeDto> findAllLikes(){
+        return likeService.getAllLikes();
     }
 
     @GetMapping("{id}")
-    public LikeGetDto findLikeById(@PathVariable UUID id){
-        return likeService.findById(id);
+    public LikeDto findLikeById(@PathVariable Integer id){
+        return likeService.getLikeById(id).orElseThrow();
     }
 
     @PatchMapping("{id}")
-    public LikeGetDto updateLike(@PathVariable UUID id, @RequestBody LikeDto likeDto){
-        return likeService.update(id, likeDto);
+    public LikeDto updateLike(@PathVariable Integer id, @RequestBody LikeDto likeDto){
+        return likeService.updateLike(id, likeDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteLike(@PathVariable UUID id){
-        likeService.delete(id);
+    void deleteLike(@PathVariable Integer id){
+        likeService.deleteLike(id);
     }
 }

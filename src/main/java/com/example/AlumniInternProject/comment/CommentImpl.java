@@ -14,43 +14,40 @@ public class CommentImpl implements CommentService{
     private final CommentRepository commentRepository;
 
     @Override
-    public CommentGetDto save(CommentDto commentDto) {
-        var comment = new Comment(
-                commentDto.getUser(),
-                commentDto.getPost(),
-                commentDto.getContent(),
-                commentDto.getDateOfCreation()
-        );
-        var saveComment = commentRepository.save(comment);
-        return map(saveComment);
+    public CommentDto save(CommentDto commentDto) {
+        var comment = new Comment();
+        commentDto.setUser(comment.getUser());
+        commentDto.setPost(comment.getPost());
+        commentDto.setContent(comment.getContent());
+        commentDto.setDateOfCreation(comment.getCommmentCreation());
+
+        return CommentConverter.convertCommentToDto(comment);
     }
 
     @Override
-    public List<CommentGetDto> findAll() {
+    public List<CommentDto> findAll() {
         return commentRepository.findAll()
                 .stream()
-                .map(comment -> map(comment))
+                .map(CommentConverter::convertCommentToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CommentGetDto findById(UUID id) {
-        var optional = commentRepository.findById(id);
-        if (optional.isPresent()){
-            return map(optional.get());
-        }else throw new RuntimeException("Comment not found");
+    public CommentDto findById(UUID id) {
+        var optional = commentRepository.findById(id).get();
+        return CommentConverter.convertCommentToDto(optional);
     }
 
     @Override
-    public CommentGetDto update(UUID id, CommentDto commentDto) {
+    public CommentDto update(UUID id, CommentDto commentDto) {
         var optional = commentRepository.findById(id).orElseThrow(RuntimeException::new);
         optional.setUser(commentDto.getUser());
         optional.setPost(commentDto.getPost());
         optional.setContent(commentDto.getContent());
         optional.setCommmentCreation(commentDto.getDateOfCreation());
 
-        var saveComment = commentRepository.save(optional);
-        return map(saveComment);
+
+        return CommentConverter.convertCommentToDto(optional);
     }
 
     @Override
@@ -58,14 +55,4 @@ public class CommentImpl implements CommentService{
         commentRepository.deleteById(id);
     }
 
-    private CommentGetDto map(Comment comment){
-        var dto = new CommentGetDto();
-
-        dto.setUser(comment.getUser());
-        dto.setPost(comment.getPost());
-        dto.setContent(comment.getContent());
-        dto.setDateOfCreation(comment.getCommmentCreation());
-
-        return dto;
-    }
 }

@@ -16,6 +16,5 @@ public interface UserService {
     List<Country> listAllCountries();
     boolean isEmailUnique(UUID id, String email);
     User get(UUID id) throws UserNotFoundException;
-
     void updateEnabledStatus(UUID id, boolean status);
 }

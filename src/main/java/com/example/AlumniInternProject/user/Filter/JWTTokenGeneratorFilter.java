@@ -19,23 +19,25 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JwtTokenFilter extends OncePerRequestFilter {
-
-    private final String secretKey = "yourSecretKey";
+public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String header = request.getHeader("Authorization");
 
         if (null != authentication) {
+            System.out.println("authentication is not null");
+            System.out.println(authentication.getName());
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder().setIssuer("Alumni").setSubject("Alumni")
+            String jwt = Jwts.builder().setIssuer("Alumni").setSubject("JWT Token")
                     .claim("username", authentication.getName())
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
                     .setExpiration(new Date((new Date()).getTime() + 30000000))
                     .signWith(key).compact();
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+
+            System.out.println(SecurityConstants.JWT_HEADER + " : " + jwt);
         }
 
         filterChain.doFilter(request, response);
@@ -43,7 +45,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals("/user");
+        System.out.println("generation filter "+ request.getServletPath());
+        System.out.println(!request.getServletPath().equals("/favicon.ico"));
+        return request.getServletPath().equals("/homepage2");
     }
 
     private String populateAuthorities(Collection<? extends GrantedAuthority> collection) {

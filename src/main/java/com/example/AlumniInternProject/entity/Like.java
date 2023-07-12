@@ -13,11 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Likes")
-public class Like {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID like_id;
+@Table(name = "likes")
+public class Like extends IdBaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -22,12 +22,12 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService{
 
     @Override
     public List<ConnectionRequest> getSentConnectionRequests(UUID senderId) {
-        return connectionRequestRepository.findAllBySenderId(senderId);
+        return connectionRequestRepository.findAllByRequesterId(senderId);
     }
 
     @Override
     public List<ConnectionRequest> getReceivedConnectionRequests(UUID receiverId) {
-        return connectionRequestRepository.findAllByReceiverId(receiverId);
+        return connectionRequestRepository.findAllByRequesteeId(receiverId);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService{
 
     @Override
     public void acceptConnectionRequest(UUID requestId, UUID receiverId) {
-        ConnectionRequest connectionRequest = connectionRequestRepository.findAllBySenderId(receiverId).stream()
+        ConnectionRequest connectionRequest = connectionRequestRepository.findAllByRequesterId(receiverId).stream()
                 .filter(request -> request.getId().equals(requestId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Connection request not found"));
@@ -60,7 +60,7 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService{
 
     @Override
     public void rejectConnectionRequest(UUID requestId, UUID receiverId) {
-        ConnectionRequest connectionRequest = connectionRequestRepository.findAllBySenderId(receiverId).stream()
+        ConnectionRequest connectionRequest = connectionRequestRepository.findAllByRequesterId(receiverId).stream()
                 .filter(request -> request.getId().equals(requestId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Connection request not found"));

@@ -29,5 +29,7 @@ public class ConnectionRequest extends IdBaseEntity{
     }
 
     public ConnectionRequest(User sender, User receiver) {
+        this.requester = sender;
+        this.requestee = receiver;
     }
 }

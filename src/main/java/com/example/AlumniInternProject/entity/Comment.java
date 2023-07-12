@@ -11,11 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "comment")
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID comment_id;
+@Table(name = "comments")
+public class Comment extends IdBaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id")

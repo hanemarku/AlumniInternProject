@@ -14,21 +14,17 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@Table(name = "post")
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID post_id;
+@Table(name = "posts")
+public class Post extends IdBaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @OneToMany(mappedBy = "like_id")
+    @OneToMany(mappedBy = "postLikes")
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "comment_id")
+    @OneToMany(mappedBy = "postComments")
     private List<Comment> comments;
 
     private String content;

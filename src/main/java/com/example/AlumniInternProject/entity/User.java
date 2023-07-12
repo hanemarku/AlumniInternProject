@@ -70,29 +70,16 @@ public class User extends IdBaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Post> posts = new ArrayList<>();
+//
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "requester")
     private List<ConnectionRequest> sentConnectionRequests;
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "requestee")
     private List<ConnectionRequest> receivedConnectionRequests;
-
-    @OneToMany(mappedBy = "user")
-    private Collection<Like> like;
-
-    public Collection<Like> getLike() {
-        return like;
-    }
-
-
-
-    public void setLike(Collection<Like> like) {
-        this.like = like;
-    }
-
 
 
     @OneToMany(mappedBy = "recommender")
@@ -101,8 +88,13 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "recommendedUser")
     private Set<Recommendation> recommendedUser;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userLikes")
+    private Collection<Like> like;
+
+
 
     @Transient
     public String getImagePath() {

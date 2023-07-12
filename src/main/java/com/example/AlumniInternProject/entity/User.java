@@ -71,6 +71,14 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<ConnectionRequest> sentConnectionRequests;
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private List<ConnectionRequest> receivedConnectionRequests;
 
     @OneToMany(mappedBy = "user")
     private Collection<Like> like;
@@ -78,6 +86,8 @@ public class User extends IdBaseEntity{
     public Collection<Like> getLike() {
         return like;
     }
+
+
 
     public void setLike(Collection<Like> like) {
         this.like = like;

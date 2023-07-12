@@ -25,7 +25,7 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @OneToMany(mappedBy = "post_id")
+    @OneToMany(mappedBy = "like_id")
     private List<Like> likes;
 
     @OneToMany(mappedBy = "comment_id")
@@ -33,4 +33,6 @@ public class Post {
 
     private String content;
     private LocalDateTime postCreation;
+    private String profilePicUrl;
+
 }

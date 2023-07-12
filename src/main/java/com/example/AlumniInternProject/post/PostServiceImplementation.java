@@ -85,10 +85,10 @@ public class PostServiceImplementation implements PostService{
 
     private PostGetDto map(Post post){
         var dto = new PostGetDto();
-        dto.setId(post.getPost_id());
+        dto.setId(post.getId());
         dto.setAuthor(post.getAuthor().getId());
         dto.setLike(post.getLikes().stream().map(like -> like.getUserLikes().getId()).toList());
-        dto.setComment(post.getComments().stream().map(Comment::getComment_id).toList());
+        dto.setComment(post.getComments().stream().map(Comment::getId).toList());
         dto.setContent(post.getContent());
         dto.setPostCreation(post.getPostCreation());
         dto.setProfilePicUrl(post.getProfilePicUrl());

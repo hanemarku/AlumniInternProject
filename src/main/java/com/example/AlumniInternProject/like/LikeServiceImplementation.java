@@ -73,8 +73,8 @@ public class LikeServiceImplementation implements LikeService{
 
     private LikeGetDto map(Like like) {
         var likeGetDto = new LikeGetDto();
-        likeGetDto.setId(like.getLike_id());
-        likeGetDto.setPostLikes(like.getPostLikes().getPost_id());
+        likeGetDto.setId(like.getId());
+        likeGetDto.setPostLikes(like.getPostLikes().getId());
         likeGetDto.setUserLikes(like.getUserLikes().getId());
 
         return likeGetDto;

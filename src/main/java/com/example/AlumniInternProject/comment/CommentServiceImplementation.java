@@ -72,9 +72,9 @@ public class CommentServiceImplementation implements CommentService{
 
     private CommentGetDto map(Comment comment){
         var comentDto = new CommentGetDto();
-        comment.setComment_id(comment.getComment_id());
+        comment.setId(comment.getId());
         comentDto.setPostComments(comment.getUserComments().getId());
-        comentDto.setPostComments(comment.getPostComments().getPost_id());
+        comentDto.setPostComments(comment.getPostComments().getId());
         comentDto.setCommentContent(comment.getContent());
 
         return comentDto;

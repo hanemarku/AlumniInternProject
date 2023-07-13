@@ -1,7 +1,6 @@
 package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
-import com.example.AlumniInternProject.Events.MembershipRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

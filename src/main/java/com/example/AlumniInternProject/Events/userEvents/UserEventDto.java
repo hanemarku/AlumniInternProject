@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
+import com.example.AlumniInternProject.entity.MembershipRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,6 @@ import java.util.UUID;
 public class UserEventDto {
     public UUID userId;
     public UUID eventSpecificsId;
-//    public MembershipRole membershipRole;
+    public MembershipRole membershipRole;
+    //public MembershipRole membershipRole;
 }

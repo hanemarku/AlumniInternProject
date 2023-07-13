@@ -3,9 +3,8 @@ package com.example.AlumniInternProject.Events.userEvents;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import com.example.AlumniInternProject.Events.MembershipRole;
-import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
+import com.example.AlumniInternProject.entity.MembershipRole;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
@@ -13,7 +12,9 @@ import com.example.AlumniInternProject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

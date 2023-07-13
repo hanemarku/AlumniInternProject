@@ -1,25 +1,22 @@
 package com.example.AlumniInternProject.post;
 
-import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.like.Like;
+
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
-import java.util.UUID;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class PostDto {
 
-    private User user;
-    private Like like;
+    private UUID author;
+    private List<UUID> like;
+    private List<UUID> comment;
     private String content;
-    private Date dateOfPost;
-    private Integer likesCount;
-    private Integer commentsCount;
-    private String keyword;
-    private String category;
-    private String tag;
+    private LocalDateTime postCreation;
+    private String profilePicUrl;
 
 }

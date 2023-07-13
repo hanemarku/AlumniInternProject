@@ -1,6 +1,5 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
-import com.example.AlumniInternProject.Events.MembershipRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -17,11 +17,12 @@ public class EventCsvExporter extends AbstractExporter {
         String[] csvHeader = {"First Name", "Last Name"};
         String[] fieldMapping = {"firstname", "lastname"};
 
+        csvWriter.writeHeader(csvHeader);
+
         for (UserGetDto user : listUsers) {
             csvWriter.write(user, fieldMapping);
         }
 
-        csvWriter.writeHeader(csvHeader);
         csvWriter.close();
     }
 }

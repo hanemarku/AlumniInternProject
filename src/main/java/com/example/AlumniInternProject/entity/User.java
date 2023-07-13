@@ -1,17 +1,11 @@
 package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.like.Like;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -74,7 +68,42 @@ public class User extends IdBaseEntity{
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserEvents> userEvents;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Post> posts = new ArrayList<>();
+//
 
+    @OneToMany(mappedBy = "requester")
+    private List<ConnectionRequest> sentConnectionRequests;
+
+    @OneToMany(mappedBy = "requestee")
+    private List<ConnectionRequest> receivedConnectionRequests;
+
+
+    @OneToMany(mappedBy = "recommender")
+    private Set<Recommendation> recommender;
+
+    @OneToMany(mappedBy = "recommendedUser")
+    private Set<Recommendation> recommendedUser;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userLikes")
+    private Collection<Like> like;
+
+
+
+    @Transient
+    public String getImagePath() {
+        if (super.getId() == null) return "/images/image-thumbnail.png";
+
+        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
+    }
+    public User() {
+    }
 
     public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
         this.firstname = firstname;
@@ -93,28 +122,4 @@ public class User extends IdBaseEntity{
         this.role = role;
     }
 
-    public User() {
-    }
-
-    @Transient
-    public String getImagePath() {
-        if (super.getId() == null) return "/images/image-thumbnail.png";
-
-        return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
-    }
-
-    @OneToMany(mappedBy = "user")
-    private List<UserEvents> userEvents;
-
-
-    @OneToMany(mappedBy = "user")
-    private Collection<Like> like;
-
-    public Collection<Like> getLike() {
-        return like;
-    }
-
-    public void setLike(Collection<Like> like) {
-        this.like = like;
-    }
 }

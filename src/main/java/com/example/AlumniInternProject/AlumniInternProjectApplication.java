@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,13 +25,5 @@ public class AlumniInternProjectApplication {
 	}
 
 
-	@RequestMapping("homepage")
-	public String helloWorld() {
-		return "Hello World";
-	}
 
-	@RequestMapping("homepage2")
-	public String helloWorld2() {
-		return "Hello World 2";
-	}
 }

@@ -1,10 +1,12 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
+import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
+import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
 import com.example.AlumniInternProject.Events.export.EventCsvExporter;
 import com.example.AlumniInternProject.Events.export.EventExcelExporter;
 import com.example.AlumniInternProject.Events.export.EventPdfExporter;
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;
+
     @GetMapping("/events/{eventId}/users")
     public List<UserGetDto> getUsersByEventId(@PathVariable UUID eventId) {
         List<User> users = userEventsRepository.findUsersByEventId(eventId);
@@ -55,6 +58,11 @@ public class UserEventsController {
         return userEventsService.save(eventDto);
     }
 
+    @PostMapping("/register")
+    public UserEventGetDto save(@RequestBody UserEventRegistrationGetDto userEventRegistrationDto,
+                                @RequestBody EventSpecificGetDto eventDto){
+        return userEventsService.save(userEventRegistrationDto, eventDto);
+    }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();
         dto.setFirstname(user.getFirstname());

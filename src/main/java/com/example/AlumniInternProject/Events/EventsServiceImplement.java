@@ -2,7 +2,10 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.Events.userEvents.UserEventsRepository;
 import com.example.AlumniInternProject.entity.Events;
+import com.example.AlumniInternProject.entity.UserEvents;
+import com.example.AlumniInternProject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ import java.util.stream.Collectors;
 public class EventsServiceImplement implements EventsService {
 
     private final EventsRepository eventsRepository;
+
+    private final UserRepository userRepository;
+    private final UserEventsRepository userEventsRepository;
 
     private EventGetDto map(Events e){
         var dto = new EventGetDto();
@@ -44,6 +50,7 @@ public class EventsServiceImplement implements EventsService {
         * when the login is finished. This is only a dumb
         * part of code i saw on net :)*/
        // eDto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication());
+
         var saved = eventsRepository.save(eDto);
         return map(saved);
     }

@@ -2,10 +2,10 @@ package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
-import com.example.AlumniInternProject.Events.EventsRepository;
+import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
 import com.example.AlumniInternProject.Events.MembershipRole;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
-import com.example.AlumniInternProject.entity.Events;
+import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
@@ -53,10 +53,22 @@ public class UserEventsServiceImplement implements UserEventsService{
                 eventSpecificsRepository.findById(eventDto.getEventSpecificsId())
                          .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "
                                                                          + eventDto.getEventSpecificsId()));
-        /*When registering in the event by default the
-        one registering is a member*/
         UserEvents userEvents = new UserEvents(MembershipRole.Member,
                                                         user, eventSpecifics);
+        UserEvents saved = userEventsRepository.save(userEvents);
+        return mapUserEvent(saved);
+    }
+
+    @Override
+    public UserEventGetDto save(UserEventRegistrationGetDto userEventRegistrationDto,
+                                EventSpecificGetDto eventDto) {
+        User user = userRepository.findById(userEventRegistrationDto.getId()).
+                                    orElseThrow(()-> new IllegalArgumentException("User not found!"));
+        EventSpecifics eventSpecifics = eventSpecificsRepository.findById(eventDto.getId())
+                                        .orElseThrow(()->
+                                                new IllegalArgumentException("Event does not exist!"));
+        UserEvents userEvents = new UserEvents(MembershipRole.Member,
+                                                user , eventSpecifics);
         UserEvents saved = userEventsRepository.save(userEvents);
         return mapUserEvent(saved);
     }

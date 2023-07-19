@@ -27,8 +27,7 @@ public class City extends IdBaseEntity {
     /*One city can have many specifics.
      * Such as date and event_id that is held.
      * So we establish the relationship one to many*/
-    @OneToMany(mappedBy = "city")
-    private List<EventSpecifics> eventSpecifics;
+
     public City() {
     }
 }

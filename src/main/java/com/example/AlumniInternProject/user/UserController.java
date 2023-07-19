@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
+import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -105,7 +107,7 @@ public class UserController {
         return userService.update(id, user);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") UUID id) throws UserNotFoundException {
         try {
             userService.get(id);
@@ -116,12 +118,13 @@ public class UserController {
     }
 
     @GetMapping("{id}/enabled/{status}")
-    public String updateEnabledStatus(@PathVariable("id") UUID id, @PathVariable("status") boolean status) {
+    public ResponseEntity<User> updateEnabledStatus(@PathVariable("id") UUID id, @PathVariable("status") boolean status) throws UserNotFoundException {
         userService.updateEnabledStatus(id, status);
-        String statuss = status ? "enabled" : "disabled";
-        String message = "The user id " + id + " has been " + statuss;
-        return message;
+        User user = userService.get(id);
+        user.setEnabled(status);
+        return ResponseEntity.ok().body(user);
     }
+
 
     @GetMapping("/login")
     public String viewLoginPage(){

@@ -57,9 +57,12 @@ public class WebSecurityConfig {
                 .csrf((csrf) -> csrf.disable())
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(matchers("/homepage")).authenticated()
-                        .requestMatchers(matchers("/homepage3")).permitAll()
-                        .requestMatchers(matchers("/api/v1/**")).permitAll())
+                        //permit all requests
+                        .anyRequest().permitAll()
+//                        .requestMatchers(matchers("/homepage")).authenticated()
+//                        .requestMatchers(matchers("/homepage3")).permitAll()
+//                        .requestMatchers(matchers("/api/v1/**")).permitAll()
+                )
 
                 .formLogin(login -> login
                         .usernameParameter("email")

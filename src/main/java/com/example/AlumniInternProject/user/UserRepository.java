@@ -19,6 +19,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     int countUserById(UUID id);
     @Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
     @Modifying
-    public void updateEnabledStatus(UUID id, boolean enabled);
+    void updateEnabledStatus(UUID id, boolean enabled);
 
 }

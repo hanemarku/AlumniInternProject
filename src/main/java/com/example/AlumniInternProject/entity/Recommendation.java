@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 
-@Table(name = "reviews")
+@Table(name = "recommendations")
 public class Recommendation extends IdBaseEntity {
 
     private LocalDateTime timestamp;

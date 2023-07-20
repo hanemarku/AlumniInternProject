@@ -1,0 +1,90 @@
+<p>list-users works!</p>
+
+<div class="container">
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+        <thead>
+            <tr>
+              <th>Profile Picture</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Birthday</th>
+              <th>Phone Number</th>
+              <th>Enabled</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.profilePicUrl }}</td>
+              <td>{{ user.firstname }}</td>
+              <td>{{ user.lastname }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.birthday }}</td>
+              <td>{{ user.phoneNumber }}</td>
+              <td>
+                <div class="form-check form-switch">
+                    <input class="form-check-input btn-lg" type="checkbox" role="switch" id="flexSwitchCheckDefault" [checked]="user.enabled" (change)="toggleUserStatus(user.id, $event)">
+                  </div>
+              </td>
+              <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="openUserModal(user)" [attr.data-bs-target]="'#userModal'">Details</button>
+              </td>
+              <td>
+                <button (click)="openConfirmDialog(user.id)" class="btn btn-danger">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel" *ngIf="selectedUser">{{selectedUser.firstname }} {{selectedUser.lastname}}</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" (click)="selectedUser = null">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      
+        <div class="modal-body row" *ngIf="selectedUser">
+            <div class="col-md-4">
+              <!-- <img class="img-fluid rounded-circle" [src]="selectedUser.profilePicUrl" alt="Profile Picture"> -->
+              <img class="img-fluid" src="https://www.udiscovermusic.com/wp-content/uploads/2020/11/Lana-Del-Ray-GettyImages-1173237797-1000x600.jpg" alt="Profile Picture">
+              <p><strong>First Name:</strong> {{ selectedUser.firstname }}</p>
+              <p><strong>Last Name:</strong> {{ selectedUser.lastname }}</p>
+              <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+              <p><strong>Birthday:</strong> {{ selectedUser.birthday }}</p>
+              <p><strong>Phone Number:</strong> {{ selectedUser.phoneNumber }}</p>
+            </div>
+            <div class="col-md-8">
+    
+              <p><strong>City:</strong> {{ selectedUser.city }}</p>
+              <p><strong>Country:</strong> {{ getCountryName(selectedUser.country) }}</p>
+              <p><strong>Bio:</strong> {{ selectedUser.bio }}</p>
+              <p><strong>Role:</strong> {{ getRoleName(selectedUser.role) }}</p>
+              <p><strong>Enabled:</strong> {{selectedUser.enabled}}</p>
+              <div>
+                <strong>Skills:</strong>
+                <ul>
+                  <li *ngFor="let skill of selectedUser.skills">{{ skill.name }}</li>
+                </ul>
+              </div>
+          
+              <div>
+                <strong>Interests:</strong>
+                <ul>
+                  <li *ngFor="let interest of selectedUser.interests">{{ interest.name }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  (click)="selectedUser = null">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

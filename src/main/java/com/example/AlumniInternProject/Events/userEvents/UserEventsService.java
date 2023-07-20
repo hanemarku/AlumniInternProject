@@ -5,6 +5,8 @@ import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGe
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.Events.dto.UserEventRegistrationDto;
 import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
+import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

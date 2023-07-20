@@ -2,6 +2,8 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.Events.email.Email;
+import com.example.AlumniInternProject.Events.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/events")
 public class EventController {
     private final EventsService eventsService;
+    private final EmailService emailService;
 
     @PostMapping
     public EventGetDto save(@RequestBody EventDto eventDto){
@@ -39,6 +42,10 @@ public class EventController {
                                           @RequestBody Set<EventGetDto> eventDtos){
         return eventsService.findByKeyword(keyWord, eventDtos);
     }
-
+    @PostMapping("/email")
+    public String sendSimpleMail(@RequestBody Email details){
+        String status = emailService.sendSimpleMail(details);
+        return status;
+    }
 }
 

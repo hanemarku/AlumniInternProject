@@ -1,7 +1,6 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
 import com.example.AlumniInternProject.Events.export.EventCsvExporter;
 import com.example.AlumniInternProject.Events.export.EventExcelExporter;

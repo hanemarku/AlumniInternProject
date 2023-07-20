@@ -14,12 +14,18 @@ public class EmailServiceImplement implements EmailService{
     @Value("${spring.mail.username}")
     private String sender;
     @Override
-    public void sendSimpleMail(Email details) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(details.getRecipient());
-        message.setSubject(details.getSubject());
-        message.setText(details.getMsgBody());
+    public String sendSimpleMail(Email details) {
+      try{
+          SimpleMailMessage message = new SimpleMailMessage();
+          message.setFrom(sender);
+          message.setTo(details.getRecipient());
+          message.setSubject(details.getSubject());
+          message.setText(details.getMsgBody());
 
-        emailSender.send(message);
+          emailSender.send(message);
+          return "Email sent succesfully!";
+      }catch (Exception e){
+          return "Email could not be sent!";
+      }
     }
 }

@@ -9,6 +9,7 @@ import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,13 +66,31 @@ public class UserEventsServiceImplement implements UserEventsService{
                                 EventSpecificGetDto eventDto) {
         User user = userRepository.findById(userEventRegistrationDto.getId()).
                                     orElseThrow(()-> new IllegalArgumentException("User not found!"));
+
+       user.setFirstname(userEventRegistrationDto.getFirstName());
+       user.setLastname(userEventRegistrationDto.getLastName());
+       user.setEmail(userEventRegistrationDto.getEmail());
+       user.setPhoneNumber(userEventRegistrationDto.getPhoneNumber());
+       user.setEnabled(false);
+
         EventSpecifics eventSpecifics = eventSpecificsRepository.findById(eventDto.getId())
                                         .orElseThrow(()->
                                                 new IllegalArgumentException("Event does not exist!"));
+        eventSpecifics.setDate(eventDto.getDate());
+        eventSpecifics.setEvents(eventDto.getEvents());
+        eventSpecifics.setCity(eventDto.getCity());
         UserEvents userEvents = new UserEvents(MembershipRole.Member,
                                                 user , eventSpecifics);
         UserEvents saved = userEventsRepository.save(userEvents);
         return mapUserEvent(saved);
+    }
+    @Transactional
+    public UserEvents findUserEventsByToken(String token) {
+        return userEventsRepository.findUserEventsByToken(token);
+    }
+    @Transactional
+    public UserEvents findUserEventsByUser(User user) {
+        return userEventsRepository.findUserEventsByUser(user);
     }
 
     private UserGetDto mapUser(User user) {
@@ -80,5 +99,6 @@ public class UserEventsServiceImplement implements UserEventsService{
         dto.setLastname(user.getLastname());
         return dto;
     }
+
 
 }

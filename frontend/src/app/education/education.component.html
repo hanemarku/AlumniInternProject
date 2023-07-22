@@ -1,0 +1,69 @@
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <!-- <div class="card-header">
+            <h5 class="card-title text-white">Education</h5>
+          </div> -->
+          <div class="card-body">
+            <div *ngFor="let education of educations" class="mb-4">
+              <div class="row align-items-center p-1">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-md">
+                            <input [(ngModel)]="education.institutionName" class="form-control bg-light" placeholder="Institution*" />
+                          </div>
+                          <div class="col-md">
+                            <input [(ngModel)]="education.fieldOfQualification" class="form-control bg-light" placeholder="Qualification*" />
+                          </div>
+                          <div class="col-md">
+                              <input [(ngModel)]="education.filedOfStudy" class="form-control bg-light" placeholder="Field of Study*" />
+                          </div>          
+                    </div>
+               
+
+                    <div class="row py-2">
+                        <div class="col-md">
+                            <div class="row">
+                                <div class="col-md-6 pt-4">
+                                    <input [(ngModel)]="education.finalGrade" class="form-control bg-light" placeholder="Final grade" />
+                                </div>
+                                <div class="col-md-3">
+                                    From:<input [(ngModel)]="education.startDate" type="date" placeholder="Start Date" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                  To:
+                                    <input [(ngModel)]="education.endDate" type="date" placeholder="End Date"  class="form-control">
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+
+                    
+                    <div class="row ">
+                      <div class="col-md-6">
+                        <app-country-city-selector
+                          [countries]="countries"
+                          [cities]="cities"
+                          [msform]="msform"
+                        ></app-country-city-selector>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for="website"></label>
+                        <input [(ngModel)]="education.website" id="website" class="form-control bg-light" placeholder="Website" />
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                  <!-- <button (click)="editEducation(education)" class="btn btn-primary">Edit</button> -->
+                  <span class="badge bg-danger me-2 bigger-badge" (click)="removeEducation(education)">&times;</span>
+                </div>
+              </div>
+            </div>
+            <button (click)="addEducation()" class="btn btn-success">Add Education</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

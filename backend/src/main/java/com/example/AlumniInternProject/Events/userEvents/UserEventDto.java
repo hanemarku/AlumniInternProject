@@ -15,5 +15,4 @@ public class UserEventDto {
     public UUID userId;
     public UUID eventSpecificsId;
     public MembershipRole membershipRole;
-    //public MembershipRole membershipRole;
 }

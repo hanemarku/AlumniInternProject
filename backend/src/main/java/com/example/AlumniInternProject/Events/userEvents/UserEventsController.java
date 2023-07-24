@@ -1,7 +1,6 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import com.example.AlumniInternProject.Events.dto.UserEventRegistrationGetDto;
 import com.example.AlumniInternProject.Events.export.EventCsvExporter;
 import com.example.AlumniInternProject.Events.export.EventExcelExporter;
 import com.example.AlumniInternProject.Events.export.EventPdfExporter;
@@ -32,21 +31,21 @@ public class UserEventsController {
         return userGetDtos;
     }
 
-    @GetMapping("/events/{eventId}/users/export/csv")
+    @GetMapping("/{eventId}/users/export/csv")
     public void exportToCSV(HttpServletResponse response, @PathVariable UUID eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventCsvExporter exporter = new EventCsvExporter();
         exporter.export(listUsers, response);
     }
 
-    @GetMapping("/events/{eventId}/users/export/excel")
+    @GetMapping("/{eventId}/users/export/excel")
     public void exportToExcel(HttpServletResponse response, @PathVariable UUID eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventExcelExporter exporter = new EventExcelExporter();
         exporter.export(listUsers, response);
     }
 
-    @GetMapping("/events/{eventId}/users/export/pdf")
+    @GetMapping("/{eventId}/users/export/pdf")
     public void exportToPDF(HttpServletResponse response, @PathVariable UUID eventId) throws IOException {
         List<UserGetDto> listUsers = userEventsService.getUsersByEventId(eventId);
         EventPdfExporter exporter = new EventPdfExporter();
@@ -55,12 +54,6 @@ public class UserEventsController {
     @PostMapping
     public UserEventGetDto save(@RequestBody UserEventDto eventDto){
         return userEventsService.save(eventDto);
-    }
-
-    @PostMapping("/register")
-    public UserEventGetDto save(@RequestBody UserEventRegistrationGetDto userEventRegistrationDto,
-                                @RequestBody EventSpecificGetDto eventDto){
-        return userEventsService.save(userEventRegistrationDto, eventDto);
     }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();

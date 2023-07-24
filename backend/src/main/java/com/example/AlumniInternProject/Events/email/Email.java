@@ -12,4 +12,16 @@ public class Email {
     private String msgBody;
     private String subject;
     private String attachment;
+
+    public Email(String recipient,
+                 String msgBody,
+                 String subject){
+        this.recipient = recipient;
+        this.msgBody = msgBody;
+        this.subject = subject;
+    }
+
+    public Email(String recipient){
+        this.recipient = recipient;
+    }
 }

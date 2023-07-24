@@ -10,22 +10,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
 @Entity
 @Table
 @Getter
 @Setter
 @NoArgsConstructor
 public class UserEvents extends IdBaseEntity {
-   // @Column(length = 32, columnDefinition = "varchar(32)")
-   // @Enumerated(value = EnumType.STRING)
+
     @Enumerated(value = EnumType.ORDINAL)
    private MembershipRole membershipRole;
 
-    private String token;
-    private LocalDateTime expires;
     private String verificationCode;
-    private boolean verified;
+    private boolean verified = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -41,12 +37,5 @@ public class UserEvents extends IdBaseEntity {
         this.membershipRole = membershipRole;
         this.user = user;
         this.eventSpecifics = eventSpecifics;
-    }
-
-
-
-    private UserEvents(User user , String token){
-        this.user = user;
-        this.token = token;
     }
 }

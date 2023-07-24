@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.Events;
 
+import ch.qos.logback.core.model.Model;
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.Events.email.Email;
@@ -43,7 +44,7 @@ public class EventController {
         return eventsService.findByKeyword(keyWord, eventDtos);
     }
     @PostMapping("/email")
-    public String sendSimpleMail(@RequestBody Email details){
+    public String sendSimpleMail(Model model, @RequestBody Email details){
         String status = emailService.sendSimpleMail(details);
         return status;
     }

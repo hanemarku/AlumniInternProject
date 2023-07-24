@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +46,14 @@ public class PostServiceImplementation implements PostService{
         post.setProfilePicUrl(postDto.getProfilePicUrl());
 
         return map(postRepository.save(post));
+    }
+
+    @Override
+    public List<PostGetDto> findPostsByUser(UUID id) {
+        return postRepository.findAll().stream()
+                .filter(post -> post.getAuthor().getId().equals(id))
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
     @Override

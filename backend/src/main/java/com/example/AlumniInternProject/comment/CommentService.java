@@ -12,5 +12,7 @@ public interface CommentService {
 
     CommentGetDto update(UUID id, CommentDto commentDto);
 
+    List<CommentGetDto> commentsPost(UUID postId);
+
     void delete(UUID id);
 }

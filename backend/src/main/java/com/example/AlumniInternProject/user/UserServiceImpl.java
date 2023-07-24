@@ -89,15 +89,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean isEmailUnique(UUID id, String email) {
-        User existingUser = userRepository.findUserByEmail(email);
-        if (existingUser != null && existingUser.getId().equals(id)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public User findById(UUID id) {
         return null;
     }
@@ -139,6 +130,16 @@ public class UserServiceImpl implements UserService{
     public void updateEnabledStatus(UUID id, boolean status) {
         userRepository.updateEnabledStatus(id, status);
     }
+
+    @Override
+    public boolean isEmailAvailable(String email) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public void delete(UUID id) throws UserNotFoundException {

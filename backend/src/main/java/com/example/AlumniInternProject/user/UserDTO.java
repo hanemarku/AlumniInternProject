@@ -23,8 +23,8 @@ public class UserDTO {
     private Country country;
     private String password;
     private String bio;
-    private Set<Skill> skills = new HashSet<>();
-    private Set<Interest> interests = new HashSet<>();
+    private Set<Skill> skills;
+    private Set<Interest> interests;
     private Role role;
 
     public UserDTO() {

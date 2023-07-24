@@ -6,6 +6,7 @@ export class CountryList{
     public id: string,
     public name: string,
     public code: string,
+    public cities: CityList[]
   ){}
 
   public getName(): string {

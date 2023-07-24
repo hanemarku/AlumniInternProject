@@ -12,7 +12,7 @@
       <label for="city">City</label>
       <select id="city" [formControl]="cityControl" class="form-control" *ngIf="selectedCountry">
         <option value="">Select City</option>
-        <option *ngFor="let city of cities[selectedCountry]" [value]="city.id">{{ city.name }}</option>
+        <option *ngFor="let city of cities[selectedCountry.id]" [value]="city.id">{{ city.name }}</option>
       </select>
       <input
         id="city"

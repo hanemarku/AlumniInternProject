@@ -16,12 +16,12 @@ export class CountryCitySelectorComponent implements OnInit {
   @Input() cities: { [key: string]: CityList[] } = {};
   @Input() msform: FormGroup = new FormGroup({});
 
-  @Output() selectedCountryChange: EventEmitter<string | null> = new EventEmitter();
+  @Output() selectedCountryChange: EventEmitter<CountryList | null> = new EventEmitter();
   @Output() selectedCityChange: EventEmitter<string | null> = new EventEmitter();
 
 
 
-  selectedCountry: string | null = null;
+  selectedCountry: CountryList | undefined | null = null;
   selectedCityFromList = true;
   customCity: string | null = null;
   selectedCity: string | null = null;
@@ -54,11 +54,35 @@ export class CountryCitySelectorComponent implements OnInit {
     
   }
 
+  // onCountryChange() {
+  //   const selectedCountryValue = this.countryControl.value;
+  //   // console.log("selected country value: " + selectedCountryValue);
+  //   if (selectedCountryValue) {
+  //     this.selectedCountry = selectedCountryValue;
+  //   } else {
+  //     this.selectedCountry = null;
+  //   }
+  //   if (selectedCountryValue) {
+  //     this.cityDataService.getCitiesByCountry(selectedCountryValue).subscribe(
+  //       (cities: CityList[]) => {
+  //         this.cities[selectedCountryValue] = cities;
+  //         // console.log("cities: " + cities);
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //       }
+  //     );
+  //   }
+  //   this.updateCityValidity();
+  //   console.log("selected city emit 2" + this.selectedCountry);
+  //   this.selectedCountryChange.emit(this.selectedCountry);
+  // }
+
   onCountryChange() {
     const selectedCountryValue = this.countryControl.value;
-    // console.log("selected country value: " + selectedCountryValue);
     if (selectedCountryValue) {
-      this.selectedCountry = selectedCountryValue;
+      const selectedCountryObject = this.countries.find(country => country.id === selectedCountryValue);
+      this.selectedCountry = selectedCountryObject;
     } else {
       this.selectedCountry = null;
     }
@@ -66,7 +90,6 @@ export class CountryCitySelectorComponent implements OnInit {
       this.cityDataService.getCitiesByCountry(selectedCountryValue).subscribe(
         (cities: CityList[]) => {
           this.cities[selectedCountryValue] = cities;
-          // console.log("cities: " + cities);
         },
         (error) => {
           console.error(error);
@@ -74,9 +97,10 @@ export class CountryCitySelectorComponent implements OnInit {
       );
     }
     this.updateCityValidity();
-    console.log("selected city emit 2" + this.selectedCountry);
+    console.log("selected country emit 2" + this.selectedCountry);
     this.selectedCountryChange.emit(this.selectedCountry);
   }
+  
 
   updateCityValidity() {
     const cityControl = this.cityControl;
@@ -90,10 +114,10 @@ export class CountryCitySelectorComponent implements OnInit {
 
   onCityInputChange() {
     const selectedCityValue = this.cityControl.value !== undefined ? this.cityControl.value : null;
-    this.selectedCityFromList = this.selectedCountry ? this.cities[this.selectedCountry]?.some(city => city.id === selectedCityValue) : false;
+    this.selectedCityFromList = this.selectedCountry ? this.cities[this.selectedCountry.id]?.some(city => city.id === selectedCityValue) : false;
 
     if (this.selectedCityFromList && this.selectedCountry) {
-      this.selectedCity= this.cities[this.selectedCountry].find(city => city.id === selectedCityValue)?.name || null;
+      this.selectedCity= this.cities[this.selectedCountry.id].find(city => city.id === selectedCityValue)?.name || null;
       console.log("selected city from list name : " + this.selectedCity);
     } else {
       this.selectedCity = null;

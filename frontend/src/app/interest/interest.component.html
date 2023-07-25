@@ -1,0 +1,48 @@
+<section class="heading-section">
+    <h1 class="title is-1 has-text-centered">Interests</h1>
+  </section>
+  
+  <div class="container">
+    <div class="add-interest-box">
+      <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+        <h2 class="title is-5">Add Interest</h2>
+  
+        <div class="field is-grouped" style="margin: 0">
+          <p class="control is-expanded">
+            <input ngModel #interestTextField="ngModel" required name="text" class="input" type="text" placeholder="Type interest name here">
+          </p>
+          <p class="control">
+            <button type="submit" class="button alt-gradient-button">
+              <i class="material-icons">add</i>
+              Add
+            </button>
+          </p>
+        </div>
+        <div *ngIf="interestTextField.invalid && showValidationErrors">
+          <p class="help is-danger" *ngIf="interestTextField.errors?.['required']">Please enter interest name.</p>    
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <section class="section">
+    <div class="container">
+  
+      <div class="interest-list">
+        <div class="interest-item" *ngFor="let interest of interests" >
+          <div class="interest-name">
+            {{interest.name}}
+          </div>
+          <div class="interest-controls-box">
+            <div class="interest-control-button" (click)="onEditClicked(interest)">
+              <i class="material-icons">edit</i>
+            </div>
+  
+            <div class="interest-control-button is-danger" (click)="onDeleteClicked(interest)">
+              <i class="material-icons">delete</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

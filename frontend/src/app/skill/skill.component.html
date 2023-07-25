@@ -1,0 +1,48 @@
+<section class="heading-section">
+  <h1 class="title is-1 has-text-centered">Skills</h1>
+</section>
+
+<div class="container">
+  <div class="add-skill-box">
+    <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+      <h2 class="title is-5">Add Skill</h2>
+
+      <div class="field is-grouped" style="margin: 0">
+        <p class="control is-expanded">
+          <input ngModel #skillTextField="ngModel" required name="text" class="input" type="text" placeholder="Type skill name here">
+        </p>
+        <p class="control">
+          <button type="submit" class="button alt-gradient-button">
+            <i class="material-icons">add</i>
+            Add
+          </button>
+        </p>
+      </div>
+      <div *ngIf="skillTextField.invalid && showValidationErrors">
+        <p class="help is-danger" *ngIf="skillTextField.errors?.['required']">Please enter skill name.</p>    
+      </div>
+    </form>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <div class="skill-list">
+      <div class="skill-item" *ngFor="let skill of skills" >
+        <div class="skill-name">
+          {{skill.name}}
+        </div>
+        <div class="skill-controls-box">
+          <div class="skill-control-button" (click)="onEditClicked(skill)">
+            <i class="material-icons">edit</i>
+          </div>
+
+          <div class="skill-control-button is-danger" (click)="onDeleteClicked(skill)">
+            <i class="material-icons">delete</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

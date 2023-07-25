@@ -20,9 +20,6 @@ public class UserEvents extends IdBaseEntity {
     @Enumerated(value = EnumType.ORDINAL)
    private MembershipRole membershipRole;
 
-    private String verificationCode;
-    private boolean verified = false;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

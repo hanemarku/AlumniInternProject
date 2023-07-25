@@ -1,10 +1,12 @@
 package com.example.AlumniInternProject.Events.email;
 
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -19,21 +21,26 @@ public class EmailServiceImplement implements EmailService{
     private final TemplateEngine templateEngine;
     @Value("alumniproject4@gmail.com")
     private final String sender = "alumniproject4@gmail.com";
+    private final String SUBJ_TEST = "Confrim your reservation";
 
-    private final String MSG_BODY_TEST = "this is the body String";
     @Override
     @Async
-    public String sendSimpleMail(Email details) {
+    public String sendSimpleMail(String email, String token) {
       try{
-          SimpleMailMessage message = new SimpleMailMessage();
+          MimeMessage message = emailSender.createMimeMessage();
+          MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+          helper.setFrom(sender);
+          helper.setTo(email);
+          helper.setSubject(SUBJ_TEST);
+
           Context context = new Context();
-          message.setFrom(sender);
-          message.setTo(details.getRecipient());
-          message.setSubject(details.getSubject());
-          message.setText(MSG_BODY_TEST);
-          context.setVariable("message",message);
+          context.setVariable("LINK", token);
+
+          String htmlContent = templateEngine.process("confirmationEmail.html", context);
+          helper.setText(htmlContent, true);
           emailSender.send(message);
-          return templateEngine.process("confirmationEmail.html", context);
+          return "Email sent succesfully";
       }catch (Exception e){
           return "Email could not be sent!";
       }

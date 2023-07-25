@@ -43,10 +43,5 @@ public class EventController {
                                           @RequestBody Set<EventGetDto> eventDtos){
         return eventsService.findByKeyword(keyWord, eventDtos);
     }
-    @PostMapping("/email")
-    public String sendSimpleMail(Model model, @RequestBody Email details){
-        String status = emailService.sendSimpleMail(details);
-        return status;
-    }
 }
 

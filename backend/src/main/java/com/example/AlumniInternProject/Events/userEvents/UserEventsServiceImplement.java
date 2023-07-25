@@ -2,7 +2,6 @@ package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
-import com.example.AlumniInternProject.Events.email.Email;
 import com.example.AlumniInternProject.Events.email.EmailService;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationToken;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationTokenRepository;
@@ -14,11 +13,13 @@ import com.example.AlumniInternProject.user.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class UserEventsServiceImplement implements UserEventsService{
     private final EventSpecificsRepository eventSpecificsRepository;
     private final EmailService emailService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
     private UserEventGetDto mapUserEvent(UserEvents userEvents){
         var dto = new UserEventGetDto();
         dto.setId(userEvents.getId());
@@ -46,7 +48,6 @@ public class UserEventsServiceImplement implements UserEventsService{
         obj.setUser(confirmationToken.getUser());
         return obj;
     }
-
     @Override
     public List<UserGetDto> getUsersByEventId(UUID eventId) {
         List<User> users = userEventsRepository.findUsersByEventId(eventId);
@@ -58,40 +59,66 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     /*This save is as a register that the user makes*/
     @Override
+  //  @Transactional
     public UserEventGetDto save(UserEventDto eventDto) {
         /*Needs to be changed the way that we get the user id
         * Should get the user that is loged in*/
-        User user = userRepository.findById(eventDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: "
-                                                                + eventDto.getUserId()));
+        User user = userRepository.findById(eventDto.getUserId()).orElseThrow(() ->
+                new IllegalArgumentException("User not found with ID: "+ eventDto.getUserId()));
+      /*Generates the token*/
        String confirmationToken = UUID.randomUUID().toString();
-        ConfirmationToken token = new ConfirmationToken(
+       user.setConfirmationToken(confirmationToken);
+
+       String link = "http://localhost:8080/api/v1/confirm/" + confirmationToken;
+
+       ConfirmationToken token = new ConfirmationToken(
             confirmationToken,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(45),
-                userRepository.findById(eventDto.getUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("User not found with ID: "
-                                + eventDto.getUserId()))
+            LocalDateTime.now(),
+            LocalDateTime.now().plusMinutes(45),
+            userRepository.findById(eventDto.getUserId()).
+                    orElseThrow(() -> new IllegalArgumentException
+                            ("User not found with ID: "+ eventDto.getUserId()))
         );
-        confirmationTokenService.saveConfirmationToken(token);
+       confirmationTokenService.saveConfirmationToken(token);
+       /*Sending the email with the generated token*/
+       emailService.sendSimpleMail(user.getEmail(),link);
 
-        EventSpecifics eventSpecifics =
-                eventSpecificsRepository.findById(eventDto.getEventSpecificsId())
-                         .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "                                  + eventDto.getEventSpecificsId()));
+       EventSpecifics eventSpecifics = eventSpecificsRepository.findById(eventDto.getEventSpecificsId()).
+                orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "+ eventDto.getEventSpecificsId()));
 
-       Email email = new Email(user.getEmail());
-       emailService.sendSimpleMail(email);
+       if(user.isVerified() == false){
+           return null;
+       } else {
+           UserEvents userEvents = new UserEvents(MembershipRole.Member, user, eventSpecifics);
+           UserEvents saved = userEventsRepository.save(userEvents);
 
-        UserEvents userEvents = new UserEvents(MembershipRole.Member,
-                                                        user, eventSpecifics);
-
-        UserEvents saved = userEventsRepository.save(userEvents);
-        return mapUserEvent(saved);
+           return mapUserEvent(saved);
+       }
     }
 
+    @Override
     @Transactional
-    public UserEvents findUserEventsByToken(String token) {
-        return userEventsRepository.findUserEventsByToken(token);
+    public boolean confirmParticipation(String confirmationToken) {
+        User user = userRepository.findUserEventsByConfirmationToken(confirmationToken);
+        ConfirmationToken token = confirmationTokenService
+                                    .getToken(confirmationToken).orElseThrow(() ->
+                        new IllegalStateException("token not found"));
+
+        if (token.getConfirmedAt() != null) {
+            user.setVerified(false);
+            return false;
+        }
+        LocalDateTime expiredAt = token.getExpiredAt();
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            user.setVerified(false);
+            return false;
+        }
+
+            confirmationTokenService.setConfirmedAt(confirmationToken);
+            user.setVerified(true);
+            userRepository.confirmUser(token.getUser().getEmail());
+
+            return true;
     }
     @Transactional
     public UserEvents findUserEventsByUser(User user) {

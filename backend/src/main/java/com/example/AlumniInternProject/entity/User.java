@@ -70,10 +70,8 @@ public class User extends IdBaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Post> posts = new ArrayList<>();
-//
+    private String confirmationToken;
+    private boolean verified = false;
 
     @OneToMany(mappedBy = "requester")
     private List<ConnectionRequest> sentConnectionRequests;

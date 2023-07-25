@@ -17,10 +17,6 @@ import java.util.stream.Collectors;
 public class EventsServiceImplement implements EventsService {
 
     private final EventsRepository eventsRepository;
-
-    private final UserRepository userRepository;
-    private final UserEventsRepository userEventsRepository;
-
     private EventGetDto map(Events e){
         var dto = new EventGetDto();
         dto.setId(e.getId());

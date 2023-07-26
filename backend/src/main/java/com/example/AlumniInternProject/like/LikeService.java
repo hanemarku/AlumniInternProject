@@ -10,6 +10,9 @@ public interface LikeService {
     LikeGetDto findById(UUID id);
 
     LikeGetDto update(UUID id, LikeDto likeDto);
+    LikeGetDto addLike(LikeGetDto likeDto);
 
     void delete(UUID id);
+
+    Long postLikes(UUID id);
 }

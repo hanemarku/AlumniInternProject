@@ -70,8 +70,6 @@ public class User extends IdBaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
-    private String confirmationToken;
-    private boolean verified = false;
 
     @OneToMany(mappedBy = "requester")
     private List<ConnectionRequest> sentConnectionRequests;

@@ -1,15 +1,11 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
-import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
-import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
 import com.example.AlumniInternProject.Events.export.EventCsvExporter;
 import com.example.AlumniInternProject.Events.export.EventExcelExporter;
 import com.example.AlumniInternProject.Events.export.EventPdfExporter;
-import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationToken;
 import com.example.AlumniInternProject.entity.User;
-import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/events/{eventId}/users")
     public List<UserGetDto> getUsersByEventId(@PathVariable UUID eventId) {
@@ -60,9 +57,8 @@ public class UserEventsController {
         return userEventsService.save(eventDto);
     }
     @GetMapping("/confirm/{token}")
-    public boolean confirmParticipation(@RequestParam("token")String confirmationToken,
-                                        EventSpecifics eventSpecifics){
-        return userEventsService.confirmParticipation(confirmationToken);
+    public String confirmParticipation(@PathVariable("token")String confirmationToken){
+       return userEventsService.confirmParticipation(confirmationToken);
     }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();

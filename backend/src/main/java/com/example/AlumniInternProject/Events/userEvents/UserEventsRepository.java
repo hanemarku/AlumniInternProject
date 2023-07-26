@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface UserEventsRepository extends JpaRepository<UserEvents, UUID> {
@@ -15,7 +14,6 @@ public interface UserEventsRepository extends JpaRepository<UserEvents, UUID> {
           " WHERE ue.eventSpecifics.id = :eventId")
 
   List<User> findUsersByEventId(@Param("eventId") UUID eventId);
-  @Query("select u from User u where u.email = :email ")
-  Optional<User> findUserByEmail(@Param("email") String email);
-  UserEvents findUserEventsByUser(User user);
+  @Query("SELECT u FROM UserEvents u WHERE u.token = :token")
+  UserEvents findUserEventsByToken(@Param("token") String confirmationToken);
 }

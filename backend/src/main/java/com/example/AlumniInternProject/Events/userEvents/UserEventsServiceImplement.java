@@ -2,10 +2,11 @@ package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepository;
+import com.example.AlumniInternProject.Events.EventsRepository;
 import com.example.AlumniInternProject.Events.email.EmailService;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationToken;
-import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationTokenRepository;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationTokenService;
+import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.MembershipRole;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
@@ -13,13 +14,11 @@ import com.example.AlumniInternProject.user.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class UserEventsServiceImplement implements UserEventsService{
     private final EventSpecificsRepository eventSpecificsRepository;
     private final EmailService emailService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final EventsRepository eventsRepository;
     private UserEventGetDto mapUserEvent(UserEvents userEvents){
         var dto = new UserEventGetDto();
         dto.setId(userEvents.getId());
@@ -58,73 +57,76 @@ public class UserEventsServiceImplement implements UserEventsService{
     }
 
     /*This save is as a register that the user makes*/
+
+    //* TODO: WHEN REGISTERING THE USER CAN BE PART OF MANY EVENTS SO WE SHOULD ALSO CHECK IF HE IS TRYING TO REGISTER HIMSELF AGAIN*/
     @Override
   //  @Transactional
-    public UserEventGetDto save(UserEventDto eventDto) {
+    public UserEventGetDto save(UserEventDto userEventDto) {
         /*Needs to be changed the way that we get the user id
         * Should get the user that is loged in*/
-        User user = userRepository.findById(eventDto.getUserId()).orElseThrow(() ->
-                new IllegalArgumentException("User not found with ID: "+ eventDto.getUserId()));
+        User user = userRepository.findById(userEventDto.getUserId()).orElseThrow(() ->
+                new IllegalArgumentException("User not found with ID: "+ userEventDto.getUserId()));
+
+        EventSpecifics eventSpecifics = eventSpecificsRepository.findById(userEventDto.getEventSpecificsId()).
+                orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "+ userEventDto.getEventSpecificsId()));
+
+        if(eventSpecifics.getEvents().getMaxParticipants() == 0){
+            throw new IllegalArgumentException("The limit is already reached!");
+        }
+        Events events = eventsRepository.getReferenceById(eventSpecifics.getEvents().getId());
+        events.setMaxParticipants(events.getMaxParticipants() - 1);
+
       /*Generates the token*/
        String confirmationToken = UUID.randomUUID().toString();
-       user.setConfirmationToken(confirmationToken);
 
-       String link = "http://localhost:8080/api/v1/confirm/" + confirmationToken;
+
+       String link = "http://localhost:8080/api/v1/eventsAndUsers/confirm/" + confirmationToken;
 
        ConfirmationToken token = new ConfirmationToken(
             confirmationToken,
             LocalDateTime.now(),
             LocalDateTime.now().plusMinutes(45),
-            userRepository.findById(eventDto.getUserId()).
+            userRepository.findById(userEventDto.getUserId()).
                     orElseThrow(() -> new IllegalArgumentException
-                            ("User not found with ID: "+ eventDto.getUserId()))
+                            ("User not found with ID: "+ userEventDto.getUserId()))
         );
        confirmationTokenService.saveConfirmationToken(token);
        /*Sending the email with the generated token*/
        emailService.sendSimpleMail(user.getEmail(),link);
 
-       EventSpecifics eventSpecifics = eventSpecificsRepository.findById(eventDto.getEventSpecificsId()).
-                orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "+ eventDto.getEventSpecificsId()));
+       UserEvents userEvents = new UserEvents(MembershipRole.Member, user, eventSpecifics, Status.PENDING);
+       userEvents.setToken(confirmationToken);
+       UserEvents saved = userEventsRepository.save(userEvents);
 
-       if(user.isVerified() == false){
-           return null;
-       } else {
-           UserEvents userEvents = new UserEvents(MembershipRole.Member, user, eventSpecifics);
-           UserEvents saved = userEventsRepository.save(userEvents);
-
-           return mapUserEvent(saved);
-       }
+       return mapUserEvent(saved);
     }
 
     @Override
     @Transactional
-    public boolean confirmParticipation(String confirmationToken) {
-        User user = userRepository.findUserEventsByConfirmationToken(confirmationToken);
+    public String confirmParticipation(String confirmationToken) {
+        /*THE USER WHO NEEDS THE STATUS CHANGED*/
+        UserEvents userEvents = userEventsRepository.findUserEventsByToken(confirmationToken);
+
         ConfirmationToken token = confirmationTokenService
-                                    .getToken(confirmationToken).orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                .getToken(confirmationToken);
+        /*.orElseThrow(() ->
+                        new IllegalStateException("token not found"));*/
 
         if (token.getConfirmedAt() != null) {
-            user.setVerified(false);
-            return false;
+            userEvents.setStatus(Status.CONFIRMED);
+            throw new RuntimeException("This user has already confirmed the participation");
         }
         LocalDateTime expiredAt = token.getExpiredAt();
+
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            user.setVerified(false);
-            return false;
+            userEvents.setStatus(Status.EXPIRED);
+            throw new RuntimeException("Your confirmation time has expired!");
         }
 
-            confirmationTokenService.setConfirmedAt(confirmationToken);
-            user.setVerified(true);
-            userRepository.confirmUser(token.getUser().getEmail());
-
-            return true;
+        confirmationTokenService.setConfirmedAt(confirmationToken);
+        userEvents.setStatus(Status.CONFIRMED);
+        return "Kthe";
     }
-    @Transactional
-    public UserEvents findUserEventsByUser(User user) {
-        return userEventsRepository.findUserEventsByUser(user);
-    }
-
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();
         dto.setFirstname(user.getFirstname());

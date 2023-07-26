@@ -1,8 +1,9 @@
 package com.example.AlumniInternProject.user;
 
-import com.example.AlumniInternProject.admin.settings.city.CityRepository;
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
+import com.example.AlumniInternProject.education.EducationImpl;
 import com.example.AlumniInternProject.entity.Country;
+import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
@@ -13,9 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,33 +25,73 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final CountryRepository countryRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EducationImpl educationService;
 
     private ModelMapper modelMapper = new ModelMapper();
     @Override
     public UserGetDto save(UserDTO userDto) {
-       String encodedPassword = encodePassword(userDto.getPassword());
+        String encodedPassword = encodePassword(userDto.getPassword());
+
+        // Create the User entity
         var user = new User(
-            userDto.getFirstname(),
-            userDto.getLastname(),
-            userDto.getEmail(),
-            userDto.isEnabled(),
-            userDto.getBirthday(),
-            userDto.getProfilePicUrl(),
-            userDto.getPhoneNumber(),
-            userDto.getCity(),
-            userDto.getCountry(),
-            encodedPassword,
-            userDto.getBio(),
-            userDto.getSkills(),
-            userDto.getInterests(),
-            userDto.getRole()
+                userDto.getFirstname(),
+                userDto.getLastname(),
+                userDto.getEmail(),
+                userDto.isEnabled(),
+                userDto.getBirthday(),
+                userDto.getProfilePicUrl(),
+                userDto.getPhoneNumber(),
+                userDto.getCity(),
+                userDto.getCountry(),
+                encodedPassword,
+                userDto.getBio(),
+                userDto.getSkills(),
+                userDto.getInterests(),
+                userDto.getRole(),
+                new HashSet<>(),
+                userDto.getEducationHistories()
         );
-        var saved = userRepository.save(user);
-        return map(saved);
-//        var savedUser = userRepository.save(user);
-//        var userGetDto = modelMapper.map(savedUser, UserGetDto.class);
-//        return userGetDto;
+
+        //set user_id to educationHistory
+        userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
+        // Save the User entity first
+        var savedUser = userRepository.save(user);
+
+//        Set<EducationHistory> educationHistories = userDto.getEducationHistories()
+//                .stream()
+//                .map(educationDto -> mapEducationHistoryDtoToEntity(educationDto, user))
+//                .collect(Collectors.toSet());
+//
+//
+//        // Add the mapped educationHistories to the User
+//        savedUser.getEducationHistories().addAll(educationHistories);
+        userRepository.save(savedUser);
+
+        return map(savedUser);
     }
+
+    private EducationHistory mapEducationHistoryDtoToEntity(EducationHistory educationDto, User user) {
+        // Create a new EducationHistory object and manually map the data from EducationDto
+        EducationHistory educationHistory = new EducationHistory(
+                educationDto.getInstitutionName(),
+                educationDto.getFieldOfQualification(),
+                educationDto.getFieldOfStudy(),
+                educationDto.getStartDate(),
+                educationDto.getEndDate(),
+                educationDto.getFinalGrade(),
+                educationDto.getWebsite(),
+                educationDto.getCity(),
+                educationDto.getCountry()
+        );
+
+        // Associate the User with the EducationHistory
+        educationHistory.setUser(user);
+
+        return educationHistory;
+    }
+
+
+
 
     @Override
     public List<UserGetDto> findAll() {
@@ -81,6 +120,8 @@ public class UserServiceImpl implements UserService{
         dto.setSkills(user.getSkills());
         dto.setInterests(user.getInterests());
         dto.setRole(user.getRole());
+        dto.setEducationHistories(user.getEducationHistories());
+        dto.setEmploymentHistories(user.getEmploymentHistories());
         return dto;
     }
 

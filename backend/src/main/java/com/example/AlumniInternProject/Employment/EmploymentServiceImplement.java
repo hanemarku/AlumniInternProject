@@ -2,7 +2,7 @@ package com.example.AlumniInternProject.Employment;
 
 import com.example.AlumniInternProject.Employment.Dto.EmploymentDto;
 import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
-import lombok.AllArgsConstructor;
+import com.example.AlumniInternProject.entity.EmploymentHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         dto.setOngoing(eh.isOngoing());
         dto.setFromDate(eh.getFromDate());
         dto.setToDate(eh.getToDate());
+        dto.setCity(eh.getCity());
+        dto.setCountry(eh.getCountry());
+        dto.setSkills(eh.getSkills());
+
         return dto;
     }
     @Override
@@ -37,7 +41,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
                 employmentDto.getDepartment(),
                 employmentDto.isOngoing(),
                 employmentDto.getFromDate(),
-                employmentDto.getToDate()
+                employmentDto.getToDate(),
+                employmentDto.getCity(),
+                employmentDto.getCountry(),
+                employmentDto.getSkills()
         );
       var saved = employmentHistoryRepository.save(ehDto);
       return map(saved);
@@ -73,6 +80,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         eh.setOngoing(edt.isOngoing());
         eh.setFromDate(edt.getFromDate());
         eh.setToDate(edt.getToDate());
+        eh.setCity(edt.getCity());
+        eh.setCountry(edt.getCountry());
+        eh.setSkills(edt.getSkills());
+
 
         var saved = employmentHistoryRepository.save(eh);
         return map(saved);

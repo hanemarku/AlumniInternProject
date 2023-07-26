@@ -19,7 +19,9 @@ import { CountryCitySelectorComponent } from './country-city-selector/country-ci
 import { SkillInterestComponentComponent } from './skill-interest-component/skill-interest-component.component';
 import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { FilterPipe } from './filter.pipe';
-import { InterestSearchComponent } from './interest-search/interest-search.component'; 
+import { InterestSearchComponent } from './interest-search/interest-search.component';
+import { EducationFormComponent } from './education-form/education-form.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { InterestSearchComponent } from './interest-search/interest-search.compo
     SkillInterestComponentComponent,
     SkillSearchComponent,
     FilterPipe,
-    InterestSearchComponent
+    InterestSearchComponent,
+    EducationFormComponent,
   ],
   imports: [
     BrowserModule,

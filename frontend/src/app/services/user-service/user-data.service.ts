@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserList } from 'src/app/user/list-users/list-users.component';
+import { Education } from '../education-service/education-data.service';
+
 
 export interface User{
   firstname: string;
@@ -13,7 +15,7 @@ export interface User{
   country: string;
   skills: string[];
   interests: string[];
-  educations: string[];
+  educationHistories: Education[];
   profilePicUrl: string;
   phoneNumber: string;
   bio: string;

@@ -6,18 +6,19 @@
             <h5 class="card-title text-white">Education</h5>
           </div> -->
           <div class="card-body">
-            <div *ngFor="let education of educations" class="mb-4">
+            <!-- <div *ngFor="let education of educations" class="mb-4"> -->
+              <form (ngSubmit)="addEducation()" #educationForm="ngForm">
               <div class="row align-items-center p-1">
                 <div class="col">
                     <div class="row">
                         <div class="col-md">
-                            <input [(ngModel)]="education.institutionName" class="form-control bg-light" placeholder="Institution*" />
+                            <input id="institutionName" name="institutionName" [(ngModel)]="newEducation.institutionName" class="form-control bg-light" placeholder="Institution*" />
                           </div>
                           <div class="col-md">
-                            <input [(ngModel)]="education.fieldOfQualification" class="form-control bg-light" placeholder="Qualification*" />
+                            <input id="fieldOfQualification" name="fieldOfQualification" [(ngModel)]="newEducation.fieldOfQualification" class="form-control bg-light" placeholder="Qualification*" />
                           </div>
                           <div class="col-md">
-                              <input [(ngModel)]="education.filedOfStudy" class="form-control bg-light" placeholder="Field of Study*" />
+                              <input id="filedOfStudy" name="filedOfStudy" [(ngModel)]="newEducation.fieldOfStudy" class="form-control bg-light" placeholder="Field of Study*" />
                           </div>          
                     </div>
                
@@ -26,14 +27,14 @@
                         <div class="col-md">
                             <div class="row">
                                 <div class="col-md-6 pt-4">
-                                    <input [(ngModel)]="education.finalGrade" class="form-control bg-light" placeholder="Final grade" />
+                                    <input id="finalGrade" name="finalGrade" [(ngModel)]="newEducation.finalGrade" class="form-control bg-light" placeholder="Final grade" />
                                 </div>
                                 <div class="col-md-3">
-                                    From:<input [(ngModel)]="education.startDate" type="date" placeholder="Start Date" class="form-control">
+                                    From:<input id="startDate" name="startDate" type="date" [(ngModel)]="newEducation.startDate" placeholder="Start Date" class="form-control">
                                 </div>
                                 <div class="col-md-3">
                                   To:
-                                    <input [(ngModel)]="education.endDate" type="date" placeholder="End Date"  class="form-control">
+                                    <input id="endDate" name="endDate" type="date" placeholder="End Date" [(ngModel)]="newEducation.endDate"  class="form-control">
                                 </div>
                             </div>
                           </div>
@@ -43,27 +44,87 @@
                     <div class="row ">
                       <div class="col-md-6">
                         <app-country-city-selector
-                          [countries]="countries"
-                          [cities]="cities"
-                          [msform]="msform"
-                        ></app-country-city-selector>
+                        [countries]="countries"
+                        [cities]="cities"
+
+                        (selectedCountryChange)="onSelectedCountryChange($event)"
+                        (selectedCityChange)="onSelectedCityChange($event)"
+                       
+                      ></app-country-city-selector>
                       </div>
                       <div class="col-md-6 mt-1">
                         <label for="website"></label>
-                        <input [(ngModel)]="education.website" id="website" class="form-control bg-light" placeholder="Website" />
+                        <input id="website" name="website" [(ngModel)]="newEducation.website" class="form-control bg-light" placeholder="Website" />
                       </div>
                     </div>
                 </div>
-                <div class="col-md-auto">
-                  <!-- <button (click)="editEducation(education)" class="btn btn-primary">Edit</button> -->
-                  <span class="badge bg-danger me-2 bigger-badge" (click)="removeEducation(education)">&times;</span>
-                </div>
               </div>
-            </div>
-            <button (click)="addEducation()" class="btn btn-success">Add Education</button>
+            <button type="submit" class="btn btn-success">Add Education</button>
+
+            </form>
+            <!-- </div> -->
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <div> education list works</div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Education List</h5>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let education of educations; let i = index" class="mb-3">
+              <div class="card">
+                <div class="card-body" style="background-color: rgb(246, 249, 255);">
+                  <h5 class="card-title mb-3">{{education.institutionName}}</h5>
+                  <p class="card-text mb-2"><strong>Qualification:</strong> {{education.fieldOfQualification}}</p>
+                  <div class="row">
+                      <p class="col "><strong>Field of Study:</strong> {{education.fieldOfStudy}}</p>
+                      <p class="col"><strong>Final Grade:</strong> {{education.finalGrade}}</p>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="card-text mb-2"><strong>City:</strong> {{education.city}}</p>
+                      <ng-container *ngIf="education.startDate && education.endDate ; else noDatesSelected">
+                        <p class="card-text">Start Date: {{education.startDate}}</p>
+                      </ng-container>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="card-text mb-2"><strong>Website:</strong> {{education.website}}</p>
+                      <ng-container *ngIf="education.endDate; else ongoing">
+                        <p class="card-text">End Date: {{education.endDate}}</p>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-danger me-2" (click)="deleteEducation(i)">Delete</button>
+                    <button class="btn btn-primary" (click)="editEducation(i)">Edit</button>
+                  </div>
+                </div>
+              </div>
+              <ng-template #noDatesSelected>
+                <p class="card-text">No start date and end date selected.</p>
+              </ng-template>
+              
+              <ng-template #ongoing>
+                <p class="card-text"> - Ongoing</p>
+              </ng-template>
+
+
+            </div>
+            <div *ngIf="educations.length === 0" class="text-center">
+              <p>No education records found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

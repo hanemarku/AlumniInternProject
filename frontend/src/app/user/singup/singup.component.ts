@@ -7,13 +7,13 @@ import { get } from 'jquery';
 import { CityList } from 'src/app/city/city.component';
 import { CityDataService } from 'src/app/services/city-service/city-data.service';
 import { CountryCitySelectorComponent } from 'src/app/country-city-selector/country-city-selector.component';
-import { Education } from 'src/app/education/education.component';
 import { User, UserDataService, UserTest } from 'src/app/services/user-service/user-data.service';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ValidationErrors } from '@angular/forms';
 import { tap } from 'rxjs/operators';
+import { Education } from 'src/app/services/education-service/education-data.service';
 
 
 @Component({
@@ -38,7 +38,7 @@ export class SingupComponent implements OnInit {
   selectedImage: string | null = null;
   profilePicFile: File | undefined;
   emailAvailable: boolean = true;
-
+  educations: Education[] = [];
 
 
   @ViewChild(CountryCitySelectorComponent) countryCitySelector!: CountryCitySelectorComponent;
@@ -53,7 +53,6 @@ export class SingupComponent implements OnInit {
   selectedCityFromList = true;
   selectedCity: string | null = null;
   cities: { [key: string]: CityList[] } = {};
-  customCity: string | null = null;
 
   msform: FormGroup<any> = new FormGroup({});
   currentStep = 0;
@@ -101,6 +100,7 @@ export class SingupComponent implements OnInit {
     this.countryDataService.listAllCountries().subscribe(
       (response: CountryList[]) => (this.countries = response) 
     );
+    
  
     this.msform = this.formBuilder.group({
       firstname: ['', Validators.required],
@@ -115,8 +115,7 @@ export class SingupComponent implements OnInit {
       bio: [''],
       skills: [[]],    
       interests: [[]],
-      educations: [[]],
-
+      educationHistories: [[]],
     });
   }
 
@@ -140,11 +139,12 @@ export class SingupComponent implements OnInit {
 
   onSelectedEducationChange(selectedEducation: Education[]) {
     this.selectedEducation = selectedEducation;
-    console.log('Selected Education:', this.selectedEducation);
+    console.log('Selected Education in signup :', this.selectedEducation);
     this.msform.patchValue({
-      educations: this.selectedEducation, 
+      educationHistories: this.selectedEducation,
     });
   }
+
 
   
   nextStep() {
@@ -204,15 +204,16 @@ export class SingupComponent implements OnInit {
       country: this.msform.get('country')?.value,
       skills: this.msform.get('skills')?.value,
       interests: this.msform.get('interests')?.value,
-      educations: this.msform.get('educations')?.value,
+      educationHistories: this.msform.get('educationHistories')?.value,
       profilePicUrl: fileUrl,
       phoneNumber: this.msform.get('phoneNumber')?.value,
       bio: this.msform.get('bio')?.value,
-  
     };
 
     //console log educations
-    console.log('Educations:', userData.educations);
+    console.log('Educations in signup submit:', userData.educationHistories);
+
+
   
     this.userDataService.createUser(userData).subscribe(
       (response) => {

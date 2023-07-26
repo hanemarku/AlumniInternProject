@@ -9,4 +9,6 @@ import java.util.UUID;
 @Setter
 public class UserGetDto extends UserDTO{
     private UUID id;
+
+
 }

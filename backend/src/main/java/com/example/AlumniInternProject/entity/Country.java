@@ -29,6 +29,12 @@ public class Country extends IdBaseEntity {
         this.code = code;
     }
 
+    public Country(UUID id, String name, String code) {
+        super(id);
+        this.name = name;
+        this.code = code;
+    }
+
     public Country(UUID id){
         super(id);
     }

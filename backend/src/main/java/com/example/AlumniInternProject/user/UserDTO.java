@@ -1,12 +1,11 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.entity.EmploymentHistory;
 import com.example.AlumniInternProject.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -23,8 +22,11 @@ public class UserDTO {
     private Country country;
     private String password;
     private String bio;
-    private Set<Skill> skills = new HashSet<>();
-    private Set<Interest> interests = new HashSet<>();
+    private Set<Skill> skills;
+    private Set<Interest> interests;
+    private Set<EmploymentHistory> employmentHistories;
+    private Set<EducationHistory> educationHistories;
+
     private Role role;
 
     public UserDTO() {
@@ -47,5 +49,6 @@ public class UserDTO {
         this.interests = interests;
         this.role = role;
     }
+
 
 }

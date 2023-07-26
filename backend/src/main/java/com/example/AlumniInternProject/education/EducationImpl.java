@@ -14,6 +14,19 @@ public class EducationImpl implements EducationService {
 
     private final EducationRepository educationRepository;
 
+    public EducationGetDto mapEducationHistoryToDto(EducationDto educationHistory) {
+        var dto = new EducationGetDto();
+        dto.setInstitutionName(educationHistory.getInstitutionName());
+        dto.setFieldOfQualification(educationHistory.getFieldOfQualification());
+        dto.setFieldOfStudy(educationHistory.getFieldOfStudy());
+        dto.setStartDate(educationHistory.getStartDate());
+        dto.setEndDate(educationHistory.getEndDate());
+        dto.setFinalGrade(educationHistory.getFinalGrade());
+        dto.setWebsite(educationHistory.getWebsite());
+        dto.setCity(educationHistory.getCity());
+        dto.setCountry(educationHistory.getCountry()); // Assuming `Country` has a `getName()` method.
+        return dto;
+    }
     @Override
     public EducationGetDto save(EducationDto educationDto) {
         var educationHistory = new EducationHistory(
@@ -23,7 +36,11 @@ public class EducationImpl implements EducationService {
                 educationDto.getStartDate(),
                 educationDto.getEndDate(),
                 educationDto.getFinalGrade(),
-                educationDto.getWebsite()
+                educationDto.getWebsite(),
+                educationDto.getCity(),
+                educationDto.getCountry(),
+                educationDto.getUser()
+
         );
         var saved = educationRepository.save(educationHistory);
         return map(saved);
@@ -56,6 +73,8 @@ public class EducationImpl implements EducationService {
         optional.setEndDate(educationDto.getEndDate());
         optional.setFinalGrade(educationDto.getFinalGrade());
         optional.setWebsite(educationDto.getWebsite());
+        optional.setCity(educationDto.getCity());
+        optional.setCountry(educationDto.getCountry());
 
         var saved_ed = educationRepository.save(optional);
 
@@ -76,6 +95,8 @@ public class EducationImpl implements EducationService {
         dto.setEndDate(educationHistory.getEndDate());
         dto.setFinalGrade(educationHistory.getFinalGrade());
         dto.setWebsite(educationHistory.getWebsite());
+        dto.setCity(educationHistory.getCity());
+        dto.setCountry(educationHistory.getCountry());
         return dto;
     }
 }

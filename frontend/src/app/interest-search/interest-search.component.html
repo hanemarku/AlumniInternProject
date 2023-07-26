@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <div class="mb-3">
+        <input
+        type="text"
+        class="form-control"
+        placeholder="Search interests"
+        #searchInput
+        (input)="onSearch(searchInput.value)"
+        (keyup.enter)="onEnterKeyPress($event)"
+      />
+    </div>
+
+    <div *ngIf="filteredInterest.length == 0 && searchTerm">
+        <p>No suggestions found. Press Enter to add "<strong>{{ searchTerm }}</strong>" to the interests.</p>
+    </div>
+    
+
+    <div class="row">
+        <div class="col">
+            <span *ngIf="filteredInterest.length != 0">Available interests</span>
+          <div *ngFor="let skill of filteredInterest">
+            <span class="badge bg-secondary me-2" (click)="onAddInterest(skill)">{{ skill }}</span>
+          </div>
+        </div>
+      </div>
+  
+    <div class="row">
+      <div class="col">
+        <span *ngIf="selectedInterest.length != 0">Selected interests</span>
+        <div *ngFor="let skill of selectedInterest">
+          <span class="badge bg-primary me-2">{{ skill }}</span>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+  

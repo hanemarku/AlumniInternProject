@@ -71,9 +71,9 @@ public class WebSecurityConfig {
                 )
                 .httpBasic(withDefaults())
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(jwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider());
+//                .addFilterBefore(jwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
+//                .addFilterAfter(jwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
         return http.build();
     }

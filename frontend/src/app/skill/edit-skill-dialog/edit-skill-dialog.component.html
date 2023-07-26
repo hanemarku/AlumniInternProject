@@ -1,16 +1,16 @@
-<h1 class="title">Edit Skill</h1>
 <div mat-dialog-content>
   <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
     <div class="field">
+    <h1 class="title">Edit Skill</h1>
       <div class="control">
-        <input type="text" class="input" [(ngModel)]="skill.name" name="name" required
+        <input type="text" class="input" [(ngModel)]="skill.name" name="name" required maxlength="45"
                placeholder="Type skill text here...">
       </div>
       <div *ngIf="form.controls['name'].invalid">
-        <p class="help is-danger" *ngIf="form.controls['name'].errors?.['required']">Please enter the skill name.</p>
+        <p class="help is-danger" *ngIf="form.controls['name'].errors?.['required']">Please enter skill name.</p>
+        <p class="help is-danger" *ngIf="form.controls['name'].errors?.['maxlength']">Skill name must not be more than 45 characters long.</p>
       </div>
     </div>
-
     <br>
 
     <div class="field is-grouped is-grouped-right">

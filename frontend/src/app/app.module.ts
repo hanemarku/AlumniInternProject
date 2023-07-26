@@ -12,7 +12,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SkillListComponent } from './skill/skill.component';
 import { EditSkillDialogComponent } from './skill/edit-skill-dialog/edit-skill-dialog.component';
 import { EditInterestDialogComponent } from './interest/edit-interest-dialog/edit-interest-dialog.component';
-import { InterestComponent, InterestListComponent } from './interest/interest.component';
+import { InterestListComponent } from './interest/interest.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,6 @@ import { InterestComponent, InterestListComponent } from './interest/interest.co
     HttpClientModule,
     BrowserAnimationsModule,
     MatDialogModule
-
   ],
   providers: [],
   bootstrap: [AppComponent]

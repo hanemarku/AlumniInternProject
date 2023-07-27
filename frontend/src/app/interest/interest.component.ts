@@ -6,9 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 export class InterestComponent {
-  
+
   constructor(
-    public interestId: string,
+    public id: string,
     public name: string
   ) { }
 }
@@ -41,29 +41,29 @@ export class InterestListComponent implements OnInit {
     } else {
       this.saveInterest(form);
     }
-  }  
-  
+  }
+
   onEditClicked(interest: InterestComponent) {
-    console.log(`edit interest ${interest.interestId}`);
+    console.log(`edit interest ${interest.id}`);
     const dialogRef = this.dialog.open(EditInterestDialogComponent, {
-      width: '400px',
+      width: '700px',
       data: interest
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
-      if (result && result.interestId) {
-        this.updateInterest(result.interestId, result);
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('Updated Interest Data:', result);
+        this.interestDataService.updateInterest(interest.id, result).subscribe(
+          response => {
+            console.log('Interest Updated:', response);
+            this.refreshInterests();
+          },
+          error => {
+            console.error('Error updating interest:', error);
+          }
+        );
       }
     });
-  }
-  
-  onDeleteClicked(interest: InterestComponent) {
-    console.log(`delete interest ${interest.interestId}`);
-    if (interest.interestId) {
-      this.deleteInterest(interest.interestId);
-    }
   }
 
   refreshInterests() {
@@ -95,21 +95,24 @@ export class InterestListComponent implements OnInit {
       response => {
         console.log(response);
         this.refreshInterests();
+      },
+      error => {
+        console.error('Error updating interest:', error);
       }
-    )
+    );
   }
 
-saveInterest(form: NgForm) {
-  console.log('save', form.value.text);
-  this.interestDataService.saveInterest({ name: form.value.text }).subscribe(
-    response => {
-      console.log(response);
-      this.refreshInterests();
-      this.showValidationErrors = false;
-      form.resetForm();
-    },
-  );
-}
+  saveInterest(form: NgForm) {
+    console.log('save', form.value.text);
+    this.interestDataService.saveInterest({ name: form.value.text }).subscribe(
+      response => {
+        console.log(response);
+        this.refreshInterests();
+        this.showValidationErrors = false;
+        form.resetForm();
+      },
+    );
+  }
 
 
 }

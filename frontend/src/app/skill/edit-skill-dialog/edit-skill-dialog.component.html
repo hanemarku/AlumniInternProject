@@ -3,7 +3,7 @@
     <div class="field">
     <h1 class="title">Edit Skill</h1>
       <div class="control">
-        <input type="text" class="input" [(ngModel)]="skill.name" name="name" required maxlength="45"
+        <input type="text" class="input" [ngModel]="skill.name" name="name" required maxlength="45"
                placeholder="Type skill text here...">
       </div>
       <div *ngIf="form.controls['name'].invalid">

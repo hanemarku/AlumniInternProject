@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 export class SkillComponent {
-  
+
   constructor(
     public id: string,
     public name: string
@@ -42,15 +42,15 @@ export class SkillListComponent implements OnInit {
     } else {
       this.saveSkill(form);
     }
-  }  
-  
+  }
+
   onEditClicked(skill: SkillComponent) {
     console.log(`edit skill ${skill.id}`);
     const dialogRef = this.dialog.open(EditSkillDialogComponent, {
       width: '700px',
       data: skill
     });
-  
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         console.log('Updated Skill Data:', result);
@@ -61,18 +61,11 @@ export class SkillListComponent implements OnInit {
           },
           error => {
             console.error('Error updating skill:', error);
-            // Handle the error if needed
           }
         );
       }
     });
   }
-  
-  
-  
-  
-  
-
 
   refreshSkills() {
     this.skillDataService.listAllSkills().subscribe(
@@ -99,38 +92,28 @@ export class SkillListComponent implements OnInit {
 
   updateSkill(skillId: string, updatedSkill: any) {
     console.log(`update skill ${skillId}`);
-    const dialogRef = this.dialog.open(EditSkillDialogComponent, {
-      width: '700px',
-      data: updatedSkill
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        console.log('Updated Skill Data:', result);
-        this.skillDataService.updateSkill(skillId, result).subscribe(
-          response => {
-            console.log('Skill Updated:', response);
-            this.refreshSkills();
-          },
-          error => {
-            console.error('Error updating skill:', error);
-          }
-        );
+    this.skillDataService.updateSkill(skillId, updatedSkill).subscribe(
+      response => {
+        console.log(response);
+        this.refreshSkills();
+      },
+      error => {
+        console.error('Error updating skill:', error);
       }
-    });
+    );
   }
 
-saveSkill(form: NgForm) {
-  console.log('save', form.value.text);
-  this.skillDataService.saveSkill({ name: form.value.text }).subscribe(
-    response => {
-      console.log(response);
-      this.refreshSkills();
-      this.showValidationErrors = false;
-      form.resetForm();
-    },
-  );
-}
+  saveSkill(form: NgForm) {
+    console.log('save', form.value.text);
+    this.skillDataService.saveSkill({ name: form.value.text }).subscribe(
+      response => {
+        console.log(response);
+        this.refreshSkills();
+        this.showValidationErrors = false;
+        form.resetForm();
+      },
+    );
+  }
 
 
 }

@@ -27,6 +27,12 @@ public class CityController {
         return result;
     }
 
+    //list all cities
+    @GetMapping("")
+    public List<City> list() {
+        return (List<City>) cityRepository.findAll();
+    }
+
     @PostMapping("save")
     public String save(@RequestBody City city) {
         City savedCity = cityRepository.save(city);

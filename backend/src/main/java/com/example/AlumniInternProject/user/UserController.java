@@ -3,8 +3,10 @@ package com.example.AlumniInternProject.user;
 import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
@@ -42,60 +43,68 @@ public class UserController {
 
 
 
-//    @PostMapping("signup")
-//    public UserGetDto save(@RequestParam UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
-//
+//    @PostMapping(value = "/signup")
+//    public ResponseEntity<Map<String, String>>  save(@RequestBody UserDTO dto, @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
+//        System.out.println(dto);
+//        System.out.println(multipartFile);
+//        Map<String, String> response = new HashMap<>();
+//        UserDTO savedUser;
 //        if (!multipartFile.isEmpty()) {
 //            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 //            dto.setProfilePicUrl(filename);
-//            UserDTO savedUser = userService.save(dto);
+//            savedUser = userService.save(dto);
 //            String uploadDir = "user-photos/" + savedUser.getFirstname();
 //            FileUploadUtil.cleanDir(uploadDir);
 //            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-//
 //        } else {
 //            if (dto.getProfilePicUrl().isEmpty()) dto.setProfilePicUrl(null);
-//
-//
 //            userService.save(dto);
 //        }
-//            return userService.save(dto);
+//        response.put("message", "User saved successfully");
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//
 //
 //    }
 
-    @PostMapping
-    public ResponseEntity<String> save(@RequestBody UserDTO dto) {
+    @PostMapping("/signup")
+    public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) {
         UserGetDto savedUser = userService.save(dto);
+        Map<String, String> response = new HashMap<>();
         if (savedUser != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("User saved successfully");
+            response.put("message", "User saved successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save user");
+            response.put("message", "Failed to save user");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-//    @PostMapping("shtoFoto")
-//
-//
-//    public String save( @RequestParam("profilePicUrl") MultipartFile multipartFile) throws IOException {
-//
-//        if (!multipartFile.isEmpty()) {
-//            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            String uploadDir = "user-photos/" + "test";
-//            FileUploadUtil.cleanDir(uploadDir);
-//            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-//
-//        } else {
-//            return "failed";
-//        }
-//        return multipartFile.getName();
-
-//    }
-
-    @PostMapping("check_unique_email")
-    public String isEmailUnique( @RequestParam String email) {
-        UUID id =   UUID.randomUUID();
-        return userService.isEmailUnique(id, email) ? "OK" : "Duplicated";
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("profilePicUrl") MultipartFile multipartFile, @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname) throws IOException {
+        if (!multipartFile.isEmpty()) {
+            Random random = new Random();
+            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String uniqueIdentifier = firstname + "-" + lastname+ "-" + random.nextInt(100000);
+            String uploadDir = "user-photos/" + uniqueIdentifier;
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+            String fileUrl = "/user-photos/" + uniqueIdentifier + "/" + filename;
+            return ResponseEntity.ok(fileUrl);
+        } else {
+            return ResponseEntity.badRequest().body("No file uploaded");
+        }
     }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmailAvailability(@RequestParam("email") String email) {
+        boolean isEmailAvailable = userService.isEmailAvailable(email);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", isEmailAvailable);
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
     @PatchMapping("edit/{id}")
     public UserGetDto update(@PathVariable("id") UUID id, @RequestBody UserDTO user) throws UserNotFoundException {

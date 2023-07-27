@@ -70,6 +70,16 @@ public class CommentServiceImplementation implements CommentService{
 
     }
 
+    @Override
+    public List<CommentGetDto> commentsPost(UUID postId) {
+        return commentRepository.findAll()
+                .stream()
+                .filter(comment -> comment.getPostComments().getId().equals(postId)
+                        && comment.getPostComments().getAuthor().getId().equals(postId))
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
     private CommentGetDto map(Comment comment){
         var comentDto = new CommentGetDto();
         comment.setId(comment.getId());

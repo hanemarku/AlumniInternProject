@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface PostService {
 
+    List<PostGetDto> findPostsByUser(UUID id);
+
     PostGetDto save(PostDto postDto);
 
     List<PostGetDto> findAll();

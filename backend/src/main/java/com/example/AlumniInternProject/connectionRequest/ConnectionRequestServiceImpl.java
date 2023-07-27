@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,14 +33,23 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService{
 
     @Override
     public ConnectionRequest sendConnectionRequest(UUID senderId, UUID receiverId) throws UserNotFoundException {
-        User sender = userRepository.findById(senderId).get();
-        User receiver = userRepository.findById(receiverId).get();
-        if (sender == null || receiver == null) {
+        Optional<User> sender = userRepository.findById(senderId);
+        Optional<User> receiver = userRepository.findById(receiverId);
+        if (sender.isEmpty() || receiver.isEmpty()) {
             throw new UserNotFoundException("Sender or receiver not found");
-        }else{
-            ConnectionRequest connectionRequest = new ConnectionRequest(sender, receiver);
-            connectionRequest.setRequester(sender);
-            connectionRequest.setRequestee(receiver);
+        }
+        else if(connectionRequestRepository.findAll().stream()
+                .anyMatch(connectionRequest -> connectionRequest.getRequester().getId().equals(senderId)
+                && connectionRequest.getRequestee().getId().equals(receiverId)
+                &&(connectionRequest.getStatus().equals(ConnectionRequestStatus.PENDING)
+                        || connectionRequest.getStatus().equals(ConnectionRequestStatus.ACCEPTED)))
+        ){
+            throw new UserNotFoundException("Connection exists or is still pending!");
+        }
+        else{
+            ConnectionRequest connectionRequest = new ConnectionRequest();
+            connectionRequest.setRequester(sender.get());
+            connectionRequest.setRequestee(receiver.get());
             connectionRequest.setStatus(ConnectionRequestStatus.PENDING);
 
             return connectionRequestRepository.save(connectionRequest);

@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.Employment;
+package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
@@ -39,15 +39,16 @@ public class EmploymentHistory extends IdBaseEntity {
     private LocalDate fromDate;
     private LocalDate toDate;
 
-    /*Nje user ka shume histori punesimi , dhe 1 histori punesimi
-     i perket 1 user ,pra marredhenia eshte 1 me shume */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(length = 45)
+    private String city;
+
     @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    @JoinColumn(name = "country_id")
+    private Country country;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -57,12 +58,7 @@ public class EmploymentHistory extends IdBaseEntity {
     )
     private Set<Skill> skills = new HashSet<>();
 
-    /*
-    * Constructor with signature as the first dto created!*/
-    public  EmploymentHistory(String mainActivities,
-                          String occupationPosition,
-                          String companyName,String department,
-                          boolean ongoing, LocalDate fromDate , LocalDate toDate){
+    public EmploymentHistory(String mainActivities, String occupationPosition, String companyName, String department, boolean ongoing, LocalDate fromDate, LocalDate toDate,  String city, Country country, Set<Skill> skills) {
         this.mainActivities = mainActivities;
         this.occupationPosition = occupationPosition;
         this.companyName = companyName;
@@ -70,5 +66,11 @@ public class EmploymentHistory extends IdBaseEntity {
         this.ongoing = ongoing;
         this.fromDate = fromDate;
         this.toDate = toDate;
+//        this.user = user;
+        this.city = city;
+        this.country = country;
+        this.skills = skills;
     }
+
+
 }

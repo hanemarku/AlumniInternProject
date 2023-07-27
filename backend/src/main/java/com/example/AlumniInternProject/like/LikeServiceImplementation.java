@@ -65,11 +65,6 @@ public class LikeServiceImplementation implements LikeService{
         return map(like);
     }
 
-    @Override
-    public void delete(UUID id) {
-        likeRepository.deleteById(id);
-
-    }
 
     private LikeGetDto map(Like like) {
         var likeGetDto = new LikeGetDto();
@@ -78,5 +73,35 @@ public class LikeServiceImplementation implements LikeService{
         likeGetDto.setUserLikes(like.getUserLikes().getId());
 
         return likeGetDto;
+    }
+    @Override
+    public LikeGetDto addLike(LikeGetDto likeGetDto) {
+        Like like = new Like();
+        var post = postRepository.findById(likeGetDto.getPostLikes()).get();
+        var user = userRepository.findById(likeGetDto.getUserLikes()).get();
+        like.setId(likeGetDto.getId());
+        like.setUserLikes(user);
+        like.setPostLikes(post);
+
+        likeRepository.save(like);
+
+        return map(like);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        if (likeRepository.findById(id).isPresent()){
+            likeRepository.deleteById(id);
+        }
+
+    }
+
+    @Override
+    public Long postLikes(UUID id) {
+        return likeRepository.findAll()
+                .stream()
+                .filter(likeEntity -> likeEntity.getPostLikes().getId().equals(id))
+                .map(this::map)
+                .count();
     }
 }

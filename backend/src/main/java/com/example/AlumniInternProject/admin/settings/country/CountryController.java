@@ -13,18 +13,18 @@ import java.util.UUID;
 public class CountryController {
     private final CountryRepository countryRepository;
 
-    @GetMapping("list")
+    @GetMapping()
     public List<Country> listAll(){
         return countryRepository.findAllByOrderByNameAsc();
     }
 
-    @PostMapping("save")
+    @PostMapping()
     public String save(@RequestBody Country country){
         Country savedCountry = countryRepository.save(country);
         return String.valueOf(savedCountry.getId());
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") UUID id){
         countryRepository.deleteById(id);
     }

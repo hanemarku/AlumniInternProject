@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class SkillComponent {
   
   constructor(
-    public skillId: string,
+    public id: string,
     public name: string
   ) { }
 }
@@ -29,6 +29,7 @@ export class SkillListComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
+
   ngOnInit(): void {
     this.refreshSkills();
   }
@@ -44,27 +45,34 @@ export class SkillListComponent implements OnInit {
   }  
   
   onEditClicked(skill: SkillComponent) {
-    console.log(`edit skill ${skill.skillId}`);
+    console.log(`edit skill ${skill.id}`);
     const dialogRef = this.dialog.open(EditSkillDialogComponent, {
-      width: '400px',
+      width: '700px',
       data: skill
     });
   
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
-      if (result && result.skillId) {
-        this.updateSkill(result.skillId, result);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('Updated Skill Data:', result);
+        this.skillDataService.updateSkill(skill.id, result).subscribe(
+          response => {
+            console.log('Skill Updated:', response);
+            this.refreshSkills();
+          },
+          error => {
+            console.error('Error updating skill:', error);
+            // Handle the error if needed
+          }
+        );
       }
     });
   }
   
-  onDeleteClicked(skill: SkillComponent) {
-    console.log(`delete skill ${skill.skillId}`);
-    if (skill.skillId) {
-      this.deleteSkill(skill.skillId);
-    }
-  }
+  
+  
+  
+  
+
 
   refreshSkills() {
     this.skillDataService.listAllSkills().subscribe(
@@ -91,12 +99,25 @@ export class SkillListComponent implements OnInit {
 
   updateSkill(skillId: string, updatedSkill: any) {
     console.log(`update skill ${skillId}`);
-    this.skillDataService.updateSkill(skillId, updatedSkill).subscribe(
-      response => {
-        console.log(response);
-        this.refreshSkills();
+    const dialogRef = this.dialog.open(EditSkillDialogComponent, {
+      width: '700px',
+      data: updatedSkill
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('Updated Skill Data:', result);
+        this.skillDataService.updateSkill(skillId, result).subscribe(
+          response => {
+            console.log('Skill Updated:', response);
+            this.refreshSkills();
+          },
+          error => {
+            console.error('Error updating skill:', error);
+          }
+        );
       }
-    )
+    });
   }
 
 saveSkill(form: NgForm) {

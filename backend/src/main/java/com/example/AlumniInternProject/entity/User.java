@@ -2,6 +2,7 @@ package com.example.AlumniInternProject.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.*;
 @Getter
 @Setter
 @Table(name = "users")
+@NoArgsConstructor
 public class User extends IdBaseEntity{
 
     @Column(name = "first_name", length = 45, nullable = false)
@@ -84,6 +86,13 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "recommendedUser")
     private Set<Recommendation> recommendedUser;
 
+    @OneToMany(mappedBy = "user")
+    private Set<EmploymentHistory> employmentHistories = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EducationHistory> educationHistories = new HashSet<>();
+
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
@@ -98,10 +107,9 @@ public class User extends IdBaseEntity{
 
         return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
     }
-    public User() {
-    }
 
-    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
+
+    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -116,6 +124,7 @@ public class User extends IdBaseEntity{
         this.skills = skills;
         this.interests = interests;
         this.role = role;
+        this.employmentHistories = employmentHistories;
+        this.educationHistories = educationHistories;
     }
-
 }

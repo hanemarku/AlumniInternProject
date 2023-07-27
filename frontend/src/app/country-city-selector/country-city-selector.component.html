@@ -1,0 +1,26 @@
+<!-- country-city-selector.component.html -->
+<div class="row mt-1">
+    <div class="col-md-6">
+      <label for="country">Country</label>
+      <select id="country" [formControl]="countryControl" class="form-control">
+        <option value="">Select Country</option>
+        <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+      </select>
+    </div>
+  
+    <div class="col-md-6">
+      <label for="city">City</label>
+      <select id="city" [formControl]="cityControl" class="form-control" *ngIf="selectedCountry">
+        <option value="">Select City</option>
+        <option *ngFor="let city of cities[selectedCountry.id]" [value]="city.id">{{ city.name }}</option>
+      </select>
+      <input
+        id="city"
+        [formControl]="customCityControl"
+        class="form-control"
+        *ngIf="!selectedCityFromList"
+        [placeholder]="customCity ? customCity : 'Enter Custom City'"
+      />
+    </div>
+  </div>
+  

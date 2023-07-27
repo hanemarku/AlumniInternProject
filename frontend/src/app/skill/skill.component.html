@@ -9,7 +9,8 @@
 
       <div class="field is-grouped" style="margin: 0">
         <p class="control is-expanded">
-          <input ngModel #skillTextField="ngModel" required name="text" class="input" type="text" placeholder="Type skill name here">
+          <input ngModel #skillTextField="ngModel" required maxlength="45" name="text" class="input" type="text"
+            placeholder="Type skill name here">
         </p>
         <p class="control">
           <button type="submit" class="button alt-gradient-button">
@@ -19,7 +20,9 @@
         </p>
       </div>
       <div *ngIf="skillTextField.invalid && showValidationErrors">
-        <p class="help is-danger" *ngIf="skillTextField.errors?.['required']">Please enter skill name.</p>    
+        <p class="help is-danger" *ngIf="skillTextField.errors?.['required']">Please enter skill name.</p>
+        <p class="help is-danger" *ngIf="form.controls['name'].errors?.['maxlength']">Skill name must not be more than
+          45 characters long.</p>
       </div>
     </form>
   </div>
@@ -29,7 +32,7 @@
   <div class="container">
 
     <div class="skill-list">
-      <div class="skill-item" *ngFor="let skill of skills" >
+      <div class="skill-item" *ngFor="let skill of skills">
         <div class="skill-name">
           {{skill.name}}
         </div>
@@ -38,7 +41,7 @@
             <i class="material-icons">edit</i>
           </div>
 
-          <div class="skill-control-button is-danger" (click)="onDeleteClicked(skill)">
+          <div class="skill-control-button is-danger" (click)="deleteSkill(skill.id)">
             <i class="material-icons">delete</i>
           </div>
         </div>

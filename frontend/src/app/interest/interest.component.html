@@ -9,7 +9,7 @@
   
         <div class="field is-grouped" style="margin: 0">
           <p class="control is-expanded">
-            <input ngModel #interestTextField="ngModel" required name="text" class="input" type="text" placeholder="Type interest name here">
+            <input ngModel #interestTextField="ngModel" required maxlength="45" name="text" class="input" type="text" placeholder="Type interest name here">
           </p>
           <p class="control">
             <button type="submit" class="button alt-gradient-button">
@@ -20,6 +20,8 @@
         </div>
         <div *ngIf="interestTextField.invalid && showValidationErrors">
           <p class="help is-danger" *ngIf="interestTextField.errors?.['required']">Please enter interest name.</p>    
+          <p class="help is-danger" *ngIf="form.controls['name'].errors?.['maxlength']">Interest name must not be more than
+            45 characters long.</p>
         </div>
       </form>
     </div>
@@ -38,7 +40,7 @@
               <i class="material-icons">edit</i>
             </div>
   
-            <div class="interest-control-button is-danger" (click)="onDeleteClicked(interest)">
+            <div class="interest-control-button is-danger" (click)="deleteInterest(interest.id)">
               <i class="material-icons">delete</i>
             </div>
           </div>

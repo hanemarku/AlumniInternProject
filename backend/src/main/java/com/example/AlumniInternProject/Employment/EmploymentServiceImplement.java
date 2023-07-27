@@ -2,12 +2,12 @@ package com.example.AlumniInternProject.Employment;
 
 import com.example.AlumniInternProject.Employment.Dto.EmploymentDto;
 import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
-import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import lombok.AllArgsConstructor;
+import com.example.AlumniInternProject.entity.EmploymentHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +26,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         dto.setOngoing(eh.isOngoing());
         dto.setFromDate(eh.getFromDate());
         dto.setToDate(eh.getToDate());
+        dto.setCity(eh.getCity());
+        dto.setCountry(eh.getCountry());
+        dto.setSkills(eh.getSkills());
+
         return dto;
     }
     @Override
@@ -37,7 +41,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
                 employmentDto.getDepartment(),
                 employmentDto.isOngoing(),
                 employmentDto.getFromDate(),
-                employmentDto.getToDate()
+                employmentDto.getToDate(),
+                employmentDto.getCity(),
+                employmentDto.getCountry(),
+                employmentDto.getSkills()
         );
       var saved = employmentHistoryRepository.save(ehDto);
       return map(saved);
@@ -73,6 +80,10 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         eh.setOngoing(edt.isOngoing());
         eh.setFromDate(edt.getFromDate());
         eh.setToDate(edt.getToDate());
+        eh.setCity(edt.getCity());
+        eh.setCountry(edt.getCountry());
+        eh.setSkills(edt.getSkills());
+
 
         var saved = employmentHistoryRepository.save(eh);
         return map(saved);
@@ -81,21 +92,5 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
     @Override
     public void delete(UUID id) {
         employmentHistoryRepository.deleteById(id);
-    }
-    @Override
-    public Set<EmploymentGetDto> findByKeyword(String keyWord,
-                                               Set<EmploymentGetDto> employmentGetDtos) {
-        Set<EmploymentGetDto> matched = new HashSet<>();
-
-        for(EmploymentGetDto ehDto : employmentGetDtos){
-            if(ehDto.getCompanyName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                || ehDto.getDepartment().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                || ehDto.getMainActivities().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                || ehDto.getOccupationPosition().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
-                ){
-                matched.add(ehDto);
-            }
-        }
-        return matched;
     }
 }

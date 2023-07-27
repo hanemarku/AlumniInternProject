@@ -1,0 +1,25 @@
+<p>education-form works!</p>
+<form (ngSubmit)="addEducation()" #educationForm="ngForm">
+    <label for="school">School:</label>
+    <input type="text" id="school" name="school" [(ngModel)]="newEducation.school" required>
+  
+    <label for="degree">Degree:</label>
+    <input type="text" id="degree" name="degree" [(ngModel)]="newEducation.degree" required>
+  
+    <label for="graduationYear">Graduation Year:</label>
+    <input type="number" id="graduationYear" name="graduationYear" [(ngModel)]="newEducation.graduationYear" required>
+  
+    <button type="submit">Add Education</button>
+  </form>
+  
+
+  <p>education-list works!</p>
+<div *ngFor="let education of educations; let i = index">
+    <p>School: {{ education.school }}</p>
+    <p>Degree: {{ education.degree }}</p>
+    <p>Graduation Year: {{ education.graduationYear }}</p>
+    <button (click)="deleteEducation(i)">Delete</button>
+    <button (click)="editEducation(i)">Edit</button>
+    <hr>
+  </div>
+  

@@ -30,7 +30,10 @@ public class ConfirmationToken extends IdBaseEntity {
     )
     private User user;
 
-    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, User user){
+    public ConfirmationToken(String token,
+                             LocalDateTime createdAt,
+                             LocalDateTime expiredAt,
+                             User user){
         this.token = token;
         this.createdAt = createdAt;
         this.expiredAt = expiredAt;

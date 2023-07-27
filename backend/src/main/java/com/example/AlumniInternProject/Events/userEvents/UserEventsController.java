@@ -9,9 +9,11 @@ import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -56,9 +58,18 @@ public class UserEventsController {
     public UserEventGetDto save(@RequestBody UserEventDto eventDto){
         return userEventsService.save(eventDto);
     }
-    @GetMapping("/confirm/{token}")
+    @GetMapping("/confirm/{token}/SuccesfullySaved")
     public String confirmParticipation(@PathVariable("token")String confirmationToken){
        return userEventsService.confirmParticipation(confirmationToken);
+    }
+    @GetMapping("/listAll")
+    public List<UserEventGetDto> findAll(){
+        return userEventsService.findAll();
+    }
+    @GetMapping("/{status}")
+    public Set<UserEventGetDto> getUsersByStatus(@PathVariable("status") Status status,
+                                                 @RequestBody Set<UserEventGetDto> userEventGetDtos){
+        return userEventsService.getUsersByStatus(status,userEventGetDtos);
     }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();

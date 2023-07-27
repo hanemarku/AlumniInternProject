@@ -2,10 +2,7 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
-import com.example.AlumniInternProject.Events.userEvents.UserEventsRepository;
 import com.example.AlumniInternProject.entity.Events;
-import com.example.AlumniInternProject.entity.UserEvents;
-import com.example.AlumniInternProject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +50,6 @@ public class EventsServiceImplement implements EventsService {
 
     @Override
     public List<EventGetDto> findAll() {
-
         return eventsRepository.findAll()
                 .stream().map(e -> map(e))
                 .collect(Collectors.toList());
@@ -106,18 +102,6 @@ public class EventsServiceImplement implements EventsService {
         return matched;
     }
 
-    /*Return true when it matches the city*/
-  /*
-  *   public boolean isCity(String city, EventGetDto eventDtos){
-        Set<City> cityEvent = eventDtos.getCities();
-        for(City c : cityEvent){
-            if (c.getName().toLowerCase().contains(city.toLowerCase(Locale.ROOT))){
-                return true;
-            }
-        }
-        // ? , sepse do e kthej gjithsesi nje false ne fund
-        return false;
-    }*/
     public boolean eventExists(EventDto eventDto){
         for (EventGetDto eventGetDto : findAll()){
             if (eventDto.getName().toLowerCase().
@@ -127,12 +111,4 @@ public class EventsServiceImplement implements EventsService {
         }
         return false;
     }
-
-    /*When creating a new event we also need to make sure
-     * that the event is not dublicated.
-     *   1. Event name must be different
-     * (if the event name is the same we can add
-     * only date and city)
-     */
-
 }

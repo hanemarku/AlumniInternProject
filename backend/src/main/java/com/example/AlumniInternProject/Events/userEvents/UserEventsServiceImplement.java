@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecificsRepos
 import com.example.AlumniInternProject.Events.EventsRepository;
 import com.example.AlumniInternProject.Events.email.EmailService;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationToken;
+import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationTokenRepository;
 import com.example.AlumniInternProject.Events.userEvents.ConfirmationToken.ConfirmationTokenService;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.MembershipRole;
@@ -14,24 +15,32 @@ import com.example.AlumniInternProject.user.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserEventsServiceImplement implements UserEventsService{
 
-    private final UserEventsRepository userEventsRepository;
     private final UserRepository userRepository;
+
+    private final UserEventsRepository userEventsRepository;
+
     private final EventSpecificsRepository eventSpecificsRepository;
-    private final EmailService emailService;
-    private final ConfirmationTokenService confirmationTokenService;
     private final EventsRepository eventsRepository;
+
+    private final EmailService emailService;
+
+    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+
+    private final TemplateEngine templateEngine;
     private UserEventGetDto mapUserEvent(UserEvents userEvents){
         var dto = new UserEventGetDto();
         dto.setId(userEvents.getId());
@@ -47,6 +56,15 @@ public class UserEventsServiceImplement implements UserEventsService{
         obj.setUser(confirmationToken.getUser());
         return obj;
     }
+    public UserEventGetDto mapUserEvents(UserEvents userEvents){
+        var obj = new UserEventGetDto();
+        obj.setMembershipRole(userEvents.getMembershipRole());
+        obj.setUserId(userEvents.getUser().getId());
+        obj.setEventSpecificsId(userEvents.getEventSpecifics().getId());
+        obj.setStatus(userEvents.getStatus());
+        return obj;
+    }
+
     @Override
     public List<UserGetDto> getUsersByEventId(UUID eventId) {
         List<User> users = userEventsRepository.findUsersByEventId(eventId);
@@ -60,7 +78,6 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     //* TODO: WHEN REGISTERING THE USER CAN BE PART OF MANY EVENTS SO WE SHOULD ALSO CHECK IF HE IS TRYING TO REGISTER HIMSELF AGAIN*/
     @Override
-  //  @Transactional
     public UserEventGetDto save(UserEventDto userEventDto) {
         /*Needs to be changed the way that we get the user id
         * Should get the user that is loged in*/
@@ -80,7 +97,7 @@ public class UserEventsServiceImplement implements UserEventsService{
        String confirmationToken = UUID.randomUUID().toString();
 
 
-       String link = "http://localhost:8080/api/v1/eventsAndUsers/confirm/" + confirmationToken;
+       String link = "http://localhost:8080/api/v1/eventsAndUsers/confirm/" + confirmationToken + "/SuccesfullySaved" ;
 
        ConfirmationToken token = new ConfirmationToken(
             confirmationToken,
@@ -103,6 +120,7 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     @Override
     @Transactional
+    @Async
     public String confirmParticipation(String confirmationToken) {
         /*THE USER WHO NEEDS THE STATUS CHANGED*/
         UserEvents userEvents = userEventsRepository.findUserEventsByToken(confirmationToken);
@@ -125,7 +143,43 @@ public class UserEventsServiceImplement implements UserEventsService{
 
         confirmationTokenService.setConfirmedAt(confirmationToken);
         userEvents.setStatus(Status.CONFIRMED);
-        return "Kthe";
+
+        Context context = new Context();
+        context.setVariable("Eventi", userEvents.getEventSpecifics().getEvents().getName());
+
+        String htmlContent = templateEngine.process("SuccesfullySaved.html", context);
+
+        return htmlContent;
+    }
+
+    @Override
+    public List<UserEventGetDto> findAll() {
+        return userEventsRepository.findAll()
+                .stream().map(e-> mapUserEvents(e)).
+                collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<UserEventGetDto> getUsersByStatus(Status status, Set<UserEventGetDto> userEventGetDtos) {
+        Set<UserEventGetDto> matched = new HashSet<>();
+
+        for (UserEventGetDto ue: userEventGetDtos) {
+            /*THIS ONLY WORKS WHEN WRITTEN CORRECTLY IN UPPERCASE AND THE FULL WORD*/
+            if(ue.getStatus() == status){
+
+                matched.add(ue);
+            }
+        }
+        if (matched.isEmpty()){
+            throw new IllegalArgumentException("No participant with" + status + "found");
+        }
+        return matched;
+    }
+
+    /* CHECK TO SET EXPIRED STATUS*/
+    private boolean isExpired(UserEventGetDto userEventGetDto){
+
+        return false;
     }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();

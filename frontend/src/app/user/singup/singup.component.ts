@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { ValidationErrors } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { Education } from 'src/app/services/education-service/education-data.service';
+import { Employment } from 'src/app/services/employment-service/employment-data.service';
 
 
 @Component({
@@ -35,10 +36,12 @@ export class SingupComponent implements OnInit {
   selectedSkills: string[] = [];
   selectedInterests: string[] = [];
   selectedEducation: Education[] = [];
+  selectedEmployment: Employment[] = [];
   selectedImage: string | null = null;
   profilePicFile: File | undefined;
   emailAvailable: boolean = true;
   educations: Education[] = [];
+  employments: Employment[] = [];
 
 
   @ViewChild(CountryCitySelectorComponent) countryCitySelector!: CountryCitySelectorComponent;
@@ -46,6 +49,7 @@ export class SingupComponent implements OnInit {
   @Output() selectedSkillsChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() selectedInterestsChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() selectedEducationChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedEmploymentChange: EventEmitter<any> = new EventEmitter<any>();
 
 
   countries: CountryList[] = [];
@@ -70,8 +74,13 @@ export class SingupComponent implements OnInit {
       ],
     },
     {
-      title: 'Social Profiles',
-      subtitle: 'Your presence on the social network',
+      title: 'Social Profiles and Education',
+      subtitle: 'Your presence on the social network and your education',
+      
+    },
+    {
+      title: 'Work Exprience',
+      subtitle: 'Tell us more about your work exprience',
       
     },
     {
@@ -116,6 +125,7 @@ export class SingupComponent implements OnInit {
       skills: [[]],    
       interests: [[]],
       educationHistories: [[]],
+      employmentHistories: [[]],
     });
   }
 
@@ -145,6 +155,13 @@ export class SingupComponent implements OnInit {
     });
   }
 
+  onSelectedEmploymentChange(selectedEmployment: Employment[]) {
+    this.selectedEmployment = selectedEmployment;
+    console.log('Selected Employment in signup :', this.selectedEmployment);
+    this.msform.patchValue({
+      employmentHistories: this.selectedEmployment,
+    });
+  }
 
   
   nextStep() {

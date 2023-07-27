@@ -23,8 +23,8 @@
               <td>{{ user.phoneNumber }}</td>
               <td>
                 <div class="form-check form-switch">
-                    <input class="form-check-input btn-lg" type="checkbox" role="switch" id="flexSwitchCheckDefault" [checked]="user.enabled" (change)="toggleUserStatus(user.id, $event)">
-                  </div>
+                  <input class="form-check-input btn-lg" type="checkbox" role="switch" id="flexSwitchCheckDefault" [checked]="user.enabled" (change)="toggleUserStatus(user.id, $event)">
+                </div>
               </td>
               <td>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="openUserModal(user)" [attr.data-bs-target]="'#userModal'">Details</button>

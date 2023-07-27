@@ -11,7 +11,7 @@
           <fieldset *ngFor="let fieldset of fieldsets; let i = index">
             <h1 class="fs-title">{{fieldsets[currentStep].title}}</h1>
             <h3 class="fs-subtitle">{{ fieldsets[currentStep].subtitle }}</h3>
-            <div class="row" *ngIf="currentStep === 3">
+            <div class="row" *ngIf="currentStep === 4">
               <div class="col-4">
                 <div class="profile-picture">
                   <div class="default-profile-picture" *ngIf="!selectedImage">
@@ -45,7 +45,7 @@
               </div>
             </div>
             
-            <div *ngIf="currentStep !== 3">
+            <div *ngIf="currentStep !== 4">
               <input
                 *ngFor="let input of fieldsets[currentStep].inputs"
                 [type]="input.type || 'text'"
@@ -76,8 +76,13 @@
               ></app-education>
             </div>
 
+            <div *ngIf="currentStep === 2">
+              <app-employment
+              (selectedEmploymentChange)="onSelectedEmploymentChange($event)"
+              ></app-employment>
+            </div>
 
-          <div *ngIf="currentStep === 2">
+          <div *ngIf="currentStep === 3">
             <app-skill-interest-component
               [selectedSkills]="selectedSkills"  
               (selectedSkillsChange)="onSelectedSkillsChange($event)"
@@ -85,6 +90,7 @@
               (selectedInterestsChange)="onSelectedInterestsChange($event)"
             ></app-skill-interest-component>
           </div>
+          
 
    
       

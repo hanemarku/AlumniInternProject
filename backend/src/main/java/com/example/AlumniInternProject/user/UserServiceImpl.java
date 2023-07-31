@@ -48,24 +48,15 @@ public class UserServiceImpl implements UserService{
                 userDto.getSkills(),
                 userDto.getInterests(),
                 userDto.getRole(),
-                new HashSet<>(),
+                userDto.getEmploymentHistories(),
                 userDto.getEducationHistories()
         );
 
         //set user_id to educationHistory
+        userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
         userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
         // Save the User entity first
         var savedUser = userRepository.save(user);
-
-//        Set<EducationHistory> educationHistories = userDto.getEducationHistories()
-//                .stream()
-//                .map(educationDto -> mapEducationHistoryDtoToEntity(educationDto, user))
-//                .collect(Collectors.toSet());
-//
-//
-//        // Add the mapped educationHistories to the User
-//        savedUser.getEducationHistories().addAll(educationHistories);
-        userRepository.save(savedUser);
 
         return map(savedUser);
     }

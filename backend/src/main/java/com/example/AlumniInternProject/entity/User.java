@@ -90,7 +90,7 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "recommendedUser")
     private Set<Recommendation> recommendedUser;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EmploymentHistory> employmentHistories = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

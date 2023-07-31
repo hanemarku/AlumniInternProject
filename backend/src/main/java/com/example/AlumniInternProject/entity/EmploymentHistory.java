@@ -66,7 +66,6 @@ public class EmploymentHistory extends IdBaseEntity {
         this.ongoing = ongoing;
         this.fromDate = fromDate;
         this.toDate = toDate;
-//        this.user = user;
         this.city = city;
         this.country = country;
         this.skills = skills;

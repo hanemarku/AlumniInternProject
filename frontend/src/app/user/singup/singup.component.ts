@@ -17,6 +17,8 @@ import { Education } from 'src/app/services/education-service/education-data.ser
 import { Employment } from 'src/app/services/employment-service/employment-data.service';
 import { Skill } from 'src/app/skill-search/skill-search.component';
 import { Interest } from 'src/app/interest-search/interest-search.component';
+import { Router } from '@angular/router';
+import { MessageService } from 'src/app/services/messages/message.service';
 
 
 @Component({
@@ -104,7 +106,9 @@ export class SingupComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private countryDataService: CountryDataService,
     private cityDataService: CityDataService,
-    private userDataService: UserDataService) {}
+    private userDataService: UserDataService,
+    private router: Router,
+    public messageService: MessageService) {}
 
   ngOnInit() {
 
@@ -199,7 +203,6 @@ export class SingupComponent implements OnInit {
       fileData.append('firstname', firstname);
       fileData.append('lastname', lastname);
 
-      // console log what is in fileData
       console.log('File Data:', fileData);
 
   
@@ -237,7 +240,6 @@ export class SingupComponent implements OnInit {
       employmentHistories: this.msform.get('employmentHistories')?.value,
     };
 
-    //console log educations
     console.log('skills in signup submit:', userData.skills);
     console.log('interests in signup submit:', userData.interests);
     console.log('Educations in signup submit:', userData.educationHistories);
@@ -248,9 +250,12 @@ export class SingupComponent implements OnInit {
     this.userDataService.createUser(userData).subscribe(
       (response) => {
         console.log('User created successfully:', response);
+        this.messageService.showSuccessMessage('Signup successful!');
+        // this.router.navigate(['/success-page']);
       },
       (error) => {
         console.error('Error creating user:', error);
+        this.messageService.showErrorMessage('Signup failed. Please try again. Open console for more details.');
       }
     );
   }

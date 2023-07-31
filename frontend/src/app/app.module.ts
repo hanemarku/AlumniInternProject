@@ -25,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EmploymentComponent } from './employment/employment.component';
+import { SuccessPageComponent } from './user/success-page/success-page.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { EmploymentComponent } from './employment/employment.component';
     FilterPipe,
     InterestSearchComponent,
     EmploymentComponent,
+    SuccessPageComponent,
   ],
   imports: [
     BrowserModule,

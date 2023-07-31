@@ -18,6 +18,6 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token,
                           LocalDateTime confirmedAt);
-    /*TODO: THE QUERY*/
+    @Query("SELECT ct.confirmedAt FROM ConfirmationToken ct WHERE ct.token = ?1")
     ConfirmationToken findConfirmedAtByConfirmationToken(String token);
 }

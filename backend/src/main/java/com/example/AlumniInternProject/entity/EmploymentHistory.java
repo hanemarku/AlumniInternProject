@@ -1,9 +1,5 @@
 package com.example.AlumniInternProject.entity;
 
-import com.example.AlumniInternProject.entity.City;
-import com.example.AlumniInternProject.entity.IdBaseEntity;
-import com.example.AlumniInternProject.entity.Skill;
-import com.example.AlumniInternProject.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

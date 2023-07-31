@@ -16,6 +16,4 @@ public interface UserEventsRepository extends JpaRepository<UserEvents, UUID> {
   List<User> findUsersByEventId(@Param("eventId") UUID eventId);
   @Query("SELECT u FROM UserEvents u WHERE u.token = :token")
   UserEvents findUserEventsByToken(@Param("token") String confirmationToken);
-
-
 }

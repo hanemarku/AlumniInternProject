@@ -2,11 +2,11 @@ package com.example.AlumniInternProject.Employment;
 
 import com.example.AlumniInternProject.Employment.Dto.EmploymentDto;
 import com.example.AlumniInternProject.Employment.Dto.EmploymentGetDto;
+import com.example.AlumniInternProject.entity.EmploymentHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -32,15 +32,17 @@ public class EmploymentHistoryController {
     public EmploymentGetDto update(@PathVariable UUID id, @RequestBody EmploymentDto edt) {
         return employmentHistoryService.update(id, edt);
     }
-
     @DeleteMapping("{id}")
     public void delete(@PathVariable UUID id)
     {
         employmentHistoryService.delete(id);
     }
     @GetMapping("/findBy/{keyWord}")
-    Set<EmploymentGetDto> findByKeyword(@PathVariable("keyWord") String keyWord,
-                                        @RequestBody Set<EmploymentGetDto> employmentGetDtos){
-        return employmentHistoryService.findByKeyword(keyWord,employmentGetDtos);
+    List<EmploymentHistory> findByKeyword(@PathVariable("keyWord") String keyWord){
+        return employmentHistoryService.findByKeyword(keyWord);
+    }
+    @GetMapping("/timeLine")
+    List<EmploymentHistory> historyTimeLine(){
+        return employmentHistoryService.historyTimeLine();
     }
 }

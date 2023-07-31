@@ -34,6 +34,8 @@ public class User extends IdBaseEntity{
     @Column(length = 15)
     private String phoneNumber;
 
+
+    private String token;
     @Column(length = 45)
     private String city;
     @ManyToOne

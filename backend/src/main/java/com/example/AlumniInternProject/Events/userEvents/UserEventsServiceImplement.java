@@ -112,7 +112,10 @@ public class UserEventsServiceImplement implements UserEventsService{
        emailService.sendSimpleMail(user.getEmail(),link);
 
        UserEvents userEvents = new UserEvents(MembershipRole.Member, user, eventSpecifics, Status.PENDING);
+
        userEvents.setToken(confirmationToken);
+       user.setToken(confirmationToken);
+
        UserEvents saved = userEventsRepository.save(userEvents);
 
        return mapUserEvent(saved);
@@ -127,8 +130,6 @@ public class UserEventsServiceImplement implements UserEventsService{
 
         ConfirmationToken token = confirmationTokenService
                 .getToken(confirmationToken);
-        /*.orElseThrow(() ->
-                        new IllegalStateException("token not found"));*/
 
         if (token.getConfirmedAt() != null) {
             userEvents.setStatus(Status.CONFIRMED);
@@ -160,13 +161,13 @@ public class UserEventsServiceImplement implements UserEventsService{
     }
 
     @Override
-    public Set<UserEventGetDto> getUsersByStatus(Status status, Set<UserEventGetDto> userEventGetDtos) {
-        Set<UserEventGetDto> matched = new HashSet<>();
+    public List<UserEvents> getUsersByStatus(Status status){
+        List<UserEvents> theUserEvents = userEventsRepository.findAll();
+        List<UserEvents> matched = new ArrayList<>(theUserEvents.size());
 
-        for (UserEventGetDto ue: userEventGetDtos) {
+        for (UserEvents ue: theUserEvents) {
             /*THIS ONLY WORKS WHEN WRITTEN CORRECTLY IN UPPERCASE AND THE FULL WORD*/
             if(ue.getStatus() == status){
-
                 matched.add(ue);
             }
         }
@@ -176,9 +177,8 @@ public class UserEventsServiceImplement implements UserEventsService{
         return matched;
     }
 
-    /* CHECK TO SET EXPIRED STATUS*/
-    private boolean isExpired(UserEventGetDto userEventGetDto){
-
+    /* TODO: CHECK TO SET EXPIRED STATUS*/
+    private boolean isExpired(String token){
         return false;
     }
     private UserGetDto mapUser(User user) {

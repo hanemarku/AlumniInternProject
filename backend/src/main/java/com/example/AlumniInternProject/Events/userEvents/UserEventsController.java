@@ -4,16 +4,15 @@ import com.example.AlumniInternProject.Events.export.EventCsvExporter;
 import com.example.AlumniInternProject.Events.export.EventExcelExporter;
 import com.example.AlumniInternProject.Events.export.EventPdfExporter;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,9 +66,8 @@ public class UserEventsController {
         return userEventsService.findAll();
     }
     @GetMapping("/{status}")
-    public Set<UserEventGetDto> getUsersByStatus(@PathVariable("status") Status status,
-                                                 @RequestBody Set<UserEventGetDto> userEventGetDtos){
-        return userEventsService.getUsersByStatus(status,userEventGetDtos);
+    public List<UserEvents> getUsersByStatus(@PathVariable("status") Status status){
+        return userEventsService.getUsersByStatus(status);
     }
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();

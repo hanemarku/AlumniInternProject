@@ -39,7 +39,6 @@ public class EducationHistory extends IdBaseEntity{
     @JoinColumn(name = "country_id")
     private Country country;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

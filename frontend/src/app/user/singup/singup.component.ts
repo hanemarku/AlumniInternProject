@@ -15,6 +15,8 @@ import { ValidationErrors } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { Education } from 'src/app/services/education-service/education-data.service';
 import { Employment } from 'src/app/services/employment-service/employment-data.service';
+import { Skill } from 'src/app/skill-search/skill-search.component';
+import { Interest } from 'src/app/interest-search/interest-search.component';
 
 
 @Component({
@@ -33,8 +35,8 @@ import { Employment } from 'src/app/services/employment-service/employment-data.
 })
 export class SingupComponent implements OnInit {
 
-  selectedSkills: string[] = [];
-  selectedInterests: string[] = [];
+  selectedSkills: Skill[] = [];
+  selectedInterests: Interest[] = [];
   selectedEducation: Education[] = [];
   selectedEmployment: Employment[] = [];
   selectedImage: string | null = null;
@@ -46,8 +48,8 @@ export class SingupComponent implements OnInit {
 
   @ViewChild(CountryCitySelectorComponent) countryCitySelector!: CountryCitySelectorComponent;
 
-  @Output() selectedSkillsChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() selectedInterestsChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() selectedSkillsChange: EventEmitter<Skill[]> = new EventEmitter<Skill[]>();
+  @Output() selectedInterestsChange: EventEmitter<Interest[]> = new EventEmitter<Interest[]>();
   @Output() selectedEducationChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedEmploymentChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -119,17 +121,21 @@ export class SingupComponent implements OnInit {
       phoneNumber: [''],
       city: [''],
       country: [''],
-      password: [''],
-      confirm_pass: [''],
+      password: ['', Validators.required],
+      confirm_pass: ['', Validators.required],
       bio: [''],
       skills: [[]],    
       interests: [[]],
       educationHistories: [[]],
       employmentHistories: [[]],
-    });
+    },
+    {
+      asyncValidators: [this.passwordMatchValidatorAsync],
+    }
+    );
   }
 
-  onSelectedSkillsChange(selectedSkills: string[]) {
+  onSelectedSkillsChange(selectedSkills: Skill[]) {
     this.selectedSkills = selectedSkills;
     console.log('Selected Skills:', this.selectedSkills);
     
@@ -139,7 +145,7 @@ export class SingupComponent implements OnInit {
     });
   }
 
-  onSelectedInterestsChange(selectedInterests: string[]) {
+  onSelectedInterestsChange(selectedInterests: Interest[]) {
     this.selectedInterests = selectedInterests;
     console.log('Selected Interests:', this.selectedInterests);
     this.msform.patchValue({
@@ -164,6 +170,8 @@ export class SingupComponent implements OnInit {
   }
 
   
+
+  
   nextStep() {
     if (this.currentStep < this.fieldsets.length - 1) {
       this.currentStep++;
@@ -178,6 +186,7 @@ export class SingupComponent implements OnInit {
       console.log(this.currentStep);
     }
   }
+
 
 
   submitForm() {
@@ -225,10 +234,14 @@ export class SingupComponent implements OnInit {
       profilePicUrl: fileUrl,
       phoneNumber: this.msform.get('phoneNumber')?.value,
       bio: this.msform.get('bio')?.value,
+      employmentHistories: this.msform.get('employmentHistories')?.value,
     };
 
     //console log educations
+    console.log('skills in signup submit:', userData.skills);
+    console.log('interests in signup submit:', userData.interests);
     console.log('Educations in signup submit:', userData.educationHistories);
+    console.log('Employments in signup submit:', userData.employmentHistories);
 
 
   
@@ -279,7 +292,24 @@ export class SingupComponent implements OnInit {
       })
     );
   }
+
+  passwordMatchValidatorAsync = (control: AbstractControl): Promise<ValidationErrors | null> => {
+    const password = control.get('password')?.value;
+    const confirmPass = control.get('confirm_pass')?.value;
   
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (password !== confirmPass) {
+          resolve({ passwordsNotMatch: true });
+          console.log('passwords not match', password, confirmPass, password !== confirmPass);
+        } else {
+          resolve(null);
+        }
+      }, 500);
+    });
+  };
+  
+
   
 
 

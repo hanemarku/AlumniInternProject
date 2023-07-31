@@ -5,6 +5,7 @@ import { CountryList } from '../country/country.component';
 import { CityList } from '../city/city.component';
 import { CountryCitySelectorComponent } from '../country-city-selector/country-city-selector.component';
 import { CountryDataService } from '../services/country-service/country-data.service';
+import { Skill } from '../skill-search/skill-search.component';
 
 @Component({
   selector: 'app-employment',
@@ -12,16 +13,6 @@ import { CountryDataService } from '../services/country-service/country-data.ser
   styleUrls: ['./employment.component.sass']
 })
 export class EmploymentComponent implements OnInit{
-
-  
-  ngOnInit(): void {
-    this.countryDataService.listAllCountries().subscribe(
-     (response: CountryList[]) => (this.countries = response)
-   );
-
-   this.selectedCity = '';
- }
-
 
   newEmployment: Employment = {
     mainActivities: '',
@@ -41,9 +32,14 @@ export class EmploymentComponent implements OnInit{
   cities: { [key: string]: CityList[] } = {};
   selectedCity: string | '' | null = '';
   selectedCountry: CountryList | null = null;
+  selectedSkills: Skill[] = [];
 
+  // @Input() selectedSkills: Skill[] = [];
   @Input() selectedCityValue: string | null = null;
+
   @Output() selectedEmploymentChange: EventEmitter<Employment[]> = new EventEmitter();
+  @Output() selectedSkillsChange: EventEmitter<Skill[]> = new EventEmitter();
+
   @ViewChild('countryCitySelector', { static: false }) countryCitySelector!: CountryCitySelectorComponent;
 
 
@@ -52,13 +48,27 @@ export class EmploymentComponent implements OnInit{
     private countryDataService: CountryDataService,
   ) {}
 
+  ngOnInit(): void {
+    this.countryDataService.listAllCountries().subscribe(
+     (response: CountryList[]) => (this.countries = response)
+   );
+
+   this.selectedCity = '';
+  }
+
   addEmployment() {
     if(this.newEmployment.companyName && this.newEmployment.mainActivities && this.newEmployment.occupationPosition){
-      console.log('Selected City in employment:', this.selectedCityValue + " electedCity: " + this.selectedCity)
+      console.log('test');
+      console.log('Selected City in employment:', this.selectedCityValue + " electedCity: " + this.selectedCity);
+      console.log('Selected skills test :', this.selectedSkills);
       this.newEmployment.city = this.selectedCityValue;
       this.newEmployment.country = this.selectedCountry;
-
-      this.employments.push(this.newEmployment);
+      this.newEmployment.skills = this.selectedSkills;
+      if (this.newEmployment.ongoing) {
+        this.newEmployment.toDate = null;
+      }
+      this.employments.push({...this.newEmployment});
+      console.log('Employment: ', this.newEmployment);
 
       this.newEmployment.companyName = '';
       this.newEmployment.mainActivities = ''
@@ -88,13 +98,56 @@ export class EmploymentComponent implements OnInit{
 
   onSelectedCountryChange(selectedCountry: CountryList | null) {
     this.selectedCountry = selectedCountry;
-    console.log('Selected Country in education:', this.selectedCountry);
+    console.log('Selected Country in employemt :', this.selectedCountry);
   }
 
   onSelectedCityChange(selectedCity: string | null) {
     this.selectedCityValue = selectedCity;
     this.selectedCity = selectedCity;
-    console.log('Selected City in education:', this.selectedCityValue + " electedCity: " + this.selectedCity);
   }
+
+  onOngoingChange(event: any) {
+    this.newEmployment.ongoing = event.target.checked;
+  }
+
+  getCountryName(employment: Employment): string {
+    if (employment.country && employment.country.name) {
+      return employment.country.name;
+    } else {
+      return 'Unknown Country';
+    }
+  }
+
+  getSkillName(skill: Skill): string {
+    if (skill.name) {
+      return skill.name;
+    } else {
+      return 'Unknown Skill';
+    }
+  }
+
+  // onSelectedSkillsChange(selectedSkills: Skill[]) {
+  //   console.log('Selected Skills in employment: ', selectedSkills);
+  //   this.selectedSkills = selectedSkills;
+  //   this.selectedSkillsChange.emit(selectedSkills);
+  // }
+
+  onSelectedSkillsChange(selectedSkills: Skill[]) {
+    this.selectedSkills = selectedSkills;
+    console.log('Selected Skills:', this.selectedSkills);
+   
+  }
+
+
+  //   onSelectedSkillsChange(selectedSkills: string[]) {
+  //   this.selectedSkills = selectedSkills;
+  //   console.log('Selected Skills:', this.selectedSkills);
+    
+  //   // this.msform.get('skills')?.setValue(selectedSkills);
+  //   this.msform.patchValue({
+  //     skills: this.selectedSkills,
+  //   });
+  // }
+
   
 }

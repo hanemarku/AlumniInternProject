@@ -23,6 +23,9 @@ export class SkillListComponent implements OnInit {
 
   skills: SkillComponent[] = [];
   showValidationErrors: boolean = false;
+  isSortByNameActive: boolean = false;
+  isSortByDateActive: boolean = true;
+  isDropdownOpen: boolean = false;
 
   constructor(
     private skillDataService: SkillDataService,
@@ -67,6 +70,7 @@ export class SkillListComponent implements OnInit {
     });
   }
 
+
   refreshSkills() {
     this.skillDataService.listAllSkills().subscribe(
       (response: any[]) => {
@@ -96,6 +100,9 @@ export class SkillListComponent implements OnInit {
       response => {
         console.log(response);
         this.refreshSkills();
+        if (this.isSortByNameActive) {
+          this.sortSkillsByName();
+        }
       },
       error => {
         console.error('Error updating skill:', error);
@@ -115,5 +122,35 @@ export class SkillListComponent implements OnInit {
     );
   }
 
+  sortSkillsByName(event?: Event) {
+    console.log('sort skills by name');
+    if (event) {
+      event.preventDefault();
+    }
+    this.skillDataService.sortSkillsByName().subscribe(
+      (response: any[]) => {
+        console.log(response);
+        this.skills = response;
+        this.isSortByDateActive = false;
+        this.isSortByNameActive = true;
+      },
+      (error: any) => {
+        console.error('Error fetching skills:', error);
+      }
+    );
+  }
+
+  sortSkillsByDate() {
+    console.log('sort skills by date');
+    this.refreshSkills();
+    this.isSortByDateActive = true;
+    this.isSortByNameActive = false;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
 
 }
+

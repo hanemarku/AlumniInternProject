@@ -30,7 +30,29 @@
 
 <section class="section">
   <div class="container">
-
+    <div class="sort-box">
+      <div class="dropdown is-active">
+        <div class="dropdown-trigger">
+          <button class="button sort-by-button" aria-haspopup="true" aria-controls="dropdown-menu" (click)="toggleDropdown()">
+            <i class="material-icons">sort</i>
+            <span>Sort by</span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu" [class.active]="isDropdownOpen">
+          <div class="dropdown-content">
+            <a href="#" class="dropdown-item" (click)="sortSkillsByName($event)" [class.is-active]="isSortByNameActive">
+              Name
+            </a>
+            <a class="dropdown-item" (click)="sortSkillsByDate()" [class.is-active]="isSortByDateActive">
+              Date created
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="skill-list">
       <div class="skill-item" *ngFor="let skill of skills">
         <div class="skill-name">

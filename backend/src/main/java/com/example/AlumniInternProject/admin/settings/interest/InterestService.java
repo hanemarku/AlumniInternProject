@@ -9,4 +9,5 @@ public interface InterestService {
     InterestGetDto findById(UUID id);
     InterestGetDto update(UUID id, InterestDto dto);
     void delete (UUID id);
+    List<InterestGetDto> sortByName();
 }

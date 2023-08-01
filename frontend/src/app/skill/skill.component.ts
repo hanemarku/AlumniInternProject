@@ -3,6 +3,7 @@ import { SkillDataService } from '../services/skill-service/skill-data.service';
 import { NgForm } from '@angular/forms';
 import { EditSkillDialogComponent } from './edit-skill-dialog/edit-skill-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 
 export class SkillComponent {
@@ -23,6 +24,9 @@ export class SkillListComponent implements OnInit {
 
   skills: SkillComponent[] = [];
   showValidationErrors: boolean = false;
+  isSortByNameActive: boolean = false;
+  isSortByDateActive: boolean = true;
+  isDropdownOpen: boolean = false;
 
   constructor(
     private skillDataService: SkillDataService,
@@ -67,6 +71,7 @@ export class SkillListComponent implements OnInit {
     });
   }
 
+
   refreshSkills() {
     this.skillDataService.listAllSkills().subscribe(
       (response: any[]) => {
@@ -96,6 +101,9 @@ export class SkillListComponent implements OnInit {
       response => {
         console.log(response);
         this.refreshSkills();
+        if (this.isSortByNameActive) {
+          this.sortSkillsByName();
+        }
       },
       error => {
         console.error('Error updating skill:', error);
@@ -115,5 +123,58 @@ export class SkillListComponent implements OnInit {
     );
   }
 
+  sortSkillsByName(event?: Event) {
+    console.log('sort skills by name');
+    if (event) {
+      event.preventDefault();
+    }
+    this.skillDataService.sortSkillsByName().subscribe(
+      (response: any[]) => {
+        console.log(response);
+        this.skills = response;
+        this.isSortByDateActive = false;
+        this.isSortByNameActive = true;
+      },
+      (error: any) => {
+        console.error('Error fetching skills:', error);
+      }
+    );
+  }
+
+  sortSkillsByDate() {
+    console.log('sort skills by date');
+    this.refreshSkills();
+    this.isSortByDateActive = true;
+    this.isSortByNameActive = false;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  openConfirmationDialog(skillId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const skillToDelete = this.skills.find(skill => skill.id === skillId);
+        if (skillToDelete) {
+          this.deleteSkill(skillToDelete.id);
+        }
+        Swal.fire(
+          'Deleted!',
+          'Skill has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
 
 }
+

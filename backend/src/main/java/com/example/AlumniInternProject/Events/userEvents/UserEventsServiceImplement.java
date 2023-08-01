@@ -166,6 +166,8 @@ public class UserEventsServiceImplement implements UserEventsService{
         List<UserEvents> matched = new ArrayList<>(theUserEvents.size());
 
         for (UserEvents ue: theUserEvents) {
+            /*TODO: TEST AFTER THE LOG IN IS CORRECTED*/
+            isExpired(ue.getToken());
             /*THIS ONLY WORKS WHEN WRITTEN CORRECTLY IN UPPERCASE AND THE FULL WORD*/
             if(ue.getStatus() == status){
                 matched.add(ue);
@@ -179,6 +181,16 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     /* TODO: CHECK TO SET EXPIRED STATUS*/
     private boolean isExpired(String token){
+        ConfirmationToken toBeChecked = confirmationTokenRepository.findByToken(token);
+        UserEvents userEvents = userEventsRepository.findUserEventsByToken(token);
+        if(userEvents.getStatus()== Status.CONFIRMED){
+            return false;
+        }
+        // nqs data e tanishme NUK eshte para dates se "skadimit"
+        if(!LocalDateTime.now().isBefore(toBeChecked.getExpiredAt())){
+            userEvents.setStatus(Status.EXPIRED);
+            return true;
+        }
         return false;
     }
     private UserGetDto mapUser(User user) {

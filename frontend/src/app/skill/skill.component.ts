@@ -3,6 +3,7 @@ import { SkillDataService } from '../services/skill-service/skill-data.service';
 import { NgForm } from '@angular/forms';
 import { EditSkillDialogComponent } from './edit-skill-dialog/edit-skill-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 
 export class SkillComponent {
@@ -151,6 +152,29 @@ export class SkillListComponent implements OnInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  openConfirmationDialog(skillId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const skillToDelete = this.skills.find(skill => skill.id === skillId);
+        if (skillToDelete) {
+          this.deleteSkill(skillToDelete.id);
+        }
+        Swal.fire(
+          'Deleted!',
+          'Skill has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
 
 }
 

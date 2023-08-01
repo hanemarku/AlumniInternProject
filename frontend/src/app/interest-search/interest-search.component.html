@@ -18,8 +18,8 @@
     <div class="row">
         <div class="col">
             <span *ngIf="filteredInterest.length != 0">Available interests</span>
-          <div *ngFor="let skill of filteredInterest">
-            <span class="badge bg-secondary me-2" (click)="onAddInterest(skill)">{{ skill }}</span>
+          <div *ngFor="let interest of filteredInterest">
+            <span class="badge bg-secondary me-2" (click)="onAddInterest(interest)">{{ getInterestName(interest) }}</span>
           </div>
         </div>
       </div>
@@ -27,8 +27,8 @@
     <div class="row">
       <div class="col">
         <span *ngIf="selectedInterest.length != 0">Selected interests</span>
-        <div *ngFor="let skill of selectedInterest">
-          <span class="badge bg-primary me-2">{{ skill }}</span>
+        <div *ngFor="let interest of selectedInterest">
+          <span class="badge bg-primary me-2">{{ getInterestName(interest) }}</span>
         </div>
       </div>
     </div>

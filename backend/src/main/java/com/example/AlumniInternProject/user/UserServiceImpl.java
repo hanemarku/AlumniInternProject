@@ -48,24 +48,15 @@ public class UserServiceImpl implements UserService{
                 userDto.getSkills(),
                 userDto.getInterests(),
                 userDto.getRole(),
-                new HashSet<>(),
+                userDto.getEmploymentHistories(),
                 userDto.getEducationHistories()
         );
 
         //set user_id to educationHistory
+        userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
         userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
         // Save the User entity first
         var savedUser = userRepository.save(user);
-
-//        Set<EducationHistory> educationHistories = userDto.getEducationHistories()
-//                .stream()
-//                .map(educationDto -> mapEducationHistoryDtoToEntity(educationDto, user))
-//                .collect(Collectors.toSet());
-//
-//
-//        // Add the mapped educationHistories to the User
-//        savedUser.getEducationHistories().addAll(educationHistories);
-        userRepository.save(savedUser);
 
         return map(savedUser);
     }
@@ -92,12 +83,12 @@ public class UserServiceImpl implements UserService{
 
 
 
-
+    @Transactional
     @Override
     public List<UserGetDto> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(user -> map(user))
+                .map(user -> mapForListing(user))
                 .collect(Collectors.toList());
     }
 
@@ -122,6 +113,29 @@ public class UserServiceImpl implements UserService{
         dto.setRole(user.getRole());
         dto.setEducationHistories(user.getEducationHistories());
         dto.setEmploymentHistories(user.getEmploymentHistories());
+        return dto;
+    }
+
+    private UserGetDto mapForListing(User user) {
+        var dto = new UserGetDto();
+        dto.setId(user.getId());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setEmail(user.getEmail());
+        dto.setEnabled(user.isEnabled());
+        dto.setBirthday(user.getBirthday());
+        dto.setProfilePicUrl(user.getProfilePicUrl());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setCity(user.getCity());
+        dto.setCountry(user.getCountry());
+        dto.setPassword(user.getPassword());
+        dto.setBio(user.getBio());
+        dto.setBirthday(user.getBirthday());
+        dto.setSkills(user.getSkills());
+        dto.setInterests(user.getInterests());
+        dto.setRole(user.getRole());
+//        dto.setEducationHistories(user.getEducationHistories());
+//        dto.setEmploymentHistories(user.getEmploymentHistories());
         return dto;
     }
 

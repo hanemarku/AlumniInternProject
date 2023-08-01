@@ -43,6 +43,7 @@ export class ListUsersComponent implements OnInit{
       response => {
         console.log(response);
         this.users = response;
+        console.log(this.users);
       }
     )
     

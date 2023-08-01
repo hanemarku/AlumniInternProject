@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -88,9 +89,11 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "recommendedUser")
     private Set<Recommendation> recommendedUser;
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EmploymentHistory> employmentHistories = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EducationHistory> educationHistories = new HashSet<>();
 
@@ -128,5 +131,21 @@ public class User extends IdBaseEntity{
         this.role = role;
         this.employmentHistories = employmentHistories;
         this.educationHistories = educationHistories;
+    }
+
+    // create a method to take only some fileds from the educationHistories
+    public Set<EducationHistory> getEducationHistories() {
+        Set<EducationHistory> educationHistories = new HashSet<>();
+        for (EducationHistory educationHistory : this.educationHistories) {
+            EducationHistory educationHistory1 = new EducationHistory();
+            educationHistory1.setId(educationHistory.getId());
+            educationHistory1.setFieldOfQualification(educationHistory.getFieldOfQualification());
+            educationHistory1.setInstitutionName(educationHistory.getInstitutionName());
+            educationHistory1.setFieldOfStudy(educationHistory.getFieldOfStudy());
+            educationHistory1.setStartDate(educationHistory.getStartDate());
+            educationHistory1.setEndDate(educationHistory.getEndDate());
+            educationHistories.add(educationHistory1);
+        }
+        return educationHistories;
     }
 }

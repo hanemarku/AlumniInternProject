@@ -1,4 +1,12 @@
 <div class="container mt-5">
+  <div *ngIf="messageService.getErrorMessage()" class="alert alert-danger">
+    {{ messageService.getErrorMessage() }}
+  </div>
+
+  <div *ngIf="messageService.getSuccessMessage()" class="alert alert-success">
+    {{ messageService.getSuccessMessage() }}
+  </div>
+  
     <div class="row justify-content-center">
       <div class="col-md-9" [@fieldsetAnimation]="currentStep">
         <form [formGroup]="msform" id="msform" >
@@ -11,7 +19,7 @@
           <fieldset *ngFor="let fieldset of fieldsets; let i = index">
             <h1 class="fs-title">{{fieldsets[currentStep].title}}</h1>
             <h3 class="fs-subtitle">{{ fieldsets[currentStep].subtitle }}</h3>
-            <div class="row" *ngIf="currentStep === 3">
+            <div class="row" *ngIf="currentStep === 4">
               <div class="col-4">
                 <div class="profile-picture">
                   <div class="default-profile-picture" *ngIf="!selectedImage">
@@ -27,15 +35,16 @@
               <div class="col-8 p-2">
                 <div *ngIf="msform.get('email')?.invalid && msform.get('email')?.touched" class="alert alert-danger">
                   <div>Email already exists</div>
-    
+                </div>
+                <div *ngIf="msform.hasError('passwordsNotMatch') && msform.get('confirm_pass')?.touched" class="alert alert-danger">
+                  Passwords do not match.
                 </div>
                 <input
                   *ngFor="let input of fieldsets[currentStep].inputs"
-                  [type]="input.type || 'text'"
+                  [type]="input.type === 'password' ? 'password' : (input.type === 'date' ? 'date' : 'text')"
                   formControlName="{{ input.name }}"
                   placeholder="{{ input.placeholder }}"
                   class="form-control"
-                  [attr.type]="input.type === 'date' ? 'date' : 'text'"
                 />
                 <textarea
                   class="form-control"
@@ -45,7 +54,7 @@
               </div>
             </div>
             
-            <div *ngIf="currentStep !== 3">
+            <div *ngIf="currentStep !== 4">
               <input
                 *ngFor="let input of fieldsets[currentStep].inputs"
                 [type]="input.type || 'text'"
@@ -55,9 +64,6 @@
                 [attr.type]="input.type === 'date' ? 'date' : 'text'"
               />
             </div>
-            
-
-
             <div *ngIf="currentStep === 0" class="row mt-3">
               <app-country-city-selector
                 [countries]="countries"
@@ -76,8 +82,13 @@
               ></app-education>
             </div>
 
+            <div *ngIf="currentStep === 2">
+              <app-employment
+              (selectedEmploymentChange)="onSelectedEmploymentChange($event)"
+              ></app-employment>
+            </div>
 
-          <div *ngIf="currentStep === 2">
+          <div *ngIf="currentStep === 3">
             <app-skill-interest-component
               [selectedSkills]="selectedSkills"  
               (selectedSkillsChange)="onSelectedSkillsChange($event)"
@@ -85,6 +96,7 @@
               (selectedInterestsChange)="onSelectedInterestsChange($event)"
             ></app-skill-interest-component>
           </div>
+          
 
    
       
@@ -95,6 +107,7 @@
                     type="button"
                     (click)="previousStep()"
                     class="previous action-button-previous btn btn-secondary"
+                    disabled=true
                   >
                     Previous
                   </button>
@@ -113,9 +126,9 @@
                     type="button"
                     (click)="submitForm()"
                     class="submit action-button btn btn-primary"
-                    [disabled]="msform.get('email')?.invalid && msform.get('email')?.touched"
+                    [disabled]="msform.get('email')?.invalid && msform.get('email')?.touched || msform.hasError('passwordsNotMatch')"
                   >
-                    Submit
+                    Create Account
                   </button>
                 </div>
               </div>

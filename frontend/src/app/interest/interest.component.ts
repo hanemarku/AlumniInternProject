@@ -23,11 +23,15 @@ export class InterestListComponent implements OnInit {
 
   interests: InterestComponent[] = [];
   showValidationErrors: boolean = false;
+  isSortByNameActive: boolean = false;
+  isSortByDateActive: boolean = true;
+  isDropdownOpen: boolean = false;
 
   constructor(
     private interestDataService: InterestDataService,
     private dialog: MatDialog
   ) { }
+
 
   ngOnInit(): void {
     this.refreshInterests();
@@ -66,6 +70,7 @@ export class InterestListComponent implements OnInit {
     });
   }
 
+
   refreshInterests() {
     this.interestDataService.listAllInterests().subscribe(
       (response: any[]) => {
@@ -95,6 +100,9 @@ export class InterestListComponent implements OnInit {
       response => {
         console.log(response);
         this.refreshInterests();
+        if (this.isSortByNameActive) {
+          this.sortInterestsByName();
+        }
       },
       error => {
         console.error('Error updating interest:', error);
@@ -114,5 +122,35 @@ export class InterestListComponent implements OnInit {
     );
   }
 
+  sortInterestsByName(event?: Event) {
+    console.log('sort interests by name');
+    if (event) {
+      event.preventDefault();
+    }
+    this.interestDataService.sortInterestsByName().subscribe(
+      (response: any[]) => {
+        console.log(response);
+        this.interests = response;
+        this.isSortByDateActive = false;
+        this.isSortByNameActive = true;
+      },
+      (error: any) => {
+        console.error('Error fetching interests:', error);
+      }
+    );
+  }
+
+  sortInterestsByDate() {
+    console.log('sort interests by date');
+    this.refreshInterests();
+    this.isSortByDateActive = true;
+    this.isSortByNameActive = false;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
 
 }
+

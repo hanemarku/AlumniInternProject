@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.entity.Interest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -60,5 +61,14 @@ public class InterestServiceImpl implements InterestService {
         dto.setId(interest.getId());
         dto.setName(interest.getName());
         return dto;
+    }
+
+    @Override
+    public List<InterestGetDto> sortByName() {
+        return interestRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Interest::getName, String.CASE_INSENSITIVE_ORDER))
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 }

@@ -21,10 +21,11 @@ import { SkillInterestComponentComponent } from './skill-interest-component/skil
 import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { FilterPipe } from './filter.pipe';
 import { InterestSearchComponent } from './interest-search/interest-search.component';
-import { EducationFormComponent } from './education-form/education-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
+import { EmploymentComponent } from './employment/employment.component';
+import { SuccessPageComponent } from './user/success-page/success-page.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     SkillSearchComponent,
     FilterPipe,
     InterestSearchComponent,
-    EducationFormComponent,
+    EmploymentComponent,
+    SuccessPageComponent,
   ],
   imports: [
     BrowserModule,

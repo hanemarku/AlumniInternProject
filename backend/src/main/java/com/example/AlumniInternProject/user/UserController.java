@@ -3,8 +3,10 @@ package com.example.AlumniInternProject.user;
 import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,10 +68,13 @@ public class UserController {
 //
 //    }
 
+
+
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) {
         UserGetDto savedUser = userService.save(dto);
         Map<String, String> response = new HashMap<>();
+
         if (savedUser != null) {
             response.put("message", "User saved successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);

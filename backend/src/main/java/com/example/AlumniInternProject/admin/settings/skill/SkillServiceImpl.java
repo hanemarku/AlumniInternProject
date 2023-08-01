@@ -86,5 +86,14 @@ public class SkillServiceImpl implements SkillService{
         return dto;
     }
 
+    @Override
+    public List<SkillGetDto> sortByName() {
+        return skillRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Skill::getName, String.CASE_INSENSITIVE_ORDER))
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
 
 }

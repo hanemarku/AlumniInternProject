@@ -42,4 +42,9 @@ public class SkillController {
     public List<TopSkillGetDto> getTopSkills(){
         return skillService.getTopSkills();
     }
+
+    @GetMapping("/sort-name")
+    public List<SkillGetDto> sortByName(){
+        return skillService.sortByName();
+    }
 }

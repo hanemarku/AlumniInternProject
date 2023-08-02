@@ -2,84 +2,119 @@ package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
 import com.example.AlumniInternProject.education.EducationImpl;
-import com.example.AlumniInternProject.entity.Country;
-import com.example.AlumniInternProject.entity.EducationHistory;
-import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.entity.*;
+import com.example.AlumniInternProject.enumerations.Role;
+import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import com.example.AlumniInternProject.user.security.ALumniUserDetails;
+import com.sun.tools.jconsole.JConsoleContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.*;
+
 import java.util.stream.Collectors;
+
+import static com.example.AlumniInternProject.constants.UserImplConstants.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Qualifier("userDetailsService")
 public class UserServiceImpl implements UserService{
+
+    private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
     private final CountryRepository countryRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final EducationImpl educationService;
+    private final AuthorityRepository authorityRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
     @Override
-    public UserGetDto save(UserDTO userDto) {
-        String encodedPassword = encodePassword(userDto.getPassword());
+    public UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException {
+        validateNewEmail(StringUtils.EMPTY, userDto.getEmail());
 
-        // Create the User entity
+        Set<Authority> authorities = Role.ROLE_USER.getAuthorities().stream()
+                .map(Authority::new)
+                .filter(authority -> !authorityRepository.existsByName(authority.getName())) // Check if authority with the same name exists
+                .collect(Collectors.toSet());
+
+
+        authorities.forEach(authorityRepository::save);
+        authorities = authorityRepository.findAll().stream().collect(Collectors.toSet());
+        authorities = authorities.stream().filter(authority -> Role.ROLE_USER.getAuthorities().contains(authority.getName())).collect(Collectors.toSet());
+
         var user = new User(
                 userDto.getFirstname(),
                 userDto.getLastname(),
                 userDto.getEmail(),
-                userDto.isEnabled(),
+                true,
                 userDto.getBirthday(),
                 userDto.getProfilePicUrl(),
                 userDto.getPhoneNumber(),
                 userDto.getCity(),
                 userDto.getCountry(),
-                encodedPassword,
+                userDto.getPassword(),
                 userDto.getBio(),
                 userDto.getSkills(),
                 userDto.getInterests(),
-                userDto.getRole(),
+                Role.ROLE_USER,
                 userDto.getEmploymentHistories(),
-                userDto.getEducationHistories()
+                userDto.getEducationHistories(),
+                userDto.getAuthorities()
         );
 
-        //set user_id to educationHistory
+
+        userDto.setAuthorities(authorities);
+        user.setAuthorities(authorities);
         userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
         userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
-        // Save the User entity first
+
         var savedUser = userRepository.save(user);
+        LOGGER.info("New user was created with password: " + user.getPassword());
 
         return map(savedUser);
     }
 
-    private EducationHistory mapEducationHistoryDtoToEntity(EducationHistory educationDto, User user) {
-        // Create a new EducationHistory object and manually map the data from EducationDto
-        EducationHistory educationHistory = new EducationHistory(
-                educationDto.getInstitutionName(),
-                educationDto.getFieldOfQualification(),
-                educationDto.getFieldOfStudy(),
-                educationDto.getStartDate(),
-                educationDto.getEndDate(),
-                educationDto.getFinalGrade(),
-                educationDto.getWebsite(),
-                educationDto.getCity(),
-                educationDto.getCountry()
-        );
 
-        // Associate the User with the EducationHistory
-        educationHistory.setUser(user);
-
-        return educationHistory;
+    private User validateNewEmail(String currentEmail, String newEmail) throws UserNotFoundException, EmailExistException {
+        if(StringUtils.isNotBlank(currentEmail)) {
+            User currentUser = findUserByEmail(currentEmail);
+            if(currentUser == null) {
+                throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + currentEmail);
+            }
+            User userByEmail1 = findUserByEmail(newEmail);
+            if(userByEmail1 != null && !currentUser.getId().equals(userByEmail1.getId())) {
+                throw new EmailExistException(EMAIL_ALREADY_EXISTS);
+            }
+            return currentUser;
+        }else {
+            User userByEmail = findUserByEmail(newEmail);
+            if(userByEmail != null) {
+                throw new EmailExistException(EMAIL_ALREADY_EXISTS);
+            }
+            return null;
+        }
     }
+
+    public User findUserByEmail(String email) {
+        return null;
+    }
+
 
 
 
@@ -94,6 +129,7 @@ public class UserServiceImpl implements UserService{
 
 
     private UserGetDto map(User user) {
+        String password = encodePassword(user.getPassword());
         var dto = new UserGetDto();
         dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
@@ -105,14 +141,16 @@ public class UserServiceImpl implements UserService{
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
         dto.setCountry(user.getCountry());
-        dto.setPassword(user.getPassword());
+        dto.setPassword(password);
         dto.setBio(user.getBio());
         dto.setBirthday(user.getBirthday());
         dto.setSkills(user.getSkills());
         dto.setInterests(user.getInterests());
         dto.setRole(user.getRole());
+        dto.setAuthorities(user.getAuthorities());
         dto.setEducationHistories(user.getEducationHistories());
         dto.setEmploymentHistories(user.getEmploymentHistories());
+
         return dto;
     }
 
@@ -134,6 +172,7 @@ public class UserServiceImpl implements UserService{
         dto.setSkills(user.getSkills());
         dto.setInterests(user.getInterests());
         dto.setRole(user.getRole());
+        dto.setAuthorities(user.getAuthorities());
 //        dto.setEducationHistories(user.getEducationHistories());
 //        dto.setEmploymentHistories(user.getEmploymentHistories());
         return dto;
@@ -149,7 +188,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserGetDto update(UUID id, UserDTO dto) {
+    public UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException {
         try {
             var user = userRepository.findById(id).get();
             user.setFirstname(dto.getFirstname());
@@ -169,7 +208,7 @@ public class UserServiceImpl implements UserService{
             var savedUser = userRepository.save(user);
             return map(savedUser);
         } catch (NoSuchElementException e) {
-            throw new UsernameNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
     }
 
@@ -177,7 +216,7 @@ public class UserServiceImpl implements UserService{
         try {
             return userRepository.findById(id).get();
         } catch (NoSuchElementException e) {
-            throw new UserNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
     }
 
@@ -195,13 +234,31 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            LOGGER.error("User not found in the database" + email);
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+        }else{
+            userRepository.save(user);
+            ALumniUserDetails userDetails = new ALumniUserDetails(user);
+            LOGGER.info(USER_FOUND_BY_EMAIL + email);
+            return userDetails;
+        }
+    }
+
+    private String getTemporaryProfileImageUrl(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
+    }
+
 
     @Override
     public void delete(UUID id) throws UserNotFoundException {
         var countById = userRepository.countUserById(id);
         var user = userRepository.findById(id).get();
         if (countById == 0) {
-            throw new UserNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
         user.getInterests().clear();
         user.getSkills().clear();

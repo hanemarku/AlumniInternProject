@@ -1,7 +1,7 @@
 package com.example.AlumniInternProject.user.security;
 
-import com.example.AlumniInternProject.entity.Role;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.enumerations.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.cache.interceptor.SimpleKey;
@@ -24,7 +24,8 @@ public class ALumniUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String roleName = user.getRole().getName();
+        String roleName = user.getRole().toString();
+        System.out.println(roleName);
         return Collections.singletonList(new SimpleGrantedAuthority(roleName));
     }
 

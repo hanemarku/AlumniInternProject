@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,8 @@ public class Homepage {
     }
 
     @GetMapping("homepage")
-    public String helloWorld() {
-        return "Hello  You are at homepage";
+    public String helloWorld() throws UserNotFoundException {
+        throw new UserNotFoundException("User not found");
     }
 
     @GetMapping("homepage3")

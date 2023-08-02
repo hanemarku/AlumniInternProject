@@ -1,11 +1,13 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.enumerations.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -14,7 +16,7 @@ import java.util.*;
 @Setter
 @Table(name = "users")
 @NoArgsConstructor
-public class User extends IdBaseEntity{
+public class User extends IdBaseEntity implements Serializable {
 
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstname;
@@ -35,16 +37,21 @@ public class User extends IdBaseEntity{
     @Column(length = 15)
     private String phoneNumber;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities = new HashSet<>();
+
     @Column(length = 45)
     private String city;
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 
-    //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "city_id")
-//
-//    private City city;
+
     @Column(length = 64, nullable = false)
     private String password;
 
@@ -67,16 +74,14 @@ public class User extends IdBaseEntity{
     )
     private Set<Interest> interests = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "role_id")
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "role_id")
+//    private Role role;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Post> posts = new ArrayList<>();
-//
 
     @OneToMany(mappedBy = "requester")
     private List<ConnectionRequest> sentConnectionRequests;
@@ -107,7 +112,6 @@ public class User extends IdBaseEntity{
     private Collection<Like> like;
 
 
-
     @Transient
     public String getImagePath() {
         if (super.getId() == null) return "/images/image-thumbnail.png";
@@ -116,7 +120,7 @@ public class User extends IdBaseEntity{
     }
 
 
-    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories) {
+    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -133,9 +137,9 @@ public class User extends IdBaseEntity{
         this.role = role;
         this.employmentHistories = employmentHistories;
         this.educationHistories = educationHistories;
+        this.authorities = authorities;
     }
 
-    // create a method to take only some fileds from the educationHistories
     public Set<EducationHistory> getEducationHistories() {
         Set<EducationHistory> educationHistories = new HashSet<>();
         for (EducationHistory educationHistory : this.educationHistories) {

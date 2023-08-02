@@ -2,6 +2,8 @@ package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.exceptions.EmailExistException;
+import com.example.AlumniInternProject.exceptions.ExceptionHandling;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,7 +26,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController extends ExceptionHandling {
     private final UserService userService;
 
 //    @GetMapping
@@ -71,7 +73,7 @@ public class UserController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) {
+    public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) throws UserNotFoundException, EmailExistException {
         UserGetDto savedUser = userService.save(dto);
         Map<String, String> response = new HashMap<>();
 

@@ -26,4 +26,9 @@ export class InterestDataService {
     return this.http.post(`http://localhost:8080/api/v1/interests`, interest);
   }
 
+  sortInterestsByName(){
+    return this.http.get<any>("http://localhost:8080/api/v1/interests/sort-name");
+  }
+
+
 }

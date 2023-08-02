@@ -26,4 +26,9 @@ export class SkillDataService {
     return this.http.post(`http://localhost:8080/api/v1/skills`, skill);
   }
 
+  sortSkillsByName(){
+    return this.http.get<any>("http://localhost:8080/api/v1/skills/sort-name");
+  }
+
+
 }

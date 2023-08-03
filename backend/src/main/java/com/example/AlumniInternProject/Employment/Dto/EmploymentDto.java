@@ -27,21 +27,4 @@ public class EmploymentDto {
     private String city;
     private Country country;
     private Set<Skill> skills = new HashSet<>();
-
-
-
-    /*
-    *     public  EmploymentDto(String mainActivities,
-                          String occupationPosition,
-                          String companyName,String department,
-                          boolean ongoing, LocalDate fromDate , LocalDate toDate){
-        this.mainActivities = mainActivities;
-        this.occupationPosition = occupationPosition;
-        this.companyName = companyName;
-        this.department = department;
-        this.ongoing = ongoing;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-    }
-*/
 }

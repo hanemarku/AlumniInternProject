@@ -37,13 +37,19 @@ public class User extends IdBaseEntity implements Serializable {
     @Column(length = 15)
     private String phoneNumber;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id")
     )
     private Set<Authority> authorities = new HashSet<>();
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "is_not_locked", nullable = true)
+    private boolean isNotLocked;
 
     @Column(length = 45)
     private String city;
@@ -120,7 +126,7 @@ public class User extends IdBaseEntity implements Serializable {
     }
 
 
-    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities) {
+    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities, boolean isActive, boolean isNotLocked) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -138,6 +144,8 @@ public class User extends IdBaseEntity implements Serializable {
         this.employmentHistories = employmentHistories;
         this.educationHistories = educationHistories;
         this.authorities = authorities;
+        this.isActive = isActive;
+        this.isNotLocked = isNotLocked;
     }
 
     public Set<EducationHistory> getEducationHistories() {

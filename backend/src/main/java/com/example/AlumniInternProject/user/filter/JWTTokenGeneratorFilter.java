@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.user.filter;
 
+import com.example.AlumniInternProject.constants.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;

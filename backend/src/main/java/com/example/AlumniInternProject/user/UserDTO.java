@@ -32,6 +32,8 @@ public class UserDTO {
     private Set<Authority> authorities = new HashSet<>();
 
     private Role role;
+    private boolean isActive;
+    private boolean isNotLocked;
 
     public UserDTO() {
 

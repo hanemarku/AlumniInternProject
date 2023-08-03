@@ -15,14 +15,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -32,21 +35,24 @@ import static com.example.AlumniInternProject.constants.UserImplConstants.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Qualifier("userDetailsService")
-public class UserServiceImpl implements UserService{
 
+public class UserServiceImpl implements UserService{
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
+
     private final CountryRepository countryRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final EducationImpl educationService;
     private final AuthorityRepository authorityRepository;
+    private final EmailService emailService;
+//    private LoginAttemptService loginAttemptService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+//    private ModelMapper modelMapper = new ModelMapper();
+
     @Override
-    public UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException {
+    public UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException, MessagingException {
         validateNewEmail(StringUtils.EMPTY, userDto.getEmail());
+        String password = encodePassword(userDto.getPassword());
 
         Set<Authority> authorities = Role.ROLE_USER.getAuthorities().stream()
                 .map(Authority::new)
@@ -64,18 +70,21 @@ public class UserServiceImpl implements UserService{
                 userDto.getEmail(),
                 true,
                 userDto.getBirthday(),
-                userDto.getProfilePicUrl(),
+                //userDto.getProfilePicUrl(),
+                getTemporaryProfileImageUrl(userDto.getFirstname()),
                 userDto.getPhoneNumber(),
                 userDto.getCity(),
                 userDto.getCountry(),
-                userDto.getPassword(),
+                password,
                 userDto.getBio(),
                 userDto.getSkills(),
                 userDto.getInterests(),
                 Role.ROLE_USER,
                 userDto.getEmploymentHistories(),
                 userDto.getEducationHistories(),
-                userDto.getAuthorities()
+                userDto.getAuthorities(),
+                true,
+                true
         );
 
 
@@ -86,6 +95,7 @@ public class UserServiceImpl implements UserService{
 
         var savedUser = userRepository.save(user);
         LOGGER.info("New user was created with password: " + user.getPassword());
+        emailService.sendNewPasswordEmail(userDto.getFirstname(), userDto.getEmail(), password);
 
         return map(savedUser);
     }
@@ -112,10 +122,8 @@ public class UserServiceImpl implements UserService{
     }
 
     public User findUserByEmail(String email) {
-        return null;
+        return userRepository.findUserByEmail(email);
     }
-
-
 
 
     @Transactional
@@ -129,7 +137,6 @@ public class UserServiceImpl implements UserService{
 
 
     private UserGetDto map(User user) {
-        String password = encodePassword(user.getPassword());
         var dto = new UserGetDto();
         dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
@@ -141,7 +148,6 @@ public class UserServiceImpl implements UserService{
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
         dto.setCountry(user.getCountry());
-        dto.setPassword(password);
         dto.setBio(user.getBio());
         dto.setBirthday(user.getBirthday());
         dto.setSkills(user.getSkills());
@@ -166,7 +172,6 @@ public class UserServiceImpl implements UserService{
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
         dto.setCountry(user.getCountry());
-        dto.setPassword(user.getPassword());
         dto.setBio(user.getBio());
         dto.setBirthday(user.getBirthday());
         dto.setSkills(user.getSkills());
@@ -200,7 +205,6 @@ public class UserServiceImpl implements UserService{
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setCity(dto.getCity());
             user.setCountry(dto.getCountry());
-            user.setPassword(dto.getPassword());
             user.setBio(dto.getBio());
             user.setSkills(dto.getSkills());
             user.setInterests(dto.getInterests());
@@ -234,19 +238,32 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            LOGGER.error("User not found in the database" + email);
-            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
-        }else{
-            userRepository.save(user);
-            ALumniUserDetails userDetails = new ALumniUserDetails(user);
-            LOGGER.info(USER_FOUND_BY_EMAIL + email);
-            return userDetails;
-        }
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
+//        User user = userRepository.findUserByEmail(email);
+//        if (user == null) {
+//            LOGGER.error("User not found in the database" + email);
+//            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+//        }else{
+//            validateLoginAttempt(user);
+//            userRepository.save(user);
+//            ALumniUserDetails userDetails = new ALumniUserDetails(user);
+//            LOGGER.info(USER_FOUND_BY_EMAIL + email);
+//            return userDetails;
+//        }
+//    }
+
+//    private void validateLoginAttempt(User user) {
+//        if(user.isNotLocked()){
+//            if(loginAttemptService.hasExceededMaxAttempts(user.getEmail())){
+//                user.setNotLocked(false);
+//            }else{
+//                user.setNotLocked(true);
+//            }
+//        }else{
+//            loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
+//        }
+//    }
 
     private String getTemporaryProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
@@ -270,4 +287,10 @@ public class UserServiceImpl implements UserService{
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+    @Override
+    public User updateProfileImage(UUID id, MultipartFile profileImage) throws UserNotFoundException {
+        return null;
+    }
+
 }

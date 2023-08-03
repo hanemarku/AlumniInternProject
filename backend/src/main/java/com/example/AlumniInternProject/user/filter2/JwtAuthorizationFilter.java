@@ -1,6 +1,5 @@
 package com.example.AlumniInternProject.user.filter2;
 
-import com.example.AlumniInternProject.user.filter.SecurityConstants;
 import com.example.AlumniInternProject.user.utility.JWTTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.AlumniInternProject.user.filter.SecurityConstants.*;
+import static com.example.AlumniInternProject.constants.SecurityConstants.*;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {

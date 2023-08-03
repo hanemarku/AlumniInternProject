@@ -17,14 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.io.File;
+
+import static com.example.AlumniInternProject.constants.FileConstants.USER_FOLDER;
+
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Alumni Intern Project API", version = "1.0", description = "Alumni Intern Project API v1.0"))
 @EnableWebMvc
+////scan the component AuthenticationFailureListener and AuthenticationSuccessEventListener
+//@ComponentScan(basePackages = {"com.example.AlumniInternProject.user.listener"})
+////scan LoginAttemptService
+//@ComponentScan(basePackages = {"com.example.AlumniInternProject.user"})
+
  // Update the package for entity scan
 public class AlumniInternProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AlumniInternProjectApplication.class, args);
+		new File(USER_FOLDER).mkdirs();
 	}
 
 	@Bean

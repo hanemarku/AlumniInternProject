@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.example.AlumniInternProject.user.filter.SecurityConstants.*;
+import static com.example.AlumniInternProject.constants.SecurityConstants.*;
 import static java.util.Arrays.stream;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -33,7 +33,7 @@ public class JWTTokenProvider {
 
     public String generateJwtToken(ALumniUserDetails userDetails) {
         String[] claims = getClaimsFromUser(userDetails);
-        return JWT.create().withIssuer(GET_ARRAYS_LLC).withAudience(GET_ARRAYS_ADMINISTRATION)
+        return JWT.create().withIssuer(ALUMNI_INTERN_PROJECT).withAudience(GET_ARRAYS_ADMINISTRATION)
                 .withIssuedAt(new Date()).withSubject(userDetails.getUsername()).withArrayClaim(AUTHORITIES, claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(secret.getBytes()));
     
@@ -76,7 +76,7 @@ public class JWTTokenProvider {
         JWTVerifier verifier;
         try {
             Algorithm algorithm = HMAC512(secret);
-            verifier = JWT.require(algorithm).withIssuer(GET_ARRAYS_LLC).build();
+            verifier = JWT.require(algorithm).withIssuer(ALUMNI_INTERN_PROJECT).build();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException(TOKEN_CANNOT_BE_VERIFIED);
         }

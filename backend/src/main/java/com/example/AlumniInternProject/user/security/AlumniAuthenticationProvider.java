@@ -35,18 +35,17 @@ public class AlumniAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String pwd = authentication.getCredentials().toString();
-        List<User> user = (List<User>) userRepository.findUserByEmail(username);
-        if (user.size() > 0) {
-            if (passwordEncoder.matches(pwd, user.get(0).getPassword())) {
-                return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(user.get(0).getRole()));
+        try {
+            User user = userRepository.findUserByEmail(username);
+            if (passwordEncoder.matches(pwd, user.getPassword())) {
+                return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(user.getRole()));
             } else {
                 throw new BadCredentialsException("Invalid password!");
             }
-        }else {
-            throw new BadCredentialsException("No user registered with this details!");
+        } catch (Exception e) {
+            throw new BadCredentialsException("No user registered with this email!", e);
         }
     }
-
     private List<GrantedAuthority> getGrantedAuthorities(Role role) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role.toString()));

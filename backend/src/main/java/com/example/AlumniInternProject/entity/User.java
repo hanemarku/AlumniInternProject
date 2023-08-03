@@ -37,6 +37,8 @@ public class User extends IdBaseEntity implements Serializable {
     @Column(length = 15)
     private String phoneNumber;
 
+    private String token;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_authorities",

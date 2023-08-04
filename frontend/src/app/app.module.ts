@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListUsersComponent } from './user/list-users/list-users.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EmploymentComponent } from './employment/employment.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
+import { AuthenticationService } from './services/authentication-service/authentication.service';
+import { UserDataService } from './services/user-service/user-data.service';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { AuthenticationGuard } from './guard/authentication.guard';
+import { NotificationModule } from './notification.module';
+import { NotificationService } from './services/notification-service/notification.service';
+import { SigninComponent } from './user/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +53,7 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     InterestSearchComponent,
     EmploymentComponent,
     SuccessPageComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +66,11 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     BrowserAnimationsModule,
     NgbModule,
     MatDialogModule,
+    NotificationModule
   ],
-  providers: [],
+  providers: [NotificationService ,AuthenticationGuard ,AuthenticationService, UserDataService, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

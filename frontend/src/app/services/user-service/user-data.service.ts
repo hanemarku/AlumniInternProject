@@ -21,15 +21,7 @@ export interface User{
   bio: string;
 }
 
-export interface UserTest {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  birthday: Date;
-  bio: string;
-  phoneNumber: string;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +61,18 @@ export class UserDataService {
     return this.http.get(this.apiUrl + `/check-email?email=${email}`);
   }
   
+  public addUsersToLocalCache(users: User[]): void {
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  public getUsersFromLocalCache(): User[] {
+    if (localStorage.getItem('users')) {
+      return JSON.parse(localStorage.getItem('users') || '{}');
+    }
+    return [];
+  }
+  
+
   
 }
 

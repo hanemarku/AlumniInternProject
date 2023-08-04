@@ -7,7 +7,7 @@ import { get } from 'jquery';
 import { CityList } from 'src/app/city/city.component';
 import { CityDataService } from 'src/app/services/city-service/city-data.service';
 import { CountryCitySelectorComponent } from 'src/app/country-city-selector/country-city-selector.component';
-import { User, UserDataService, UserTest } from 'src/app/services/user-service/user-data.service';
+import { User, UserDataService } from 'src/app/services/user-service/user-data.service';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -196,12 +196,12 @@ export class SingupComponent implements OnInit {
   submitForm() {
     const firstname = this.msform.get('firstname')?.value;
     const lastname = this.msform.get('lastname')?.value;
+    const email = this.msform.get('email')?.value;
   
     if (this.profilePicFile) {
       const fileData = new FormData();
       fileData.append('profilePicUrl', this.profilePicFile);
-      fileData.append('firstname', firstname);
-      fileData.append('lastname', lastname);
+      fileData.append('email', email);
 
       console.log('File Data:', fileData);
 

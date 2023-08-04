@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.user.security;
 
 import com.example.AlumniInternProject.user.LoginAttemptService;
+
 import com.example.AlumniInternProject.user.filter2.JwtAccessDeniedHandler;
 import com.example.AlumniInternProject.user.filter2.JwtAuthenticationEntryPoint;
 import com.example.AlumniInternProject.user.filter2.JwtAuthorizationFilter;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -61,6 +63,7 @@ public class WebSecurityConfig {
 
     private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
+
     @Autowired
     public void setJwtAccessDeniedHandler(JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
@@ -96,7 +99,9 @@ public class WebSecurityConfig {
                             .accessDeniedHandler(jwtAccessDeniedHandler)
                             .authenticationEntryPoint(jwtAuthenticationEntryPoint())
                     )
+//                    .addFilterBefore(corsFilter(), JwtAuthorizationFilter.class)
                     .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+//                    .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
                     .formLogin(login -> login
                             .usernameParameter("email")
                             .defaultSuccessUrl("/homepage2")
@@ -106,6 +111,7 @@ public class WebSecurityConfig {
                     .authenticationProvider(authenticationProvider());
             return http.build();
         }
+
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

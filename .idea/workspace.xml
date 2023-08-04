@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b514de6-11b0-49ae-983e-7e2d7bc44313" name="Changes" comment="Merged to my brench" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="newMethods" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+  }
+}</component>
+  <component name="GitToolBoxStore">
+    <option name="branchesCleanupHistory">
+      <BranchesCleanupHistory>
+        <option name="history">
+          <list>
+            <BranchCleanupEntry>
+              <option name="deletions">
+                <list>
+                  <BranchDeletion>
+                    <option name="hash" value="b2ceefc06034429c5eb9787384ee64705898a094" />
+                    <option name="name" value="testArmela" />
+                  </BranchDeletion>
+                  <BranchDeletion>
+                    <option name="hash" value="baa00bb8a09669e2117491432be77e573970813d" />
+                    <option name="name" value="CRUDReq" />
+                  </BranchDeletion>
+                  <BranchDeletion>
+                    <option name="hash" value="5ce980dad44e20b97a85489d229a0fa814ccd741" />
+                    <option name="name" value="newEntities" />
+                  </BranchDeletion>
+                </list>
+              </option>
+              <option name="timestamp" value="1687773527002" />
+            </BranchCleanupEntry>
+          </list>
+        </option>
+      </BranchesCleanupHistory>
+    </option>
+    <option name="projectConfigVersion" value="5" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="Adding-entities" />
+                    <option name="lastUsedInstant" value="1689233009" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1689158071" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="newMethods" />
+                    <option name="lastUsedInstant" value="1688713201" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="Events" />
+                    <option name="lastUsedInstant" value="1688304344" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="CRUDReq" />
+                    <option name="lastUsedInstant" value="1687775037" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="40f73f4e-4bb5-436a-b477-cf3d6fcdb648" />
+        <option name="url" value="https://github.com/hanemarku/AlumniInternProject.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2RPrx1523TT0n0H3888Z1uJEXK2" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Adding-entities",
+    "last_opened_file_path": "/home/armela/Desktop/LibraryMenagmentSystem",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "editing.templates",
+    "spring.configuration.checksum": "6f3860e0a61c0e3e3d221c26ac714536",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="AlumniInternProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="AlumniInternProject" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.AlumniInternProject.AlumniInternProjectApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b514de6-11b0-49ae-983e-7e2d7bc44313" name="Changes" comment="" />
+      <created>1687162800725</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1687162800725</updated>
+      <workItem from="1687162801993" duration="2812000" />
+      <workItem from="1687274110908" duration="2682000" />
+      <workItem from="1687327948357" duration="909000" />
+      <workItem from="1687328875174" duration="2380000" />
+      <workItem from="1687333872047" duration="2173000" />
+      <workItem from="1687336669820" duration="10951000" />
+      <workItem from="1687413678794" duration="3203000" />
+      <workItem from="1687417685582" duration="391000" />
+      <workItem from="1687418138659" duration="2226000" />
+      <workItem from="1687420373939" duration="65000" />
+      <workItem from="1687420577169" duration="24387000" />
+      <workItem from="1687716912625" duration="9464000" />
+      <workItem from="1687768976669" duration="568000" />
+      <workItem from="1687769604420" duration="534000" />
+      <workItem from="1687770149909" duration="4928000" />
+      <workItem from="1687802499181" duration="2656000" />
+      <workItem from="1687848092933" duration="7370000" />
+      <workItem from="1687857628932" duration="13628000" />
+      <workItem from="1688019665344" duration="6033000" />
+      <workItem from="1688026317450" duration="7536000" />
+      <workItem from="1688106629911" duration="345000" />
+      <workItem from="1688202601087" duration="1593000" />
+      <workItem from="1688304239209" duration="12581000" />
+      <workItem from="1688332995238" duration="2817000" />
+      <workItem from="1688461563509" duration="4444000" />
+      <workItem from="1688538078969" duration="11132000" />
+      <workItem from="1688625803107" duration="23703000" />
+      <workItem from="1688712046115" duration="36136000" />
+      <workItem from="1688924910438" duration="4499000" />
+      <workItem from="1688970784308" duration="40000" />
+      <workItem from="1688970841641" duration="16170000" />
+      <workItem from="1689018724369" duration="2574000" />
+      <workItem from="1689085690389" duration="13175000" />
+      <workItem from="1689157608600" duration="1947000" />
+      <workItem from="1689195234959" duration="1046000" />
+      <workItem from="1689232284408" duration="9118000" />
+      <workItem from="1689241774780" duration="5420000" />
+      <workItem from="1689492277858" duration="3157000" />
+      <workItem from="1689705938757" duration="7651000" />
+    </task>
+    <task id="LOCAL-00001" summary="First test commit">
+      <created>1687167362523</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1687167362523</updated>
+    </task>
+    <task id="LOCAL-00002" summary="adding Employment and Education entities">
+      <created>1687338337415</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1687338337415</updated>
+    </task>
+    <task id="LOCAL-00003" summary="adding Employment entity">
+      <created>1687338576350</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1687338576350</updated>
+    </task>
+    <task id="LOCAL-00004" summary="CRUD requests for Employment History. The update method needs a few more updates.">
+      <created>1687450528368</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1687450528368</updated>
+    </task>
+    <task id="LOCAL-00005" summary="all var. can be updated">
+      <created>1687502615579</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1687502615579</updated>
+    </task>
+    <task id="LOCAL-00006" summary="draft 1">
+      <created>1687534812206</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1687534812206</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Event classes with the established relationships. Without CRUD or any other method created.">
+      <option name="closed" value="true" />
+      <created>1687768506287</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687768506287</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Letting only cruds">
+      <option name="closed" value="true" />
+      <created>1688572920428</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1688572920428</updated>
+    </task>
+    <task id="LOCAL-00009" summary="The keyword search method added. It only works with full words and not word patterns">
+      <option name="closed" value="true" />
+      <created>1688630482520</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1688630482520</updated>
+    </task>
+    <task id="LOCAL-00010" summary="without the default">
+      <option name="closed" value="true" />
+      <created>1688639488956</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1688639488956</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Adding : &#10;order by date Asc/Desc">
+      <option name="closed" value="true" />
+      <created>1688712543265</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1688712543265</updated>
+    </task>
+    <task id="LOCAL-00012" summary="After resolving the conflict for moving the Events in entity foleder">
+      <option name="closed" value="true" />
+      <created>1688713406171</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1688713406171</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Little changes">
+      <option name="closed" value="true" />
+      <created>1688717343071</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1688717343071</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Adding event specifics and estabishing the relationships with event and cities">
+      <option name="closed" value="true" />
+      <created>1688747797107</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1688747797107</updated>
+    </task>
+    <task id="LOCAL-00015" summary="after resolving it">
+      <option name="closed" value="true" />
+      <created>1688748580491</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1688748580491</updated>
+    </task>
+    <task id="LOCAL-00016" summary="cruds at EventSpecific">
+      <option name="closed" value="true" />
+      <created>1688834342707</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1688834342707</updated>
+    </task>
+    <task id="LOCAL-00017" summary="adding registration and half of email">
+      <option name="closed" value="true" />
+      <created>1689239617606</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1689239617606</updated>
+    </task>
+    <task id="LOCAL-00018" summary="after resolving?!">
+      <option name="closed" value="true" />
+      <created>1689240091936</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1689240091936</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Merged to my brench">
+      <option name="closed" value="true" />
+      <created>1689241039897</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1689241039897</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="0713a98b-0029-4162-8a46-b3703ebd587b" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="0713a98b-0029-4162-8a46-b3703ebd587b">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="CRUDReq" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="First test commit" />
+    <MESSAGE value="adding Employment and Education entities" />
+    <MESSAGE value="adding Employment entity" />
+    <MESSAGE value="CRUD requests for Employment History. The update method needs a few more updates." />
+    <MESSAGE value="all var. can be updated" />
+    <MESSAGE value="draft 1" />
+    <MESSAGE value="Event classes with the established relationships. Without CRUD or any other method created." />
+    <MESSAGE value="minor changes (i think!)" />
+    <MESSAGE value="deleted Events" />
+    <MESSAGE value="Letting only cruds" />
+    <MESSAGE value="The keyword search method added. It only works with full words and not word patterns" />
+    <MESSAGE value="without the default" />
+    <MESSAGE value="Adding : &#10;order by date Asc/Desc" />
+    <MESSAGE value="After resolving the conflict for moving the Events in entity foleder" />
+    <MESSAGE value="Little changes" />
+    <MESSAGE value="Adding event specifics and estabishing the relationships with event and cities" />
+    <MESSAGE value="after resolving it" />
+    <MESSAGE value="cruds at EventSpecific" />
+    <MESSAGE value="adding registration and half of email" />
+    <MESSAGE value="after resolving?!" />
+    <MESSAGE value="Merged to my brench" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged to my brench" />
+  </component>
+</project>

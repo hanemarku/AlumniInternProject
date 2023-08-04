@@ -124,10 +124,10 @@ public class ExceptionHandling implements ErrorController {
                 httpStatus.getReasonPhrase().toUpperCase(), message), httpStatus);
     }
 
-    @RequestMapping(ERROR_PATH)
-    public ResponseEntity<HttpResponse> notFound404() {
-        return createHttpResponse(NOT_FOUND, "There is no mapping for this URL");
-    }
+//    @RequestMapping(ERROR_PATH)
+//    public ResponseEntity<HttpResponse> notFound404() {
+//        return createHttpResponse(NOT_FOUND, "There is no mapping for this URL");
+//    }
 
 
 

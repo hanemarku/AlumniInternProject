@@ -95,7 +95,8 @@ public class UserServiceImpl implements UserService{
 
         var savedUser = userRepository.save(user);
         LOGGER.info("New user was created with password: " + user.getPassword());
-        emailService.sendNewPasswordEmail(userDto.getFirstname(), userDto.getEmail(), password);
+//        emailService.sendNewPasswordEmail(userDto.getFirstname(), userDto.getEmail(), password);
+        emailService.sendNewPasswordEmail(userDto.getFirstname(), password, userDto.getEmail());
 
         return map(savedUser);
     }

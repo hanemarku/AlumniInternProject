@@ -1,15 +1,18 @@
 package com.example.AlumniInternProject.education;
 
 
+import com.example.AlumniInternProject.entity.EducationHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import java.util.UUID;
 
+@CrossOrigin(origins="http://localhost:4200")
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/educations")
+@RequestMapping("/api/v1/educations")
 public class EducationController {
     private final EducationService educationService;
 
@@ -36,5 +39,13 @@ public class EducationController {
     @DeleteMapping("{id}")
     void delete(@PathVariable UUID id){
         educationService.delete(id);
+    }
+    @GetMapping("/timeLine")
+    public List<EducationHistory> historyTimeLine(){
+        return educationService.historyTimeLine();
+    }
+    @GetMapping("/findBy/{keyword}")
+    public List<EducationHistory> findByKeyword(@PathVariable("keyword") String keyword){
+        return educationService.findByKeyword(keyword);
     }
 }

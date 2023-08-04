@@ -6,14 +6,13 @@ import com.example.AlumniInternProject.entity.EmploymentHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EmploymentServiceImplement implements EmploymentHistoryService{
-
+    /*TODO: CREATE A HISTORY TIMELINE*/
     private final EmploymentHistoryRepository employmentHistoryRepository;
 
     private EmploymentGetDto map(EmploymentHistory eh) {
@@ -88,9 +87,38 @@ public class EmploymentServiceImplement implements EmploymentHistoryService{
         var saved = employmentHistoryRepository.save(eh);
         return map(saved);
     }
-
     @Override
     public void delete(UUID id) {
         employmentHistoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<EmploymentHistory> findByKeyword(String keyWord) {
+        List<EmploymentHistory> theList = employmentHistoryRepository.findAll();
+        List<EmploymentHistory> matched = new ArrayList<>();
+
+        for(EmploymentHistory employmentDto : theList){
+            if( employmentDto.getMainActivities().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getCompanyName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getDepartment().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getCity().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getOccupationPosition().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getCountry().getName().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getUser().getFirstname().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getUser().getInterests().contains(keyWord.toLowerCase(Locale.ROOT))
+                || employmentDto.getUser().getLastname().toLowerCase().contains(keyWord.toLowerCase(Locale.ROOT))
+            ){
+                matched.add(employmentDto);
+            }
+        }
+        return matched;
+    }
+
+    @Override
+    public List<EmploymentHistory> historyTimeLine() {
+        List<EmploymentHistory> theEmploymentHistory = employmentHistoryRepository.findAll();
+        List<EmploymentHistory> ordered = theEmploymentHistory.stream().sorted(Comparator.comparing(EmploymentHistory ::getFromDate)).
+                collect(Collectors.toList());
+        return ordered;
     }
 }

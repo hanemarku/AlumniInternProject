@@ -4,13 +4,13 @@ import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.UserEvents;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -32,5 +32,19 @@ public class EventSpecifics extends IdBaseEntity {
     private City city;
 
     @OneToMany(mappedBy = "eventSpecifics")
-    private List<UserEvents> userEvents;
+    @JsonIgnore
+    private Set<UserEvents> userEvents;
+
+ public EventSpecifics(LocalDateTime date,
+                          UUID eventId,
+                          UUID cityId) {
+        this.date = date;
+    }
+    public EventSpecifics(LocalDateTime date,
+                          Events events,
+                          City city) {
+     this.date = date;
+     this.city = city;
+     this.events = events;
+    }
 }

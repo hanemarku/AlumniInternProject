@@ -12,7 +12,7 @@ public class SecurityConstants {
     // 5 days
     public static final long EXPIRATION_TIME = 432000000;
     public static final String TOKEN_PREFIX= "Bearer ";
-    public static final String JWT_TOKEN_HEADER = "JWT-Token";
+    public static final String JWT_TOKEN_HEADER = "jwt-token";
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
     public static final String ALUMNI_INTERN_PROJECT = "Alumni Inten Project";
     public static final String GET_ARRAYS_ADMINISTRATION = "User Management Portal";

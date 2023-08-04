@@ -25,6 +25,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.*;
 
+import static com.example.AlumniInternProject.constants.FileConstants.*;
 import static com.example.AlumniInternProject.constants.SecurityConstants.JWT_TOKEN_HEADER;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -32,12 +33,12 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserController extends ExceptionHandling {
+public class UserController  {
     private final UserService userService;
 
 
-//    @Autowired
-//    private AlumniAuthenticationProvider authenticationProvider;
+    @Autowired
+    private AlumniAuthenticationProvider authenticationProvider;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -48,7 +49,10 @@ public class UserController extends ExceptionHandling {
 //    private final DaoAuthenticationProvider authenticationProvider;
 
     @PostMapping("/signin")
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<User> signin(@RequestBody UserLoginDTO user) throws UserNotFoundException {
+        authenticate(user.getEmail(), user.getPassword());
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
         );
@@ -56,6 +60,7 @@ public class UserController extends ExceptionHandling {
         User loginUser = userService.findUserByEmail(user.getEmail());
         ALumniUserDetails userDetails = new ALumniUserDetails(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userDetails);
+        System.out.println(jwtHeader);
         return new ResponseEntity<>(loginUser,jwtHeader, OK);
 
     }
@@ -71,6 +76,7 @@ public class UserController extends ExceptionHandling {
 
     @GetMapping
     public List<UserGetDto> getAllUsers() {
+        System.out.println("testtttttttt222"    );
         return userService.findAll();
     }
 
@@ -116,18 +122,26 @@ public class UserController extends ExceptionHandling {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("profilePicUrl") MultipartFile multipartFile, @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname) throws IOException {
+    public ResponseEntity<String> uploadFile(@RequestParam("profilePicUrl") MultipartFile multipartFile, @RequestParam("email") String email) throws IOException {
         if (!multipartFile.isEmpty()) {
-            Random random = new Random();
+
             String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            String uniqueIdentifier = firstname + "-" + lastname+ "-" + random.nextInt(100000);
-            String uploadDir = "user-photos/" + uniqueIdentifier;
+            String[] emailParts = email.split("@");
+            if (emailParts.length == 2) {
+                email = emailParts[0];
+            }
+            email = email.replace(".", "_");
+            String uniqueIdentifier = email;
+            String uploadDir = UPLOAD_DIRECTORY + uniqueIdentifier;
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-            String fileUrl = "/user-photos/" + uniqueIdentifier + "/" + filename;
+            String fileUrl = "/"+UPLOAD_DIRECTORY + uniqueIdentifier + "/" + filename;
             return ResponseEntity.ok(fileUrl);
         } else {
-            return ResponseEntity.badRequest().body("No file uploaded");
+//            String temporaryPic = TEMP_UPLOAD_DIRECTORY;
+            String fileUrl = "/" + TEMP_UPLOAD_DIRECTORY + "/" + TEMP_PROFILE_IMAGE_BASE_URL;
+            return ResponseEntity.ok(fileUrl);
+
         }
     }
 
@@ -180,7 +194,7 @@ public class UserController extends ExceptionHandling {
     }
 
     private void authenticate(String email, String password) {
-//        authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 //        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
     }

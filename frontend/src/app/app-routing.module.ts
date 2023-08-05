@@ -6,7 +6,7 @@ import { EducationComponent } from './education/education.component';
 import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { SkillListComponent } from './skill/skill.component';
 import { InterestListComponent } from './interest/interest.component';
-import { SigninComponent } from './signin/signin.component';
+import { SigninComponent } from './user/signin/signin.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent},

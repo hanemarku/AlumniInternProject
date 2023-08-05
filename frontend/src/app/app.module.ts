@@ -26,7 +26,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EmploymentComponent } from './employment/employment.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
-import { SigninComponent } from './signin/signin.component';
+import { SigninComponent } from './user/signin/signin.component';
+import { NotificationModule } from './notification.module';
+import { NotificationService } from './services/notification-service/notification.service';
+import { UserDataService } from './services/user-service/user-data.service';
 
 @NgModule({
   declarations: [
@@ -60,8 +63,10 @@ import { SigninComponent } from './signin/signin.component';
     BrowserAnimationsModule,
     NgbModule,
     MatDialogModule,
+    NotificationModule
   ],
   providers: [],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

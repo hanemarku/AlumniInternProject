@@ -20,6 +20,7 @@ public interface UserService {
     User get(UUID id) throws UserNotFoundException;
     void updateEnabledStatus(UUID id, boolean status);
     boolean isEmailAvailable(String email);
+    User findUserByEmail(String email);
 
     UserDetails loadUserByUsername(String email) throws UserNotFoundException;
 }

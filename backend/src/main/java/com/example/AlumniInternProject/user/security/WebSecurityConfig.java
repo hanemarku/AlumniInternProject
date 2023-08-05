@@ -1,20 +1,13 @@
 package com.example.AlumniInternProject.user.security;
 
-import com.example.AlumniInternProject.user.UserServiceImpl;
-import com.example.AlumniInternProject.user.filter.JWTTokenGeneratorFilter;
-import com.example.AlumniInternProject.user.filter.JWTTokenValidatorFilter;
-import com.example.AlumniInternProject.user.filter.SecurityConstants;
 import com.example.AlumniInternProject.user.filter2.JwtAccessDeniedHandler;
 import com.example.AlumniInternProject.user.filter2.JwtAuthenticationEntryPoint;
 import com.example.AlumniInternProject.user.filter2.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,13 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.matchers;
 
 
 @Configuration

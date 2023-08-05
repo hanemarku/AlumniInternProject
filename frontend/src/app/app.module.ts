@@ -30,6 +30,10 @@ import { SigninComponent } from './user/signin/signin.component';
 import { NotificationModule } from './notification.module';
 import { NotificationService } from './services/notification-service/notification.service';
 import { UserDataService } from './services/user-service/user-data.service';
+import { AuthenticationGuard } from './guard/authentication.guard';
+import { ErrorPageComponent } from './error-page/error-page.component';
+
+
 
 @NgModule({
   declarations: [
@@ -51,6 +55,7 @@ import { UserDataService } from './services/user-service/user-data.service';
     EmploymentComponent,
     SuccessPageComponent,
     SigninComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,7 @@ import { UserDataService } from './services/user-service/user-data.service';
     MatDialogModule,
     NotificationModule
   ],
-  providers: [],
+  providers: [AuthenticationGuard],
   
   bootstrap: [AppComponent]
 })

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { NotificationType } from 'src/app/enum/header-type.enum';
+import { TokenType } from '@angular/compiler';
+import { HeaderType } from 'src/app/enum/notification-type.enum';
 
 @Component({
   selector: 'app-signin',
@@ -51,7 +53,7 @@ export class SigninComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           // Get the 'jwt-token' header if it exists
-          const jwtTokenHeader = response.headers.get('jwt-token');
+          const jwtTokenHeader = response.headers.get(HeaderType.JWT_TOKEN);
           const user = response.body;
         
           if (jwtTokenHeader !== null) {

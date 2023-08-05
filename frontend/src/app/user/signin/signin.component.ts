@@ -52,7 +52,6 @@ export class SigninComponent implements OnInit, OnDestroy {
     this.authenticationService.login(email, password)
       .subscribe(
         response => {
-          // Get the 'jwt-token' header if it exists
           const jwtTokenHeader = response.headers.get(HeaderType.JWT_TOKEN);
           const user = response.body;
         
@@ -61,7 +60,8 @@ export class SigninComponent implements OnInit, OnDestroy {
             this.authenticationService.addUserToLocalStorage(user);
             this.router.navigateByUrl('/users');
             this.showLoading = false;
-            this.notificationService.notify(NotificationType.SUCCESS, `Welcome ${user.firstName} ${user.lastName}`);
+            const userLoggedIn = this.authenticationService.getUserFromLocalStorage();
+            this.notificationService.notify(NotificationType.SUCCESS, `Welcome ${userLoggedIn.firstname} ${userLoggedIn.lastname}`);
           } else {
             this.showLoading = false;
             this.notificationService.notify(NotificationType.ERROR, 'An error occurred. Please try again.');

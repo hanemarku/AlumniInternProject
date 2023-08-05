@@ -22,5 +22,7 @@ public interface UserService {
     boolean isEmailAvailable(String email);
     User findUserByEmail(String email);
 
+
+
     UserDetails loadUserByUsername(String email) throws UserNotFoundException;
 }

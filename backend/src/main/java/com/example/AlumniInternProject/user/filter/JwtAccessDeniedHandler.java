@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.user.filter2;
+package com.example.AlumniInternProject.user.filter;
 
 import com.example.AlumniInternProject.user.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static com.example.AlumniInternProject.user.filter.SecurityConstants.ACCESS_DENIED_MESSAGE;
+import static com.example.AlumniInternProject.constants.SecurityConstants.ACCESS_DENIED_MESSAGE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

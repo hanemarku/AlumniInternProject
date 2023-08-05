@@ -1,6 +1,6 @@
 package com.example.AlumniInternProject.Events.export;
 
-import com.example.AlumniInternProject.user.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.CellStyle;

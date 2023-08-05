@@ -1,7 +1,7 @@
 package com.example.AlumniInternProject.Events.userEvents;
 
 import com.example.AlumniInternProject.entity.UserEvents;
-import com.example.AlumniInternProject.user.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,31 +1,24 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
-import com.example.AlumniInternProject.education.EducationImpl;
 import com.example.AlumniInternProject.entity.*;
 import com.example.AlumniInternProject.enumerations.Role;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import com.example.AlumniInternProject.user.DTOs.UserDTO;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
-import com.sun.tools.jconsole.JConsoleContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.mail.MessagingException;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -50,13 +43,13 @@ public class UserServiceImpl implements UserService{
 //    private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public UserGetDto save(UserDTO userDto) throws UserNotFoundException {
-//        validateNewEmail(StringUtils.EMPTY, userDto.getEmail());
+    public UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException {
+        validateNewEmail(StringUtils.EMPTY, userDto.getEmail());
         String password = encodePassword(userDto.getPassword());
 
         Set<Authority> authorities = Role.ROLE_USER.getAuthorities().stream()
                 .map(Authority::new)
-                .filter(authority -> !authorityRepository.existsByName(authority.getName())) // Check if authority with the same name exists
+                .filter(authority -> !authorityRepository.existsByName(authority.getName()))
                 .collect(Collectors.toSet());
 
 

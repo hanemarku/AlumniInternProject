@@ -1,8 +1,8 @@
 package com.example.AlumniInternProject.user.security;
 
-import com.example.AlumniInternProject.user.filter2.JwtAccessDeniedHandler;
-import com.example.AlumniInternProject.user.filter2.JwtAuthenticationEntryPoint;
-import com.example.AlumniInternProject.user.filter2.JwtAuthorizationFilter;
+import com.example.AlumniInternProject.user.filter.JwtAccessDeniedHandler;
+import com.example.AlumniInternProject.user.filter.JwtAuthenticationEntryPoint;
+import com.example.AlumniInternProject.user.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -5,20 +5,18 @@ import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.ExceptionHandling;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import com.example.AlumniInternProject.user.DTOs.UserDTO;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import com.example.AlumniInternProject.user.security.AlumniAuthenticationProvider;
 import com.example.AlumniInternProject.user.utility.JWTTokenProvider;
 import com.example.AlumniInternProject.user.utility.UserLoginDTO;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,12 +24,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import static org.springframework.http.HttpStatus.OK;
 
 import java.io.IOException;
 import java.util.*;
 
-import static com.example.AlumniInternProject.user.filter.SecurityConstants.JWT_TOKEN_HEADER;
+import static com.example.AlumniInternProject.constants.SecurityConstants.JWT_TOKEN_HEADER;
 
 //@CrossOrigin(origins="http://localhost:4200")
 @CrossOrigin(exposedHeaders = "jwt-token")

@@ -4,6 +4,8 @@ import com.example.AlumniInternProject.entity.Country;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import com.example.AlumniInternProject.user.DTOs.UserDTO;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.AlumniInternProject.user;
+package com.example.AlumniInternProject.user.DTOs;
 
 import com.example.AlumniInternProject.entity.*;
 import lombok.Getter;

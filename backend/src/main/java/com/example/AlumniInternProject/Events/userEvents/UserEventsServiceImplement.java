@@ -11,7 +11,7 @@ import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.MembershipRole;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
-import com.example.AlumniInternProject.user.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

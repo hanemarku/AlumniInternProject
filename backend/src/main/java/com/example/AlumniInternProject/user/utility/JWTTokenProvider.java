@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.example.AlumniInternProject.user.filter.SecurityConstants.*;
+import static com.example.AlumniInternProject.constants.SecurityConstants.*;
 import static java.util.Arrays.stream;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;

@@ -13,7 +13,6 @@ public class HttpResponse {
     private String reason;
     private String message;
 
-    // Constructor never used. Can be (and should be) deleted
     public HttpResponse() {}
 
     public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message) {

@@ -5,7 +5,7 @@ import com.example.AlumniInternProject.Events.export.EventExcelExporter;
 import com.example.AlumniInternProject.Events.export.EventPdfExporter;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
-import com.example.AlumniInternProject.user.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -26,6 +26,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EmploymentComponent } from './employment/employment.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
+import { SigninComponent } from './signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     InterestSearchComponent,
     EmploymentComponent,
     SuccessPageComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,7 +17,6 @@ export class NotLoggedInGuard implements CanActivate {
     if (!this.authenticationService.isLoggedIn()) {
       return true;
     } else {
-      // User is already logged in, redirect to the error page
       this.router.navigate(['/error-page']);
       return false;
     }

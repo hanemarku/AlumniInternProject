@@ -10,14 +10,18 @@ import { SigninComponent } from './user/signin/signin.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { HeaderComponent } from './header/header.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
   {path: 'skills', component: SkillListComponent, canActivate: [AuthenticationGuard] },
   {path: 'interests', component: InterestListComponent, canActivate: [AuthenticationGuard]},
   {path: 'signup', component: SingupComponent, canActivate: [NotLoggedInGuard]},
+  {path: 'homepage', component: HomepageComponent, canActivate: [AuthenticationGuard]},
   {path: 'signin', component: SigninComponent, canActivate: [NotLoggedInGuard]},
   {path: 'error-page', component: ErrorPageComponent},
+  {path: 'header', component: HeaderComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ];

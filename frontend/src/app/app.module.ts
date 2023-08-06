@@ -32,6 +32,8 @@ import { NotificationService } from './services/notification-service/notificatio
 import { UserDataService } from './services/user-service/user-data.service';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { HeaderComponent } from './header/header.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 
@@ -56,6 +58,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     SuccessPageComponent,
     SigninComponent,
     ErrorPageComponent,
+    HeaderComponent,
+    HomepageComponent,
   ],
   imports: [
     BrowserModule,

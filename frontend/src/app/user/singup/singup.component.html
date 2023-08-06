@@ -1,11 +1,16 @@
 <div class="container mt-5">
-  <div *ngIf="messageService.getErrorMessage()" class="alert alert-danger">
+  <!-- <div *ngIf="messageService.getErrorMessage()" class="alert alert-danger">
     {{ messageService.getErrorMessage() }}
-  </div>
+  </div> -->
 
-  <div *ngIf="messageService.getSuccessMessage()" class="alert alert-success">
+  <!-- <div *ngIf="messageService.getSuccessMessage()" class="alert alert-success">
     {{ messageService.getSuccessMessage() }}
-  </div>
+  </div> -->
+  <!-- <div class="row mt-3">
+    <div class="col-md-12 text-center">
+      <p>Already have an account? <a routerLink="/signin">Sign in</a></p>
+    </div>
+  </div> -->
   
     <div class="row justify-content-center">
       <div class="col-md-9" [@fieldsetAnimation]="currentStep">
@@ -102,7 +107,12 @@
       
             <div class="row mt-3">
                 <div class="col-md-6 text-center">
-                  <button
+                    <div class="row mt-3 previous action-button-previous ">
+                      <div class="col-md-12 text-center">
+                        <p>Already have an account? <a routerLink="/signin">Sign in</a></p>
+                      </div>
+                    </div>
+                  <!-- <button
                     *ngIf="currentStep !== 0"
                     type="button"
                     (click)="previousStep()"
@@ -110,7 +120,7 @@
                     disabled=true
                   >
                     Previous
-                  </button>
+                  </button> -->
                 </div>
                 <div class="col-md-6 text-center">
                   <button

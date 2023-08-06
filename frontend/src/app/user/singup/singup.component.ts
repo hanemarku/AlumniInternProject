@@ -19,6 +19,8 @@ import { Skill } from 'src/app/skill-search/skill-search.component';
 import { Interest } from 'src/app/interest-search/interest-search.component';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/messages/message.service';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { NotificationType } from 'src/app/enum/header-type.enum';
 
 
 @Component({
@@ -108,7 +110,8 @@ export class SingupComponent implements OnInit {
     private cityDataService: CityDataService,
     private userDataService: UserDataService,
     private router: Router,
-    public messageService: MessageService) {}
+    public messageService: MessageService,
+    private notificationSerivce: NotificationService) {}
 
   ngOnInit() {
 
@@ -194,14 +197,15 @@ export class SingupComponent implements OnInit {
 
 
   submitForm() {
-    const firstname = this.msform.get('firstname')?.value;
-    const lastname = this.msform.get('lastname')?.value;
+    // const firstname = this.msform.get('firstname')?.value;
+    // const lastname = this.msform.get('lastname')?.value;
+    const email = this.msform.get('email')?.value;
   
     if (this.profilePicFile) {
       const fileData = new FormData();
       fileData.append('profilePicUrl', this.profilePicFile);
-      fileData.append('firstname', firstname);
-      fileData.append('lastname', lastname);
+      fileData.append('email', email);
+      // fileData.append('lastname', lastname);
 
       console.log('File Data:', fileData);
 
@@ -212,11 +216,13 @@ export class SingupComponent implements OnInit {
           this.submitUserData(response);
         },
         (error) => {
+          this.notificationSerivce.notify(NotificationType.ERROR, "Something went wrong. Unable to upload file");
           console.error('Error uploading file:', error);
         }
       );
     } else {
       console.log('No file selected');
+      this.notificationSerivce.notify(NotificationType.ERROR, "Please select a profile picture");
     }
   }
   
@@ -250,11 +256,15 @@ export class SingupComponent implements OnInit {
     this.userDataService.createUser(userData).subscribe(
       (response) => {
         console.log('User created successfully:', response);
-        this.messageService.showSuccessMessage('Signup successful!');
+        this.notificationSerivce.notify(NotificationType.SUCCESS ,'Signup successful!');
+        this.router.navigate(['/signin']);
+        
+        this.messageService.showSuccessMessage('Signup successful! Now you can login.');
         // this.router.navigate(['/success-page']);
       },
       (error) => {
         console.error('Error creating user:', error);
+        this.notificationSerivce.notify(NotificationType.ERROR ,'Signup failed!');
         this.messageService.showErrorMessage('Signup failed. Please try again. Open console for more details.');
       }
     );

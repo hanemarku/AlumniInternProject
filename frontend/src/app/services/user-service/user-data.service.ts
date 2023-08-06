@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserList } from 'src/app/user/list-users/list-users.component';
 import { Education } from '../education-service/education-data.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 
 export interface User{
@@ -35,9 +37,12 @@ export interface UserTest {
   providedIn: 'root'
 })
 export class UserDataService {
+  private baseUrl = 'http://localhost:8080/api/v1/users';
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+
   ) { }
 
   listAllUsers(){
@@ -69,6 +74,15 @@ export class UserDataService {
     return this.http.get(this.apiUrl + `/check-email?email=${email}`);
   }
   
+  getUserProfilePic(email: string): Observable<SafeUrl> {
+    const backendImageUrl = `${this.baseUrl}/get-profile-pic?email=${email}`;
+    return this.http.get(backendImageUrl, { responseType: 'blob' }).pipe(
+      map((blob: Blob) => {
+        const objectURL = URL.createObjectURL(blob);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
+  }
   
 }
 

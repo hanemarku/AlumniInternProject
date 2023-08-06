@@ -30,7 +30,6 @@ public class UserDTO {
     private Set<EmploymentHistory> employmentHistories;
     private Set<EducationHistory> educationHistories;
     private Set<Authority> authorities = new HashSet<>();
-
     private Role role;
 
     public UserDTO() {

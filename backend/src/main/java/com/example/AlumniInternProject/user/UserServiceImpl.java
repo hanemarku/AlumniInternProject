@@ -5,8 +5,7 @@ import com.example.AlumniInternProject.entity.*;
 import com.example.AlumniInternProject.enumerations.Role;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
-import com.example.AlumniInternProject.user.DTOs.UserDTO;
-import com.example.AlumniInternProject.user.DTOs.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.*;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +51,15 @@ public class UserServiceImpl implements UserService{
                 .filter(authority -> !authorityRepository.existsByName(authority.getName()))
                 .collect(Collectors.toSet());
 
+//        String profileImageUrl = "";
+//
+//            if(userDto.getProfilePicUrl() == null) {
+//                profileImageUrl = getTemporaryProfileImageUrl(userDto.getFirstname());
+//            }else {
+//                profileImageUrl = generateRrofileImageUrl(userDto.getEmail());
+//            }
+
+
 
         authorities.forEach(authorityRepository::save);
         authorities = authorityRepository.findAll().stream().collect(Collectors.toSet());
@@ -80,7 +88,6 @@ public class UserServiceImpl implements UserService{
 //                true
         );
 
-
         userDto.setAuthorities(authorities);
         user.setAuthorities(authorities);
         userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
@@ -93,6 +100,7 @@ public class UserServiceImpl implements UserService{
 
         return map(savedUser);
     }
+
 
 
     private User validateNewEmail(String currentEmail, String newEmail) throws UserNotFoundException, EmailExistException {
@@ -120,6 +128,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String generateRrofileImageUrl(String email) {
+        String[] emailParts = email.split("@");
+        if (emailParts.length == 2) {
+            email = emailParts[0];
+        }
+        email = email.replace(".", "_");
+        return email;
+    }
+
+    @Override
+    public String fixProfileImagePath(String profileImagePath) {
+        String forwardSlashesPath = profileImagePath.replace("\\", "/");
+        int startIndex = forwardSlashesPath.indexOf("user-photos");
+        if (startIndex == -1) {
+            return forwardSlashesPath;
+        }
+        String relativePath = forwardSlashesPath.substring(startIndex);
+        return relativePath;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
         User user = userRepository.findUserByEmail(email);
         if(user == null) {
@@ -136,16 +165,16 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public List<UserGetDto> findAll() {
+    public List<UsersListingDTO> findAll() {
         List<User> users = userRepository.findAll();
+
         return users.stream()
                 .map(user -> mapForListing(user))
                 .collect(Collectors.toList());
     }
 
-
-    private UserGetDto map(User user) {
-        var dto = new UserGetDto();
+    private UsersListingDTO mapForListing(User user) {
+        var dto = new UsersListingDTO();
         dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
@@ -153,6 +182,45 @@ public class UserServiceImpl implements UserService{
         dto.setEnabled(user.isEnabled());
         dto.setBirthday(user.getBirthday());
         dto.setProfilePicUrl(user.getProfilePicUrl());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setCity(user.getCity());
+        dto.setCountry(user.getCountry());
+        dto.setBio(user.getBio());
+        dto.setBirthday(user.getBirthday());
+        dto.setSkills(user.getSkills());
+        dto.setInterests(user.getInterests());
+        dto.setRole(user.getRole());
+        dto.setAuthorities(user.getAuthorities());
+        List<EducationHistoryDTO> educationHistories = user.getEducationHistories().stream()
+                .map(e -> new EducationHistoryDTO(e.getInstitutionName(), e.getFieldOfQualification(), e.getFieldOfStudy(), e.getStartDate(), e.getEndDate(), e.getFinalGrade(), e.getWebsite(), e.getCity(), e.getCountry()))
+                .collect(Collectors.toList());
+        dto.setEducationHistories(educationHistories);
+
+
+        List<EmploymentHistoryDTO> employmentHistories = user.getEmploymentHistories().stream()
+                .map(e -> new EmploymentHistoryDTO(e.getMainActivities(), e.getOccupationPosition(), e.getCompanyName(), e.getDepartment(), e.isOngoing(), e.getFromDate(), e.getToDate(), e.getCity(), e.getCountry(), e.getSkills()))
+                .collect(Collectors.toList());
+        dto.setEmploymentHistories(employmentHistories);
+        return dto;
+    }
+
+
+    private UserGetDto map(User user) {
+        String profileImageUrl = "";
+
+        if(user.getProfilePicUrl() == null) {
+            profileImageUrl = getTemporaryProfileImageUrl(user.getFirstname());
+        }else {
+            profileImageUrl = generateRrofileImageUrl(user.getEmail());
+        }
+        var dto = new UserGetDto();
+        dto.setId(user.getId());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setEmail(user.getEmail());
+        dto.setEnabled(user.isEnabled());
+        dto.setBirthday(user.getBirthday());
+        dto.setProfilePicUrl(profileImageUrl);
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
         dto.setCountry(user.getCountry());
@@ -168,28 +236,9 @@ public class UserServiceImpl implements UserService{
         return dto;
     }
 
-    private UserGetDto mapForListing(User user) {
-        var dto = new UserGetDto();
-        dto.setId(user.getId());
-        dto.setFirstname(user.getFirstname());
-        dto.setLastname(user.getLastname());
-        dto.setEmail(user.getEmail());
-        dto.setEnabled(user.isEnabled());
-        dto.setBirthday(user.getBirthday());
-        dto.setProfilePicUrl(user.getProfilePicUrl());
-        dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setCity(user.getCity());
-        dto.setCountry(user.getCountry());
-        dto.setBio(user.getBio());
-        dto.setBirthday(user.getBirthday());
-        dto.setSkills(user.getSkills());
-        dto.setInterests(user.getInterests());
-        dto.setRole(user.getRole());
-        dto.setAuthorities(user.getAuthorities());
-//        dto.setEducationHistories(user.getEducationHistories());
-//        dto.setEmploymentHistories(user.getEmploymentHistories());
-        return dto;
-    }
+
+
+
 
     public List<Country> listAllCountries() {
         return (List<Country>) countryRepository.findAll();

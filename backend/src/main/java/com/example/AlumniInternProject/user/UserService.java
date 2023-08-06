@@ -6,6 +6,7 @@ import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import com.example.AlumniInternProject.user.DTOs.UserDTO;
 import com.example.AlumniInternProject.user.DTOs.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UsersListingDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 public interface UserService {
     UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException;
-    List<UserGetDto> findAll();
+    List<UsersListingDTO> findAll();
     User findById(UUID id);
     UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException;
     void delete(UUID id) throws UserNotFoundException;
@@ -23,6 +24,10 @@ public interface UserService {
     void updateEnabledStatus(UUID id, boolean status);
     boolean isEmailAvailable(String email);
     User findUserByEmail(String email);
+
+    String generateRrofileImageUrl(String email);
+
+    String fixProfileImagePath(String profileImagePath);
 
 
 

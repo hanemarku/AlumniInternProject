@@ -12,6 +12,7 @@ import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'signup', component: SingupComponent, canActivate: [NotLoggedInGuard]},
   {path: 'homepage', component: HomepageComponent, canActivate: [AuthenticationGuard]},
   {path: 'signin', component: SigninComponent, canActivate: [NotLoggedInGuard]},
+  {path: 'profile', component: UserProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},

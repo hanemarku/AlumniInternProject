@@ -61,6 +61,7 @@ export class ListUsersComponent implements OnInit{
       this.userService.listAllUsers().subscribe(
         async (users: UserList[]) => {
           for (const user of users) {
+
             console.log("user-> " + user.email);
             console.log("user education-> " + user.educationHistories);
             this.userService.getUserProfilePic(user.email).subscribe(

@@ -34,6 +34,8 @@ import { AuthenticationGuard } from './guard/authentication.guard';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 
@@ -60,6 +62,8 @@ import { HomepageComponent } from './homepage/homepage.component';
     ErrorPageComponent,
     HeaderComponent,
     HomepageComponent,
+    UserProfileComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

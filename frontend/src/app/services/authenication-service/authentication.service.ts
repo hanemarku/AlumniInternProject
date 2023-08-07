@@ -88,6 +88,7 @@ export class AuthenticationService {
 
   public addUserToLocalStorage(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
+    this.loggedInEmail = user.email;
   }
 
   public getUserFromLocalStorage(): User {

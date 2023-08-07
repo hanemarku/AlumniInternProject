@@ -5,6 +5,8 @@ import { UserList } from 'src/app/user/list-users/list-users.component';
 import { Education } from '../education-service/education-data.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
+import { Employment } from '../employment-service/employment-data.service';
+import { HttpParams } from '@angular/common/http';
 
 
 export interface User{
@@ -18,7 +20,8 @@ export interface User{
   skills: string[];
   interests: string[];
   educationHistories: Education[];
-  profilePicUrl: string;
+  employmentHistories: Employment[];
+  profilePicUrl: SafeUrl | string;
   phoneNumber: string;
   bio: string;
 }
@@ -47,6 +50,11 @@ export class UserDataService {
 
   listAllUsers(){
     return this.http.get<UserList[]>("http://localhost:8080/api/v1/users");
+  }
+
+  getUserByEmail(email: string) {
+    const params = new HttpParams().set('email', email); // Create query parameter
+    return this.http.get<UserList>(`http://localhost:8080/api/v1/users/email`, { params });
   }
 
   updateEnabledStatus(id: string, status: boolean): Observable<any> {

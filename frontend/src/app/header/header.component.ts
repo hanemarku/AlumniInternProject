@@ -37,29 +37,33 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.userEmail = JSON.parse(localStorage.getItem('user') || '{}').email;
-    this.firstname = JSON.parse(localStorage.getItem('user') || '{}').firstname;
-    this.lastname = JSON.parse(localStorage.getItem('user') || '{}').lastname;
-    console.log("email + " + this.userEmail)
-    var email = this.userEmail;
-
-    this.userService.getUserProfilePic(email).subscribe(
-      (url: SafeUrl) => {
-        this.profilePicUrl = url;
-      },
-      (error) => {
-        console.error('Error fetching profile picture:', error);
-      }
-    );
-    
-
     if (this.authenticationService.isLoggedIn()) {
       console.log("User is logged in");
       this.loggedIn = true;
+      this.userEmail = JSON.parse(localStorage.getItem('user') || '{}').email;
+      this.firstname = JSON.parse(localStorage.getItem('user') || '{}').firstname;
+      this.lastname = JSON.parse(localStorage.getItem('user') || '{}').lastname;
+      console.log("email + " + this.userEmail)
+      var email = this.userEmail;
+  
+      this.userService.getUserProfilePic(email).subscribe(
+        (url: SafeUrl) => {
+          this.profilePicUrl = url;
+        },
+        (error) => {
+          console.error('Error fetching profile picture:', error);
+        }
+      );
+      
     } else {
       console.log("User is not logged in");
       this.loggedIn = false;
     }
+  }
+
+  signOut(): void {
+    this.authenticationService.logout();
+
   }
 
 

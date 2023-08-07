@@ -1,13 +1,12 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
+import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.ExceptionHandling;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
-import com.example.AlumniInternProject.user.DTOs.UserDTO;
-import com.example.AlumniInternProject.user.DTOs.UserGetDto;
-import com.example.AlumniInternProject.user.DTOs.UsersListingDTO;
+import com.example.AlumniInternProject.user.DTOs.*;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import com.example.AlumniInternProject.user.security.AlumniAuthenticationProvider;
 import com.example.AlumniInternProject.user.utility.JWTTokenProvider;
@@ -32,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.AlumniInternProject.constants.FileConstants.*;
 import static com.example.AlumniInternProject.constants.SecurityConstants.JWT_TOKEN_HEADER;
@@ -209,15 +209,12 @@ public class UserController extends ExceptionHandling {
     }
 
 
-    @GetMapping("/login")
-    public String viewLoginPage(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
-            return "login";
-        }
-        return "redirect:/";
 
+    @GetMapping("/email")
+    public UsersListingDTO getUserByEmail(@RequestParam("email") String email) throws UserNotFoundException {
+        return userService.findByEmail(email);
     }
+
 
     private void authenticate(String email, String password) {
         authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(email, password));

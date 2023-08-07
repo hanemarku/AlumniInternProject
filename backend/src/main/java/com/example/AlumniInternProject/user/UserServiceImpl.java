@@ -163,6 +163,15 @@ public class UserServiceImpl implements UserService{
     }
 
 
+    @Override
+    public UsersListingDTO findByEmail(String email) throws UserNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+//                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
+        return mapForListing(user);
+    }
+
+
     @Transactional
     @Override
     public List<UsersListingDTO> findAll() {
@@ -173,9 +182,9 @@ public class UserServiceImpl implements UserService{
                 .collect(Collectors.toList());
     }
 
+
     private UsersListingDTO mapForListing(User user) {
-        var dto = new UsersListingDTO();
-        dto.setId(user.getId());
+        var dto = new UsersListingDTO();;
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());

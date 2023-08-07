@@ -11,11 +11,11 @@ import java.util.UUID;
 
 @RestController
 public class Homepage {
-    @GetMapping("homepage2")
-    public String helloWorld2(@AuthenticationPrincipal ALumniUserDetails loggedUser) {
-        return "Hello  " + loggedUser.getUsername()  + " " + loggedUser.getUser().getId() + " You are at homepage2";
-
-    }
+//    @GetMapping("homepage2")
+//    public String helloWorld2(@AuthenticationPrincipal ALumniUserDetails loggedUser) {
+//        return "Hello  " + loggedUser.getUsername()  + " " + loggedUser.getUser().getId() + " You are at homepage2";
+//
+//    }
 
     @GetMapping("homepage")
     public String helloWorld() throws UserNotFoundException {

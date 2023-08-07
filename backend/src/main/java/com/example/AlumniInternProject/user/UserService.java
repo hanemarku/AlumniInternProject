@@ -29,6 +29,8 @@ public interface UserService {
 
     String fixProfileImagePath(String profileImagePath);
 
+    UsersListingDTO findByEmail(String email) throws UserNotFoundException;
+
 
 
     UserDetails loadUserByUsername(String email) throws UserNotFoundException;

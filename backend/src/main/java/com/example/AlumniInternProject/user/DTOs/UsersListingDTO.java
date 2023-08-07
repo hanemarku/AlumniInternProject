@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 
-public class UsersListingDTO extends IdBaseEntity {
+public class UsersListingDTO {
     private String firstname;
     private String lastname;
     private String email;

@@ -26,6 +26,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EmploymentComponent } from './employment/employment.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
+import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     InterestSearchComponent,
     EmploymentComponent,
     SuccessPageComponent,
+    UpdateCountryDialogComponent,
   ],
   imports: [
     BrowserModule,

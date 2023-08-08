@@ -6,6 +6,7 @@ import { EducationComponent } from './education/education.component';
 import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { SkillListComponent } from './skill/skill.component';
 import { InterestListComponent } from './interest/interest.component';
+<<<<<<< HEAD
 import { SigninComponent } from './user/signin/signin.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';
@@ -13,6 +14,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -24,9 +26,10 @@ const routes: Routes = [
   {path: 'profile', component: UserProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
+  {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

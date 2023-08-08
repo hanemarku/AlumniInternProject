@@ -36,8 +36,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
-
-
+import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,12 +57,16 @@ import { FooterComponent } from './footer/footer.component';
     InterestSearchComponent,
     EmploymentComponent,
     SuccessPageComponent,
+<<<<<<< HEAD
     SigninComponent,
     ErrorPageComponent,
     HeaderComponent,
     HomepageComponent,
     UserProfileComponent,
     FooterComponent,
+=======
+    UpdateCountryDialogComponent,
+>>>>>>> feature-countries-added
   ],
   imports: [
     BrowserModule,

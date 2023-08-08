@@ -57,16 +57,14 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
     InterestSearchComponent,
     EmploymentComponent,
     SuccessPageComponent,
-<<<<<<< HEAD
     SigninComponent,
     ErrorPageComponent,
     HeaderComponent,
     HomepageComponent,
     UserProfileComponent,
     FooterComponent,
-=======
     UpdateCountryDialogComponent,
->>>>>>> feature-countries-added
+
   ],
   imports: [
     BrowserModule,

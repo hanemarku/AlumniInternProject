@@ -6,7 +6,6 @@ import { EducationComponent } from './education/education.component';
 import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { SkillListComponent } from './skill/skill.component';
 import { InterestListComponent } from './interest/interest.component';
-<<<<<<< HEAD
 import { SigninComponent } from './user/signin/signin.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';

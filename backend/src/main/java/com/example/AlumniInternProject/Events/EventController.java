@@ -1,9 +1,7 @@
 package com.example.AlumniInternProject.Events;
 
-import ch.qos.logback.core.model.Model;
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
-import com.example.AlumniInternProject.Events.email.Email;
 import com.example.AlumniInternProject.Events.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/events")
+@CrossOrigin("http://localhost:4200/events")
 public class EventController {
     private final EventsService eventsService;
     private final EmailService emailService;

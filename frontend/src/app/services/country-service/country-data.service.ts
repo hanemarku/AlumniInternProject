@@ -13,6 +13,20 @@ export class CountryDataService {
   ) { }
 
   listAllCountries(){
-    return this.http.get<CountryList[]>("http://localhost:8080/api/v1/countries");
+    return this.http.get<any>("http://localhost:8080/api/v1/countries");
   }
+
+  saveCountry(country: any){
+    return this.http.post(`http://localhost:8080/api/v1/countries`, country);
+  }
+
+  deleteCountry(countryId: string){
+    return this.http.delete(`http://localhost:8080/api/v1/countries/${countryId}`);
+  }
+
+  updateCountry(countryId: string, updatedCountry: any){
+    return this.http.patch(`http://localhost:8080/api/v1/countries/${countryId}`, updatedCountry);
+  } 
+
+
 }

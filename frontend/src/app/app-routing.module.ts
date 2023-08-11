@@ -15,6 +15,8 @@ import { HeaderComponent } from './header/header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SettingsComponent } from './setting-folder/settings/settings.component';
 import { MessageComponent } from './message/message.component';
+import { CountryComponent } from './country/country.component';
+
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -28,9 +30,10 @@ const routes: Routes = [
   {path: 'settings', component: SettingsComponent},
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
+  {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

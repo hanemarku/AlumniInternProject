@@ -43,6 +43,7 @@ import { UserVerificationTemplateComponent } from './setting-folder/user-verific
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AccountVerificationComponent } from './account-verification/account-verification.component';
 import { MessageComponent } from './message/message.component';
+import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 
 
 @NgModule({
@@ -76,6 +77,8 @@ import { MessageComponent } from './message/message.component';
     UserVerificationTemplateComponent,
     AccountVerificationComponent,
     MessageComponent,
+    UpdateCountryDialogComponent,
+
   ],
   imports: [
     BrowserModule,

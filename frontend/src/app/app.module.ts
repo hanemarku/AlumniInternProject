@@ -44,6 +44,7 @@ import { UserVerificationTemplateComponent } from './setting-folder/user-verific
 import { AccountVerificationComponent } from './account-verification/account-verification.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 
 
 
@@ -79,6 +80,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AccountVerificationComponent,
     MessageComponent,
     UpdateCountryDialogComponent,
+    ResetPasswordComponent,
 
   ],
   imports: [

@@ -13,6 +13,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MessageComponent } from './message/message.component';
+import { SettingsComponent } from './setting-folder/settings/settings.component';
 import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
   {path: 'homepage', component: HomepageComponent, canActivate: [AuthenticationGuard]},
   {path: 'signin', component: SigninComponent, canActivate: [NotLoggedInGuard]},
   {path: 'profile', component: UserProfileComponent, canActivate: [AuthenticationGuard]},
+  {path: 'message', component: MessageComponent},
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthenticationGuard]},
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},

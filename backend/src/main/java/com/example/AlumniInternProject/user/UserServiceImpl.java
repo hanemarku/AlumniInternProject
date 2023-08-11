@@ -1,5 +1,7 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
+import com.example.AlumniInternProject.Verfication.VerificationTokenService;
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
 import com.example.AlumniInternProject.entity.*;
 import com.example.AlumniInternProject.enumerations.Role;
@@ -11,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService{
     private final CountryRepository countryRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
+    private final EmailService emailService;
+    private final VerificationTokenService verificationTokenService;
 //    private final EmailService emailService;
 //    private LoginAttemptService loginAttemptService;
 
@@ -51,25 +57,17 @@ public class UserServiceImpl implements UserService{
                 .filter(authority -> !authorityRepository.existsByName(authority.getName()))
                 .collect(Collectors.toSet());
 
-//        String profileImageUrl = "";
-//
-//            if(userDto.getProfilePicUrl() == null) {
-//                profileImageUrl = getTemporaryProfileImageUrl(userDto.getFirstname());
-//            }else {
-//                profileImageUrl = generateRrofileImageUrl(userDto.getEmail());
-//            }
-
-
-
         authorities.forEach(authorityRepository::save);
         authorities = authorityRepository.findAll().stream().collect(Collectors.toSet());
         authorities = authorities.stream().filter(authority -> Role.ROLE_USER.getAuthorities().contains(authority.getName())).collect(Collectors.toSet());
+
+        String randomCode = RandomString.make(64);
 
         var user = new User(
                 userDto.getFirstname(),
                 userDto.getLastname(),
                 userDto.getEmail(),
-                true,
+                false,
                 userDto.getBirthday(),
                 userDto.getProfilePicUrl(),
 //                getTemporaryProfileImageUrl(userDto.getFirstname()),
@@ -83,7 +81,8 @@ public class UserServiceImpl implements UserService{
                 Role.ROLE_USER,
                 userDto.getEmploymentHistories(),
                 userDto.getEducationHistories(),
-                userDto.getAuthorities()
+                userDto.getAuthorities(),
+                userDto.getVerificationCode()
 //                true,
 //                true
         );
@@ -92,12 +91,22 @@ public class UserServiceImpl implements UserService{
         user.setAuthorities(authorities);
         userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
         userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
+        userDto.setVerificationCode(randomCode);
 
         var savedUser = userRepository.save(user);
         LOGGER.info("New user was created with password: " + user.getPassword());
 //        emailService.sendNewPasswordEmail(userDto.getFirstname(), userDto.getEmail(), password);
 //        emailService.sendNewPasswordEmail(userDto.getFirstname(), password, userDto.getEmail());
 
+        try{
+            String siteURL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+            System.out.println(siteURL);
+            String token = UUID.randomUUID().toString();
+            verificationTokenService.save(savedUser , token, VerificationType.EMAIL_VERIFICATION);
+            emailService.sendVerificationEmail(savedUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return map(savedUser);
     }
 
@@ -184,7 +193,8 @@ public class UserServiceImpl implements UserService{
 
 
     private UsersListingDTO mapForListing(User user) {
-        var dto = new UsersListingDTO();;
+        var dto = new UsersListingDTO();
+        dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
@@ -241,6 +251,7 @@ public class UserServiceImpl implements UserService{
         dto.setAuthorities(user.getAuthorities());
         dto.setEducationHistories(user.getEducationHistories());
         dto.setEmploymentHistories(user.getEmploymentHistories());
+        dto.setVerificationCode(user.getVerificationCode());
 
         return dto;
     }

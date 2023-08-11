@@ -36,7 +36,16 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
+import { MessageComponent } from './message/message.component';
+import { SettingsComponent } from './setting-folder/settings/settings.component';
+import { GeneralSettingComponent } from './setting-folder/general-setting/general-setting.component';
+import { MailServerComponent } from './setting-folder/mail-server/mail-server.component';
+import { UserVerificationTemplateComponent } from './setting-folder/user-verification-template/user-verification-template.component';
+import { AccountVerificationComponent } from './account-verification/account-verification.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
+
 
 @NgModule({
   declarations: [
@@ -63,6 +72,12 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
     HomepageComponent,
     UserProfileComponent,
     FooterComponent,
+    SettingsComponent,
+    GeneralSettingComponent,
+    MailServerComponent,
+    UserVerificationTemplateComponent,
+    AccountVerificationComponent,
+    MessageComponent,
     UpdateCountryDialogComponent,
 
   ],
@@ -77,7 +92,8 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
     BrowserAnimationsModule,
     NgbModule,
     MatDialogModule,
-    NotificationModule
+    NotificationModule,
+    AngularEditorModule
   ],
   providers: [AuthenticationGuard],
   

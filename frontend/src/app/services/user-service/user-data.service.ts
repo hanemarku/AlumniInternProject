@@ -92,7 +92,12 @@ export class UserDataService {
     );
   }
   
+  verifyEmail(token: string): Observable<any> {
+    const url = `${this.baseUrl}/verify?token=${token}`;
+    return this.http.get(url);
+  }
 }
+
 
   
   // createUser(formData: FormData): Observable<any> {

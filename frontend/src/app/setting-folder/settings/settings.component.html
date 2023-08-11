@@ -1,0 +1,45 @@
+<!-- settings.component.html -->
+<div class="container-fluid">
+    <div>
+      <h2>Site Settings</h2>
+    </div>
+  
+    <!-- <div class="alert alert-success text-center" *ngIf="message">
+      {{ message }}
+    </div>
+   -->
+    <div>
+      <ul class="nav nav-tabs" id="settingTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#general" role="tab">General</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#mail_settings" role="tab">Mail Settings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#mail_template" role="tab">Mail Template</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#confirm_signup_template" role="tab">Account Confirmation Template</a>
+        </li>
+      </ul>
+  
+      <div class="tab-content">
+        <div class="tab-pane active p-3" id="general" role="tabpanel">
+         <app-general-setting></app-general-setting>
+        </div>
+        <div class="tab-pane p-3" id="mail_settings" role="tabpanel">
+          <app-mail-server></app-mail-server>
+        </div>
+        <div class="tab-pane p-3" id="mail_template" role="tabpanel">
+            <app-user-verification-template></app-user-verification-template>
+        </div>
+        <div class="tab-pane p-3" id="confirm_signup_template" role="tabpanel">
+            <div>confirm-signup-template</div>
+        </div>
+
+    </div>
+  
+    <!-- Toast container here -->
+  </div>
+  

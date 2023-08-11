@@ -36,7 +36,13 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
-
+import { SettingsComponent } from './setting-folder/settings/settings.component';
+import { GeneralSettingComponent } from './setting-folder/general-setting/general-setting.component';
+import { MailServerComponent } from './setting-folder/mail-server/mail-server.component';
+import { UserVerificationTemplateComponent } from './setting-folder/user-verification-template/user-verification-template.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { AccountVerificationComponent } from './account-verification/account-verification.component';
+import { MessageComponent } from './message/message.component';
 
 
 @NgModule({
@@ -64,6 +70,12 @@ import { FooterComponent } from './footer/footer.component';
     HomepageComponent,
     UserProfileComponent,
     FooterComponent,
+    SettingsComponent,
+    GeneralSettingComponent,
+    MailServerComponent,
+    UserVerificationTemplateComponent,
+    AccountVerificationComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +88,9 @@ import { FooterComponent } from './footer/footer.component';
     BrowserAnimationsModule,
     NgbModule,
     MatDialogModule,
-    NotificationModule
+    NotificationModule,
+    AngularEditorModule
+    
   ],
   providers: [AuthenticationGuard],
   

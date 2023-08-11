@@ -1,0 +1,21 @@
+<div class="container">
+    <form [formGroup]="settingsForm"  (ngSubmit)="saveMailServerTemplate()">
+      <div class="form-group row py-2">
+        <label class="col-sm-2 col-form-label">E-mail Subject:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" formControlName="CUSTOMER_VERIFY_SUBJECT" required>
+        </div>
+      </div>
+  
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">E-mail Content:</label>
+        <div class="col-sm-10">
+          <angular-editor formControlName="CUSTOMER_VERIFY_CONTENT" [placeholder]="'Enter text here...'" [config]="config" ></angular-editor>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary m-3">Save</button>
+      </div>
+    </form>
+  </div>
+  

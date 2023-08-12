@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListUsersComponent } from './user/list-users/list-users.component';
-import { SingupComponent } from './user/singup/singup.component';
-import { EducationComponent } from './education/education.component';
-import { SkillSearchComponent } from './skill-search/skill-search.component';
-import { SkillListComponent } from './skill/skill.component';
-import { InterestListComponent } from './interest/interest.component';
-import { SigninComponent } from './user/signin/signin.component';
+import { CountryComponent } from './country/country.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { EventDetailComponent } from "./event-features/event-detail/event-detail.component";
+import { EventFormComponent } from './event-features/event-form/event-form.component';
+import { EventComponent } from "./event/event.component";
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';
-import { ErrorPageComponent } from './error-page/error-page.component';
-import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { InterestListComponent } from './interest/interest.component';
+import { SkillListComponent } from './skill/skill.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { CountryComponent } from './country/country.component';
+import { ListUsersComponent } from './user/list-users/list-users.component';
+import { SigninComponent } from './user/signin/signin.component';
+import { SingupComponent } from './user/singup/singup.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -26,6 +27,9 @@ const routes: Routes = [
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
+  {path: 'event', component: EventComponent},
+  {path:'event-detail', component: EventDetailComponent},
+  {path:'event-form', component: EventFormComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

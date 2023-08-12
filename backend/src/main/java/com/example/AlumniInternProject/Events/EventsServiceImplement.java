@@ -27,10 +27,10 @@ public class EventsServiceImplement implements EventsService {
 
     @Override
     public EventGetDto save(EventDto edto) {
-        if(eventExists(edto)){
-            throw new
-                    RuntimeException("The event you are trying to create already exists");
-        }
+      //  if(eventExists(edto)){
+       //     throw new
+         //           RuntimeException("The event you are trying to create already exists");
+        //}
         var eDto = new Events(
                 edto.getName(),
                 edto.getTopic(),

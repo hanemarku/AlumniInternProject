@@ -3,7 +3,7 @@
 <ul class="heroes">
   <li *ngFor="let e of event">
     <button [class.selected] = "e === selectedEvent" type="button" (click)="OnSelect(e)">
-    <p>{{ e.name }}</p>
+      <p>{{ e.name }}</p>
     </button>
   </li>
 </ul>

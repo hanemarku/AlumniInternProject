@@ -53,6 +53,31 @@ public class EmailService {
         }
     }
 
+    public void sendForgotPasswordEmail(User user) {
+        VerificationToken verificationToken = verificationTokenService.findByUser(user);
+        if (verificationToken != null) {
+            String token = verificationToken.getToken();
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+
+            String emailSubject = getSettingContentFromKey("FORGOT_PASSWORD_SUBJECT", SettingCategory.MAIL_TEMPLATES);
+            String emailContent = getSettingContentFromKey("FORGOT_PASSWORD_CONTENT", SettingCategory.MAIL_TEMPLATES);
+            emailContent = emailContent.replace("[token]", token);
+            System.out.println(emailContent);
+
+            emailContent = emailContent.replace("[name]", user.getFirstname() + " " + user.getLastname());
+
+            try {
+                helper.setTo(user.getEmail());
+                helper.setSubject(emailSubject);
+                helper.setText(emailContent, true);
+                javaMailSender.send(mimeMessage);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private String getSettingContentFromKey(String key, SettingCategory category) {
         Setting emailContentSetting = settingRepository.findByCategory(category).stream()
                 .filter(setting -> setting.getKey().equals(key)) // Fix the closing parenthesis here

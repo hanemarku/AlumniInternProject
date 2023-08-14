@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -35,7 +36,6 @@ public class UserServiceImpl implements UserService{
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
-
     private final CountryRepository countryRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
@@ -110,6 +110,26 @@ public class UserServiceImpl implements UserService{
         return map(savedUser);
     }
 
+    @Override
+    public boolean resetPassword(String token, String newPassword) throws UserNotFoundException {
+        VerificationToken verificationToken = verificationTokenService.findByToken(token);
+
+        if (verificationToken != null) {
+            UUID userId = verificationToken.getUser().getId();
+            User user = findById(userId);
+            if (!user.isEnabled() || verificationToken.getExpirationDate().before(new Timestamp(System.currentTimeMillis()))) {
+                return false;
+            }
+            user.setPassword(passwordEncoder.encode(newPassword));
+            System.out.println("test1");
+            userRepository.save(user);
+            System.out.println("test2");
+            verificationTokenService.removeTokenByUserAndType(user.getId(), VerificationType.PASSWORD_RESET);
+            return true;
+        }
+
+        return false;
+    }
 
 
     private User validateNewEmail(String currentEmail, String newEmail) throws UserNotFoundException, EmailExistException {
@@ -172,13 +192,6 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    @Override
-    public UsersListingDTO findByEmail(String email) throws UserNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-//                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
-
-        return mapForListing(user);
-    }
 
 
     @Transactional
@@ -189,6 +202,31 @@ public class UserServiceImpl implements UserService{
         return users.stream()
                 .map(user -> mapForListing(user))
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public UsersListingDTO findByEmail(String email) throws UserNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+//                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
+        return mapForListing(user);
+    }
+
+    @Override
+    public UsersListingDTO findByID(UUID id) throws UserNotFoundException {
+        User user =  userRepository.findUserById(id);
+        return mapForListing(user);
+    }
+
+
+    public User findById(UUID id) throws UserNotFoundException {
+        User user = userRepository.findUserById(id);
+        if(user == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
+        }else {
+            return user;
+        }
     }
 
 
@@ -264,10 +302,10 @@ public class UserServiceImpl implements UserService{
         return (List<Country>) countryRepository.findAll();
     }
 
-    @Override
-    public User findById(UUID id) {
-        return null;
-    }
+//    @Override
+//    public User findUserById(UUID id) {
+//        return userRepository.findUserById(id);\
+//    }
 
     @Override
     public UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException {
@@ -361,7 +399,8 @@ public class UserServiceImpl implements UserService{
 
     }
 
-    private String encodePassword(String password) {
+    @Override
+    public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
 

@@ -13,11 +13,12 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, UUID> {
     User findUserByEmail(String email);
-    User getUserByEmail(String email);
     int countUserById(UUID id);
     @Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
     @Modifying
     void updateEnabledStatus(UUID id, boolean enabled);
+
+    User findUserById(UUID id);
 
     User findByVerificationCode(String verificationCode);
 }

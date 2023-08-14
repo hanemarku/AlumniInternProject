@@ -70,8 +70,8 @@ public class User extends IdBaseEntity implements Serializable {
     )
     private Set<Skill> skills = new HashSet<>();
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<VerificationToken> verificationTokens;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<VerificationToken> verificationTokens;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

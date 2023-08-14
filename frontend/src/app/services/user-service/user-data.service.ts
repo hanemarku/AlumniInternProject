@@ -53,7 +53,7 @@ export class UserDataService {
   }
 
   getUserByEmail(email: string) {
-    const params = new HttpParams().set('email', email); // Create query parameter
+    const params = new HttpParams().set('email', email); 
     return this.http.get<UserList>(`http://localhost:8080/api/v1/users/email`, { params });
   }
 
@@ -96,6 +96,28 @@ export class UserDataService {
     const url = `${this.baseUrl}/verify?token=${token}`;
     return this.http.get(url);
   }
+
+  forgotEmail(token: string): Observable<any> {
+    const url = `${this.baseUrl}/forgot-email?token=${token}`;
+    return this.http.get(url);
+  }
+
+  checkEmailExists(email: string): Observable<any> {
+    const url = `${this.baseUrl}/check-email-exists?email=${email}`;
+    return this.http.get(url);
+  }
+
+  sendForgotPasswordEmail(email: string): Observable<any> {
+    const url = `${this.apiUrl}/send-forgot-password-email?email=${email}`;
+    return this.http.post<any>(url, {});
+  }
+
+  resetPassword(token: string , newPassword: string): Observable<any> {
+    const url = `${this.apiUrl}/reset-password`;
+    const resetPass = {token, newPassword }; 
+    return this.http.post<any>(url, resetPass, { observe: 'response' });
+  }
+
 }
 
 

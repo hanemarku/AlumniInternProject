@@ -44,7 +44,7 @@ export class MessageComponent {
         }
       );
     } else {
-      this.message = "No token provided";
+      // this.message = "No token provided";
       console.log('No token provided');
     }
   }

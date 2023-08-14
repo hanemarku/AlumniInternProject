@@ -40,11 +40,13 @@ import { MessageComponent } from './message/message.component';
 import { SettingsComponent } from './setting-folder/settings/settings.component';
 import { GeneralSettingComponent } from './setting-folder/general-setting/general-setting.component';
 import { MailServerComponent } from './setting-folder/mail-server/mail-server.component';
-import { UserVerificationTemplateComponent } from './setting-folder/user-verification-template/user-verification-template.component';
+import { UserVerificationTemplateComponent} from './setting-folder/email-template/user-verification-template.component';
 import { AccountVerificationComponent } from './account-verification/account-verification.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
 
 
 
@@ -76,11 +78,13 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
     SettingsComponent,
     GeneralSettingComponent,
     MailServerComponent,
-    UserVerificationTemplateComponent,
     AccountVerificationComponent,
     MessageComponent,
     UpdateCountryDialogComponent,
     ResetPasswordComponent,
+    ForgotPasswordComponent,
+    UserVerificationTemplateComponent,
+    ForgotEmailTemplateComponent
 
   ],
   imports: [

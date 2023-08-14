@@ -16,6 +16,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MessageComponent } from './message/message.component';
 import { SettingsComponent } from './setting-folder/settings/settings.component';
 import { CountryComponent } from './country/country.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -30,8 +33,9 @@ const routes: Routes = [
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
+  {path: 'reset-password', component: ResetPasswordComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
-
 ]
 
 @NgModule({

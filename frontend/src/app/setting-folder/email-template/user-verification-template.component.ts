@@ -10,8 +10,7 @@ import { UserDataService } from 'src/app/services/user-service/user-data.service
 
 @Component({
   selector: 'app-user-verification-template',
-  templateUrl: './user-verification-template.component.html',
-  styleUrls: ['./user-verification-template.component.sass']
+  templateUrl: './user-verification-template.component.html'
 })
 export class UserVerificationTemplateComponent implements OnInit{
   
@@ -64,7 +63,6 @@ export class UserVerificationTemplateComponent implements OnInit{
           );
         } else {
           console.log('No token provided');
-          // Handle case where no token is provided
         }
       });
    

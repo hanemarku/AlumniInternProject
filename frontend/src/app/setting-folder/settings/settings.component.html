@@ -17,8 +17,11 @@
             <a class="nav-link" data-bs-toggle="tab" href="#mail_settings" role="tab">Mail Settings</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#mail_template" role="tab">Mail Template</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#account_template" role="tab">Email Confirmation Mail Template</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#forgot_pass_template" role="tab">Forgot Password Mail Template</a>
+      </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#confirm_signup_template" role="tab">Account Confirmation Template</a>
         </li>
@@ -31,15 +34,15 @@
         <div class="tab-pane p-3" id="mail_settings" role="tabpanel">
           <app-mail-server></app-mail-server>
         </div>
-        <div class="tab-pane p-3" id="mail_template" role="tabpanel">
-            <app-user-verification-template></app-user-verification-template>
+     
+        <div class="tab-pane p-3" id="account_template" role="tabpanel">
+          <app-user-verification-template></app-user-verification-template>
         </div>
-        <div class="tab-pane p-3" id="confirm_signup_template" role="tabpanel">
-            <div>confirm-signup-template</div>
+
+        <div class="tab-pane p-3" id="forgot_pass_template" role="tabpanel">
+         <app-forgot-email-template></app-forgot-email-template>
         </div>
 
     </div>
-  
-    <!-- Toast container here -->
   </div>
   

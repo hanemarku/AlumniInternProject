@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authenication-service/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserDataService } from '../services/user-service/user-data.service';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export class UserHeader{
   constructor(
@@ -21,7 +22,9 @@ export class UserHeader{
 })
 
 
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit , OnDestroy{
+  private profilePicSubscription: Subscription | undefined;
+  
   public loggedIn = false;
   profilePicUrl: SafeUrl | string = '';
   userEmail: string = ''; 
@@ -63,8 +66,23 @@ export class HeaderComponent implements OnInit{
 
   signOut(): void {
     this.authenticationService.logout();
-
+    this.loggedIn = false;
+    this.profilePicUrl = '';
+    this.userEmail = '';
+    this.firstname = '';
+    this.lastname = '';
+  }
+  
+  ngOnDestroy(): void {
+    if (this.profilePicSubscription) {
+      this.profilePicSubscription.unsubscribe();
+    }
   }
 
+  
+  
+  
+  
+  
 
 }

@@ -17,7 +17,9 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
 import { EducationComponent } from './education/education.component';
 import { EmploymentComponent } from './employment/employment.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { EventDeleteComponent } from './event-features/event-delete/event-delete.component';
 import { EventDetailComponent } from "./event-features/event-detail/event-detail.component";
+import { EventEditComponent } from './event-features/event-edit/event-edit.component';
 import { EventFormComponent } from './event-features/event-form/event-form.component';
 import { EventComponent } from "./event/event.component";
 import { FilterPipe } from './filter.pipe';
@@ -68,7 +70,9 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     UpdateCountryDialogComponent,
     EventComponent,
     EventDetailComponent,
-    EventFormComponent
+    EventFormComponent,
+    EventEditComponent,
+    EventDeleteComponent
   ],
   imports: [
     BrowserModule,

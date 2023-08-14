@@ -1,5 +1,5 @@
 export interface Event{
-  id?: string;
+  id: string;
   // createdby
   //eventSpecifics[]
   name: string;

@@ -27,10 +27,6 @@ public class EventsServiceImplement implements EventsService {
 
     @Override
     public EventGetDto save(EventDto edto) {
-      //  if(eventExists(edto)){
-       //     throw new
-         //           RuntimeException("The event you are trying to create already exists");
-        //}
         var eDto = new Events(
                 edto.getName(),
                 edto.getTopic(),
@@ -101,7 +97,7 @@ public class EventsServiceImplement implements EventsService {
         }
         return matched;
     }
-
+    /*TODO: DO NOT USE CONTAIN CUZ IT WILL ALWAYS CONTAIN EVEN A LETTER*/
     public boolean eventExists(EventDto eventDto){
         for (EventGetDto eventGetDto : findAll()){
             if (eventDto.getName().toLowerCase().

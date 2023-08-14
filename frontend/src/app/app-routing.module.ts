@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CountryComponent } from './country/country.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { EventDeleteComponent } from './event-features/event-delete/event-delete.component';
 import { EventDetailComponent } from "./event-features/event-detail/event-detail.component";
+import { EventEditComponent } from './event-features/event-edit/event-edit.component';
 import { EventFormComponent } from './event-features/event-form/event-form.component';
 import { EventComponent } from "./event/event.component";
 import { AuthenticationGuard } from './guard/authentication.guard';
@@ -30,6 +32,8 @@ const routes: Routes = [
   {path: 'event', component: EventComponent},
   {path:'event-detail', component: EventDetailComponent},
   {path:'event-form', component: EventFormComponent},
+  {path:'event-edit', component:EventEditComponent},
+  {path:'event-delete', component:EventDeleteComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

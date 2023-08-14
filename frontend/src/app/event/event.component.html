@@ -1,6 +1,6 @@
 <h2>My Events</h2>
 
-<ul class="heroes">
+<ul>
   <li *ngFor="let e of event">
     <button [class.selected] = "e === selectedEvent" type="button" (click)="OnSelect(e)">
       <p>{{ e.name }}</p>

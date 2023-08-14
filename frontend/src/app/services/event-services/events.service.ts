@@ -22,16 +22,23 @@ export class EventsService{
     return this.http.get<Event[]>(this.BASE_URL);
   }
 
-  getEventsById(id: string): Observable<Event[]>{
-    const url = `${this.BASE_URL}/${id}`;
-    return this.http.get<Event[]>(url)
-  }
-
-  updateDetails(event: Event): any {
-    return this.http.patch(this.BASE_URL, event);
-  }
-
   createEvent(event: any): any{
     return this.http.post(this.BASE_URL, event);
   }
+
+  getEventsById(id: string): Observable<Event>{
+    const url = `${this.BASE_URL}/${id}`;
+    return this.http.get<Event>(url);
+  }
+
+  updateDetails(id: string,event: Event): any {
+    const url = `${this.BASE_URL}/${id}`;
+    return this.http.patch(url, event);
+  }
+
+  deleteDetails(id: string){
+    const url = `${this.BASE_URL}/${id}`;
+    return this.http.delete(url);
+  }
+
 }

@@ -25,9 +25,6 @@ export class EventFormComponent implements OnInit{
   }
 
   newEvent(){
-    const event: Event = Object.assign({}, this.eventModel);
-    console.log(this.eventModel)
-    
     this.eventService.createEvent(this.eventModel).subscribe();
   }
 

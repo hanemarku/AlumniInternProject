@@ -27,6 +27,6 @@ export class EventComponent {
   }
   OnSelect(event: Event) {
     this.selectedEvent = event;
-    this.eventsService.updateDetails(event).subscribe();
+    return this.eventsService.getEventsById(this.selectedEvent.id).subscribe();
   }
 }

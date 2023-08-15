@@ -1,0 +1,317 @@
+Index: src/main/java/com/example/AlumniInternProject/entity/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.entity;\n\nimport com.example.AlumniInternProject.like.Like;\nimport com.fasterxml.jackson.annotation.JsonIgnore;\nimport jakarta.persistence.*;\nimport lombok.Getter;\nimport lombok.Setter;\n\nimport java.sql.Date;\nimport java.time.LocalDate;\nimport java.util.Collection;\nimport java.util.HashSet;\nimport java.util.Set;\n\n@Entity\n@Getter\n@Setter\n@Table(name = \"users\")\npublic class User extends IdBaseEntity{\n    @Column(name = \"first_name\", length = 45, nullable = false)\n    private String firstname;\n\n    @Column(name = \"last_name\", length = 45, nullable = false)\n    private String lastname;\n    @Column(length = 128, nullable = false, unique = true)\n    private String email;\n    private boolean  enabled;\n    private LocalDate birthday;\n    @Column(length = 64)\n    private String profilePicUrl;\n    @Column(length = 15)\n    private String phoneNumber;\n\n    @Column(length = 45)\n    private String city;\n    @ManyToOne\n    @JoinColumn(name = \"country_id\")\n    private Country country;\n\n//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)\n//    @JoinColumn(name = \"city_id\")\n//\n//    private City city;\n    @Column(length = 64, nullable = false)\n    private String password;\n\n    @Column(length = 1500)\n    private String bio;\n    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)\n    @JoinTable(\n            name = \"users_skills\",\n            joinColumns= @JoinColumn(name = \"user_id\"),\n            inverseJoinColumns = @JoinColumn(name = \"skill_id\")\n    )\n    private Set<Skill> skills = new HashSet<>();\n\n\n    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)\n    @JoinTable(\n            name = \"users_interests\",\n            joinColumns = @JoinColumn(name = \"user_id\"),\n            inverseJoinColumns = @JoinColumn(name = \"interest_id\")\n    )\n    private Set<Interest> interests = new HashSet<>();\n\n    @ManyToOne\n    @JoinColumn(name = \"role_id\")\n    private Role role;\n\n\n\n    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {\n        this.firstname = firstname;\n        this.lastname = lastname;\n        this.email = email;\n        this.enabled = enabled;\n        this.birthday = birthday;\n        this.profilePicUrl = profilePicUrl;\n        this.phoneNumber = phoneNumber;\n        this.city = city;\n        this.country = country;\n        this.password = password;\n        this.bio = bio;\n        this.skills = skills;\n        this.interests = interests;\n        this.role = role;\n    }\n\n    public User() {\n    }\n\n//    public boolean isEnabled() {\n//        return enabled;\n//    }\n\n    @OneToMany(mappedBy = \"user\")\n    private Collection<Like> like;\n\n    public Collection<Like> getLike() {\n        return like;\n    }\n\n    public void setLike(Collection<Like> like) {\n        this.like = like;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/entity/User.java b/src/main/java/com/example/AlumniInternProject/entity/User.java
+--- a/src/main/java/com/example/AlumniInternProject/entity/User.java	
++++ b/src/main/java/com/example/AlumniInternProject/entity/User.java	
+@@ -1,5 +1,6 @@
+ package com.example.AlumniInternProject.entity;
+ 
++import com.example.AlumniInternProject.comment.Comment;
+ import com.example.AlumniInternProject.like.Like;
+ import com.fasterxml.jackson.annotation.JsonIgnore;
+ import jakarta.persistence.*;
+@@ -103,4 +104,15 @@
+     public void setLike(Collection<Like> like) {
+         this.like = like;
+     }
++
++    @OneToMany(mappedBy = "user")
++    private Collection<Comment> comment;
++
++    public Collection<Comment> getComment() {
++        return comment;
++    }
++
++    public void setComment(Collection<Comment> comment) {
++        this.comment = comment;
++    }
+ }
+Index: src/main/java/com/example/AlumniInternProject/role/RoleImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.role;\n\nimport com.example.AlumniInternProject.entity.Role;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Service;\n\nimport java.util.List;\nimport java.util.UUID;\nimport java.util.stream.Collectors;\n\n@Service\n@RequiredArgsConstructor\npublic class RoleImpl implements RoleService {\n\n    final private RoleRepository roleRepository;\n\n    @Override\n    public RoleGetDto save(RoleDto roleDto) {\n        var role = new Role(\n                roleDto.getName(),\n                roleDto.getDescription()\n        );\n        var saveRoe = roleRepository.save(role);\n        return map(saveRoe);\n    }\n\n    @Override\n    public List<RoleGetDto> findAll() {\n        return roleRepository.findAll()\n                .stream()\n                .map(role -> map(role))\n                .collect(Collectors.toList());\n    }\n\n    @Override\n    public RoleGetDto findById(UUID id) {\n        var optional = roleRepository.findById(id);\n        if (optional.isPresent()){\n            return map(optional.get());\n        } throw new RuntimeException(\"Roli i cili kerkoni nuk gjendet!\");\n    }\n\n    @Override\n    public RoleGetDto update(UUID id, RoleDto roleDto) {\n        var optional = roleRepository.findById(id).orElseThrow(RuntimeException::new);\n        optional.setName(roleDto.getName());\n        optional.setDescription(roleDto.getDescription());\n\n        var saved_role = roleRepository.save(optional);\n        return map(saved_role);\n    }\n\n    @Override\n    public void delete(UUID id) {\n        roleRepository.deleteById(id);\n    }\n\n    private RoleGetDto map(Role role){\n        var dto = new RoleGetDto();\n        dto.setName(role.getName());\n        dto.setDescription(role.getDescription());\n        dto.setId(role.getId());\n        return dto;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/role/RoleImpl.java b/src/main/java/com/example/AlumniInternProject/role/RoleImpl.java
+--- a/src/main/java/com/example/AlumniInternProject/role/RoleImpl.java	
++++ b/src/main/java/com/example/AlumniInternProject/role/RoleImpl.java	
+@@ -62,4 +62,9 @@
+         dto.setId(role.getId());
+         return dto;
+     }
++
++    // create a function that finds a role by the user id
++    // public RoleGetDto findByUserId(UUID id) {
++
++    // implement a function that
+ }
+Index: src/main/java/com/example/AlumniInternProject/post/PostService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.post;\n\nimport java.util.Date;\nimport java.util.List;\nimport java.util.UUID;\n\npublic interface PostService {\n\n}\n\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/post/PostService.java b/src/main/java/com/example/AlumniInternProject/post/PostService.java
+--- a/src/main/java/com/example/AlumniInternProject/post/PostService.java	
++++ b/src/main/java/com/example/AlumniInternProject/post/PostService.java	
+@@ -1,10 +1,22 @@
+ package com.example.AlumniInternProject.post;
+ 
++import org.springframework.web.bind.annotation.PathVariable;
++import org.springframework.web.bind.annotation.RequestBody;
++
+ import java.util.Date;
+ import java.util.List;
+ import java.util.UUID;
+ 
+ public interface PostService {
++     List<PostGetDto> getAllPosts();
++
++    PostGetDto getPostById(@PathVariable UUID id);
+ 
+-}
++    PostGetDto createPost(@RequestBody PostDto postDto);
+ 
++    PostGetDto updatePost(@PathVariable UUID id, @RequestBody PostDto postDto);
++
++    void deletePost(@PathVariable UUID id);
++
++    //List<PostGetDto> getPostsByUser(@PathVariable UUID user_id);
++}
+\ No newline at end of file
+Index: src/main/java/com/example/AlumniInternProject/post/PostController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.post;\n\n\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.web.bind.annotation.*;\n\nimport java.util.Date;\nimport java.util.List;\nimport java.util.UUID;\n\n@RestController\n@RequiredArgsConstructor\n@RequestMapping(\"api/v1/posts\")\npublic class PostController {\n\n    /*private final PostService postService;\n\n    @GetMapping\n    public List<PostGetDto> getAllPosts(){\n        return postService.getAllPosts();\n    }\n\n\n    @GetMapping(\"{id}\")\n    public PostGetDto getPostById(@PathVariable UUID id){\n        return postService.getPostById(id);\n    }\n\n    @GetMapping(\"user/{user_id}\")\n    public List<PostGetDto> getPostsByUser(@PathVariable UUID user_id){\n        return postService.getPostsByUser(user_id);\n    }\n\n    @PostMapping\n    public PostGetDto createPost(@RequestBody PostDto postDto){\n        return postService.createPost(postDto);\n    }\n\n    @PutMapping(\"update/{id}\")\n    public PostGetDto updatePost(@PathVariable UUID id, @RequestBody PostDto postDto){\n        return postService.updatePost(id, postDto);\n    }\n\n\n    @DeleteMapping(\"delete/{id}\")\n    void deletePost(@PathVariable UUID id){\n        postService.deletePost(id);\n    }\n\n    @GetMapping(\"/{keyword}\")\n    public List<PostGetDto> searchPostsByKeyword(@PathVariable @RequestBody String keyword){\n        return postService.searchPostsByKeyword(keyword);\n    }\n\n    @GetMapping(\"/{category}\")\n    public List<PostGetDto> getPostsByCategory(@PathVariable @RequestBody String category){\n        return postService.getPostsByCategory(category);\n    }\n\n    @GetMapping(\"/{tag}\")\n    public List<PostGetDto> getPostByTag(@PathVariable @RequestBody String tag){\n        return postService.getPostsByTag(tag);\n    }\n\n    @GetMapping(\"\")\n    public PostGetDto getPostByDateRange(@RequestBody Date startDate, @RequestBody Date endDate){\n        return  null;\n    }\n\n     */\n\n\n\n\n\n\n\n\n\n\n}\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/post/PostController.java b/src/main/java/com/example/AlumniInternProject/post/PostController.java
+--- a/src/main/java/com/example/AlumniInternProject/post/PostController.java	
++++ b/src/main/java/com/example/AlumniInternProject/post/PostController.java	
+@@ -13,7 +13,7 @@
+ @RequestMapping("api/v1/posts")
+ public class PostController {
+ 
+-    /*private final PostService postService;
++    private final PostService postService;
+ 
+     @GetMapping
+     public List<PostGetDto> getAllPosts(){
+@@ -26,10 +26,10 @@
+         return postService.getPostById(id);
+     }
+ 
+-    @GetMapping("user/{user_id}")
++    /*@GetMapping("user/{user_id}")
+     public List<PostGetDto> getPostsByUser(@PathVariable UUID user_id){
+         return postService.getPostsByUser(user_id);
+-    }
++    }*/
+ 
+     @PostMapping
+     public PostGetDto createPost(@RequestBody PostDto postDto){
+@@ -47,7 +47,7 @@
+         postService.deletePost(id);
+     }
+ 
+-    @GetMapping("/{keyword}")
++    /*@GetMapping("/{keyword}")
+     public List<PostGetDto> searchPostsByKeyword(@PathVariable @RequestBody String keyword){
+         return postService.searchPostsByKeyword(keyword);
+     }
+Index: src/main/java/com/example/AlumniInternProject/post/PostImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.post;\n\n\nimport com.example.AlumniInternProject.entity.User;\nimport com.example.AlumniInternProject.user.UserRepository;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Service;\nimport com.example.AlumniInternProject.user.UserService;\n\nimport java.util.Date;\nimport java.util.List;\nimport java.util.UUID;\nimport java.util.stream.Collectors;\n\n\n\n\n\n@Service\n@RequiredArgsConstructor\npublic class PostImpl implements PostService{\n\n\n}\n\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/post/PostImpl.java b/src/main/java/com/example/AlumniInternProject/post/PostImpl.java
+--- a/src/main/java/com/example/AlumniInternProject/post/PostImpl.java	
++++ b/src/main/java/com/example/AlumniInternProject/post/PostImpl.java	
+@@ -18,8 +18,90 @@
+ 
+ @Service
+ @RequiredArgsConstructor
+-public class PostImpl implements PostService{
++public class PostImpl implements PostService {
+ 
++    private final PostRepository postRepository;
++
++    @Override
++    public List<PostGetDto> getAllPosts() {
++        return postRepository.findAll()
++                .stream()
++                .map(post -> map(post))
++                .collect(Collectors.toList());
++    }
++
++    @Override
++    public PostGetDto getPostById(UUID id) {
++        return null;
++    }
++
++    /*@Override
++    public List<PostGetDto> getPostsByUser(UUID user_id) {
++        var optional = postRepository.findById(user_id);
++        if (optional.isPresent()){
++            return map(optional.get())
++        }throw new RuntimeException("Postet per kete user nuk ekzistojn");
++    }*/
++
++    @Override
++    public PostGetDto createPost(PostDto postDto) {
++        var post = new Post(
++                postDto.getUser(),
++                postDto.getLike(),
++                postDto.getContent(),
++                postDto.getDateOfPost(),
++                postDto.getLikesCount(),
++                postDto.getCommentsCount(),
++                postDto.getKeyword(),
++                postDto.getCategory(),
++                postDto.getTag()
++        );
++
++        var savePost = postRepository.save(post);
++
++        return map(savePost);
++    }
++
++    @Override
++    public PostGetDto updatePost(UUID id, PostDto postDto) {
++        var optional = postRepository.findById(id).orElseThrow(RuntimeException::new);
++        optional.setUser(postDto.getUser());
++        optional.setContent(postDto.getContent());
++        optional.setLike(postDto.getLike());
++        optional.setCommentsCount(postDto.getCommentsCount());
++        optional.setLikesCount(postDto.getLikesCount());
++        optional.setDateOfPost(postDto.getDateOfPost());
++        optional.setKeyword(postDto.getKeyword());
++        optional.setTag(postDto.getTag());
++        optional.setCategory(postDto.getCategory());
++
++        var savePost = postRepository.save(optional);
++        return map(savePost);
++    }
++
++    @Override
++    public void deletePost(UUID id) {
++        postRepository.deleteById(id);
++    }
++
++    public PostGetDto map(Post post) {
++        var dto = new PostGetDto();
++
++        dto.setUser(post.getUser());
++        dto.setLike(post.getLike());
++        dto.setCategory(post.getCategory());
++        dto.setContent(post.getContent());
++        dto.setKeyword(post.getKeyword());
++        dto.setCategory(post.getCategory());
++        dto.setCommentsCount(post.getCommentsCount());
++        dto.setDateOfPost(post.getDateOfPost());
++        dto.setLikesCount(post.getLikesCount());
++        dto.setTag(post.getTag());
++
++        return dto;
++    }
++
++
+ 
+ }
+ 
+Index: src/main/java/com/example/AlumniInternProject/like/LikeImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.like;\n\nimport com.example.AlumniInternProject.comment.Comment;\nimport com.example.AlumniInternProject.comment.CommentGetDto;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Service;\n\nimport java.util.List;\nimport java.util.UUID;\nimport java.util.stream.Collectors;\n\n@Service\n@RequiredArgsConstructor\npublic class LikeImpl implements LikeService{\n\n    private final LikeRepository likeRepository;\n\n    @Override\n    public LikeGetDto save(LikeDto likeDto) {\n        var like = new Like(\n                likeDto.getUser(),\n                likeDto.getPost(),\n                likeDto.getComment(),\n                likeDto.getDateOfLike()\n        );\n\n        var saveLike = likeRepository.save(like);\n        return map(saveLike);\n    }\n\n    @Override\n    public List<LikeGetDto> findAll() {\n        return likeRepository.findAll()\n                .stream()\n                .map(like -> map(like))\n                .collect(Collectors.toList());\n    }\n\n    @Override\n    public LikeGetDto findById(UUID id) {\n        var optional = likeRepository.findById(id);\n        if (optional.isPresent()){\n            return map(optional.get());\n        }throw new RuntimeException(\"Like does not exists\");\n    }\n\n    @Override\n    public LikeGetDto update(UUID id, LikeDto likeDto) {\n        var optional = likeRepository.findById(id).orElseThrow(RuntimeException::new);\n        optional.setUser(likeDto.getUser());\n        optional.setPost(likeDto.getPost());\n        optional.setComment(likeDto.getComment());\n        optional.setDateOfLike(likeDto.getDateOfLike());\n\n        var saveLike = likeRepository.save(optional);\n        return map(saveLike);\n    }\n\n    @Override\n    public void delete(UUID id) {\n        likeRepository.deleteById(id);\n    }\n\n    private LikeGetDto map(Like like){\n        var dto = new LikeGetDto();\n\n        dto.setUser(like.getUser());\n        dto.setPost(like.getPost());\n        dto.setComment(like.getComment());\n        dto.setDateOfLike(like.getDateOfLike());\n\n        return dto;\n    }\n}\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/like/LikeImpl.java b/src/main/java/com/example/AlumniInternProject/like/LikeImpl.java
+--- a/src/main/java/com/example/AlumniInternProject/like/LikeImpl.java	
++++ b/src/main/java/com/example/AlumniInternProject/like/LikeImpl.java	
+@@ -1,11 +1,11 @@
+ package com.example.AlumniInternProject.like;
+ 
+-import com.example.AlumniInternProject.comment.Comment;
+-import com.example.AlumniInternProject.comment.CommentGetDto;
++import com.example.AlumniInternProject.post.Post;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
++import java.util.Optional;
+ import java.util.UUID;
+ import java.util.stream.Collectors;
+ 
+@@ -71,4 +71,9 @@
+ 
+         return dto;
+     }
++
++    @Override
++    public Optional<Like> findLikeByPost(Post post){
++        return likeRepository.findLikeByPost(post);
++    }
+ }
+Index: src/main/java/com/example/AlumniInternProject/like/LikeController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.like;\n\n\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.web.bind.annotation.*;\n\nimport java.util.List;\nimport java.util.UUID;\n\n@RequestMapping(\"api/v1/likes\")\n@RequiredArgsConstructor\n@RestController\npublic class LikeController {\n\n    private final LikeService likeService;\n\n    @PostMapping\n    public LikeGetDto saveLike(@RequestBody LikeDto likeDto){\n        return likeService.save(likeDto);\n    }\n\n    @GetMapping\n    public List<LikeGetDto> findAllLikes(){\n        return likeService.findAll();\n    }\n\n    @GetMapping(\"{id}\")\n    public LikeGetDto findLikeById(@PathVariable UUID id){\n        return likeService.findById(id);\n    }\n\n    @PatchMapping(\"{id}\")\n    public LikeGetDto updateLike(@PathVariable UUID id, @RequestBody LikeDto likeDto){\n        return likeService.update(id, likeDto);\n    }\n\n    @DeleteMapping(\"{id}\")\n    void deleteLike(@PathVariable UUID id){\n        likeService.delete(id);\n    }\n}\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/like/LikeController.java b/src/main/java/com/example/AlumniInternProject/like/LikeController.java
+--- a/src/main/java/com/example/AlumniInternProject/like/LikeController.java	
++++ b/src/main/java/com/example/AlumniInternProject/like/LikeController.java	
+@@ -1,10 +1,12 @@
+ package com.example.AlumniInternProject.like;
+ 
+ 
++import com.example.AlumniInternProject.post.Post;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.web.bind.annotation.*;
+ 
+ import java.util.List;
++import java.util.Optional;
+ import java.util.UUID;
+ 
+ @RequestMapping("api/v1/likes")
+@@ -38,4 +40,9 @@
+     void deleteLike(@PathVariable UUID id){
+         likeService.delete(id);
+     }
++
++    @GetMapping("post/{post}")
++    public Optional<Like> findLikeByPost(@PathVariable Post post){
++        return likeService.findLikeByPost(post);
++    }
+ }
+Index: src/main/java/com/example/AlumniInternProject/like/LikeService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.like;\n\nimport com.example.AlumniInternProject.comment.CommentDto;\nimport com.example.AlumniInternProject.comment.CommentGetDto;\nimport lombok.AllArgsConstructor;\nimport org.springframework.stereotype.Service;\n\nimport java.awt.*;\nimport java.util.List;\nimport java.util.UUID;\n\npublic interface LikeService {\n\n    LikeGetDto save(LikeDto likeDto);\n\n    List<LikeGetDto> findAll();\n\n    LikeGetDto findById(UUID id);\n\n    LikeGetDto update(UUID id, LikeDto likeDto);\n\n    void delete(UUID id);\n}\n
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/like/LikeService.java b/src/main/java/com/example/AlumniInternProject/like/LikeService.java
+--- a/src/main/java/com/example/AlumniInternProject/like/LikeService.java	
++++ b/src/main/java/com/example/AlumniInternProject/like/LikeService.java	
+@@ -2,11 +2,13 @@
+ 
+ import com.example.AlumniInternProject.comment.CommentDto;
+ import com.example.AlumniInternProject.comment.CommentGetDto;
++import com.example.AlumniInternProject.post.Post;
+ import lombok.AllArgsConstructor;
+ import org.springframework.stereotype.Service;
+ 
+ import java.awt.*;
+ import java.util.List;
++import java.util.Optional;
+ import java.util.UUID;
+ 
+ public interface LikeService {
+@@ -20,4 +22,6 @@
+     LikeGetDto update(UUID id, LikeDto likeDto);
+ 
+     void delete(UUID id);
++
++    Optional<Like> findLikeByPost(Post post);
+ }

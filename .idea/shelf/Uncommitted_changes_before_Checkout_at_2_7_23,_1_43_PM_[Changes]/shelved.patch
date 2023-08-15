@@ -1,0 +1,66 @@
+Index: src/main/java/com/example/AlumniInternProject/entity/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.AlumniInternProject.entity;\n\nimport com.fasterxml.jackson.annotation.JsonIgnore;\nimport jakarta.persistence.*;\nimport lombok.Getter;\nimport lombok.Setter;\n\nimport java.sql.Date;\nimport java.time.LocalDate;\nimport java.util.HashSet;\nimport java.util.Set;\n\n@Entity\n@Getter\n@Setter\n@Table(name = \"users\")\npublic class User extends IdBaseEntity{\n    @Column(name = \"first_name\", length = 45, nullable = false)\n    private String firstname;\n\n    @Column(name = \"last_name\", length = 45, nullable = false)\n    private String lastname;\n    @Column(length = 128, nullable = false, unique = true)\n    private String email;\n    private boolean  enabled;\n    private LocalDate birthday;\n    @Column(length = 64)\n    private String profilePicUrl;\n    @Column(length = 15)\n    private String phoneNumber;\n\n    @Column(length = 45)\n    private String city;\n    @ManyToOne\n    @JoinColumn(name = \"country_id\")\n    private Country country;\n\n    //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)\n//    @JoinColumn(name = \"city_id\")\n//\n//    private City city;\n    @Column(length = 64, nullable = false)\n    private String password;\n\n    @Column(length = 1500)\n    private String bio;\n    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)\n    @JoinTable(\n            name = \"users_skills\",\n            joinColumns= @JoinColumn(name = \"user_id\"),\n            inverseJoinColumns = @JoinColumn(name = \"skill_id\")\n    )\n    private Set<Skill> skills = new HashSet<>();\n\n\n    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)\n    @JoinTable(\n            name = \"users_interests\",\n            joinColumns = @JoinColumn(name = \"user_id\"),\n            inverseJoinColumns = @JoinColumn(name = \"interest_id\")\n    )\n    private Set<Interest> interests = new HashSet<>();\n\n    @ManyToOne\n    @JoinColumn(name = \"role_id\")\n    private Role role;\n\n\n\n    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {\n        this.firstname = firstname;\n        this.lastname = lastname;\n        this.email = email;\n        this.enabled = enabled;\n        this.birthday = birthday;\n        this.profilePicUrl = profilePicUrl;\n        this.phoneNumber = phoneNumber;\n        this.city = city;\n        this.country = country;\n        this.password = password;\n        this.bio = bio;\n        this.skills = skills;\n        this.interests = interests;\n        this.role = role;\n    }\n\n    public User() {\n    }\n\n//    public boolean isEnabled() {\n//        return enabled;\n//}\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/AlumniInternProject/entity/User.java b/src/main/java/com/example/AlumniInternProject/entity/User.java
+--- a/src/main/java/com/example/AlumniInternProject/entity/User.java	
++++ b/src/main/java/com/example/AlumniInternProject/entity/User.java	
+@@ -1,5 +1,7 @@
+ package com.example.AlumniInternProject.entity;
+ 
++import com.example.AlumniInternProject.comment.Comment;
++import com.example.AlumniInternProject.like.Like;
+ import com.fasterxml.jackson.annotation.JsonIgnore;
+ import jakarta.persistence.*;
+ import lombok.Getter;
+@@ -7,6 +9,7 @@
+ 
+ import java.sql.Date;
+ import java.time.LocalDate;
++import java.util.Collection;
+ import java.util.HashSet;
+ import java.util.Set;
+ 
+@@ -35,7 +38,7 @@
+     @JoinColumn(name = "country_id")
+     private Country country;
+ 
+-    //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
++//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+ //    @JoinColumn(name = "city_id")
+ //
+ //    private City city;
+@@ -89,6 +92,27 @@
+ 
+ //    public boolean isEnabled() {
+ //        return enabled;
+-//}
++//    }
+ 
+-}
+\ No newline at end of file
++    @OneToMany(mappedBy = "user")
++    private Collection<Like> like;
++
++    public Collection<Like> getLike() {
++        return like;
++    }
++
++    public void setLike(Collection<Like> like) {
++        this.like = like;
++    }
++
++    @OneToMany(mappedBy = "user")
++    private Collection<Comment> comment;
++
++    public Collection<Comment> getComment() {
++        return comment;
++    }
++
++    public void setComment(Collection<Comment> comment) {
++        this.comment = comment;
++    }
++}

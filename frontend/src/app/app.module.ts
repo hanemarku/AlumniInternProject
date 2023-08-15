@@ -37,6 +37,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
     UserProfileComponent,
     FooterComponent,
     UpdateCountryDialogComponent,
+    PostComponent
 
   ],
   imports: [

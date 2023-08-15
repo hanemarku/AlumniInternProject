@@ -14,6 +14,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CountryComponent } from './country/country.component';
+import { PostComponent } from './post/post.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
+  {path: 'post', component: PostComponent}
 
 ]
 

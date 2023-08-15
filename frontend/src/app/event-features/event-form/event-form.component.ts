@@ -11,6 +11,7 @@ export class EventFormComponent implements OnInit{
 
     eventModel: Event = {
     id:'',
+    createdby:'',
     name: 'hardcoded',
     topic: 'hardcoded',
     description: 'hardcoded',

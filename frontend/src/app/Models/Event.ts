@@ -1,7 +1,7 @@
 export interface Event{
   id: string;
-  // createdby
-  //eventSpecifics[]
+  createdby: string;
+ // eventSpecifics[]
   name: string;
   topic: string;
   description: string;

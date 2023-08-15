@@ -21,6 +21,8 @@ import { EventDeleteComponent } from './event-features/event-delete/event-delete
 import { EventDetailComponent } from "./event-features/event-detail/event-detail.component";
 import { EventEditComponent } from './event-features/event-edit/event-edit.component';
 import { EventFormComponent } from './event-features/event-form/event-form.component';
+import { EventSearchByComponent } from './event-features/event-search-by/event-search-by.component';
+import { EventSpecificsComponent } from './event-features/event-specifics/event-specifics.component';
 import { EventComponent } from "./event/event.component";
 import { FilterPipe } from './filter.pipe';
 import { FooterComponent } from './footer/footer.component';
@@ -72,7 +74,9 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     EventDetailComponent,
     EventFormComponent,
     EventEditComponent,
-    EventDeleteComponent
+    EventDeleteComponent,
+    EventSearchByComponent,
+    EventSpecificsComponent
   ],
   imports: [
     BrowserModule,

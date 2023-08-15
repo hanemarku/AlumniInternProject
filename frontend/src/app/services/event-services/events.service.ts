@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Event } from "../../Models/Event";
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService{
 
   private BASE_URL: string = 'http://localhost:8080/api/v1/events';
+  private SPECIFICS_URL: string = 'http://localhost:8080/api/v1/specifics';
 
   httpOptions = {
     headers:new HttpHeaders({'Content-Type': 'application/json'})
@@ -41,4 +41,7 @@ export class EventsService{
     return this.http.delete(url);
   }
 
+  saveEventSpecifics(eventSpecifics: any): any{
+    this.http.post(this.SPECIFICS_URL, eventSpecifics);
+  }
 }

@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +23,7 @@ public class EventsServiceImplement implements EventsService {
         dto.setDescription(e.getDescription());
         dto.setMaxParticipants(e.getMaxParticipants());
         dto.setImgUrl(e.getImgUrl());
+        dto.setCreatedBy(e.getCreatedBy());
         return dto;
     }
 
@@ -35,11 +37,8 @@ public class EventsServiceImplement implements EventsService {
                 edto.getMaxParticipants(),
                 edto.getEventSpecifics()
         );
-        /*The part of the code that needs to be done
-        * when the login is finished. This is only a dumb
-        * part of code i saw on net :)*/
-       // eDto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication());
-
+        String auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        eDto.setCreatedBy(auth);
         var saved = eventsRepository.save(eDto);
         return map(saved);
     }
@@ -80,9 +79,6 @@ public class EventsServiceImplement implements EventsService {
         eventsRepository.deleteById(id);
     }
 
-    /*Searching by keyword. String elements :
-     * Name , Topic and Description. I am searching for
-     * the city in another method */
     @Override
     public Set<EventGetDto> findByKeyword(String keyWord, Set<EventGetDto> eventDtos) {
         Set<EventGetDto> matched = new HashSet<>();

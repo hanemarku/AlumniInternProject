@@ -1,10 +1,5 @@
 <div *ngIf="event">
-  <div>
-    <h1>Inside ngIf</h1>
-  </div>
   <h1>Update the event</h1>
-  {{event | json}}
-  
   <div [hidden]="submitted">
     <form (ngSubmit)="onSubmit()" #eventForm="ngForm" >
         <div>

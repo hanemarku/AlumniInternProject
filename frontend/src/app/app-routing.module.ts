@@ -6,6 +6,8 @@ import { EventDeleteComponent } from './event-features/event-delete/event-delete
 import { EventDetailComponent } from "./event-features/event-detail/event-detail.component";
 import { EventEditComponent } from './event-features/event-edit/event-edit.component';
 import { EventFormComponent } from './event-features/event-form/event-form.component';
+import { EventSearchByComponent } from './event-features/event-search-by/event-search-by.component';
+import { EventSpecificsComponent } from './event-features/event-specifics/event-specifics.component';
 import { EventComponent } from "./event/event.component";
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotLoggedInGuard } from './guard/not-logged-in-guard.guard';
@@ -34,6 +36,8 @@ const routes: Routes = [
   {path:'event-form', component: EventFormComponent},
   {path:'event-edit', component:EventEditComponent},
   {path:'event-delete', component:EventDeleteComponent},
+  {path:'event-search-by', component:EventSearchByComponent},
+  {path: 'event-specifics', component: EventSpecificsComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

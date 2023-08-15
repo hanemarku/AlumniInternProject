@@ -1,0 +1,65 @@
+<section class="heading-section">
+  <h1 class="title is-1 has-text-centered">Countries</h1>
+</section>
+
+<div class="container">
+  <div class="add-country-box">
+    <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+      <h2 class="title is-5">Add Country</h2>
+
+      <div class="field is-grouped" style="margin: 0">
+        <p class="control is-expanded">
+          <input ngModel #countryTextField="ngModel" required maxlength="45" name="text" class="input" type="text"
+            placeholder="Type country name here">
+        </p>
+        <p class="control is-expanded">
+          <input ngModel #countryCodeField="ngModel" required maxlength="5" name="code" class="input" type="text"
+          size="1" placeholder="Type code here">
+        </p>
+        <p class="control">
+          <button type="submit" class="button alt-gradient-button">
+            <i class="material-icons">add</i>
+            Add
+          </button>
+        </p>
+      </div>
+      <div *ngIf="countryTextField.invalid && showValidationErrors">
+        <p class="help is-danger" *ngIf="countryTextField.errors?.['required']">Please enter country name.</p>
+        <p class="help is-danger" *ngIf="form.controls['name'].errors?.['maxlength']">Country name must not be more than
+          45 characters long.</p>
+      </div>
+      <div *ngIf="countryCodeField.invalid && showValidationErrors">
+        <p class="help is-danger" *ngIf="countryCodeField.errors?.['required']">Please enter code name.</p>
+        <p class="help is-danger" *ngIf="form.controls['code'].errors?.['maxlength']">Country code must not be more than
+          5 characters long.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="country-container">
+      <select class="form-control m-2 mt-5" style="height: 300px" size="3">
+        <option *ngFor="let country of countries" class="country-item" (click)="onCountryClick(country)">
+          {{ country.name }}
+        </option>
+      </select> 
+    </div>
+    <div class="form-group row">
+      <!-- <label class="col-form-label mt-2">Country Name:</label> -->
+      <div class="col-md">
+        <input type="text" class="form-control mt-3" placeholder="Country Name" [(ngModel)]="selectedCountry.name" disabled="disabled">
+      </div>
+      <!-- <label class="col-form-label mt-2">Code:</label> -->
+      <div class="col-md-3">
+        <input type="text" class="form-control mt-3" placeholder="Code" [(ngModel)]="selectedCountry.code" disabled="disabled">
+      </div>
+      <div class="col-lg-4 mt-3 text-right">
+        <input type="button" class="btn btn-secondary text-black" value="Update" [disabled]="!showCountry" (click)="onUpdateClicked(selectedCountry)">
+        <input type="button" class="btn btn-danger" value="Delete" [disabled]="!showCountry" (click)="openConfirmationDialog(selectedCountry.id)">
+      </div>
+    </div>
+  </div>
+</section>
+

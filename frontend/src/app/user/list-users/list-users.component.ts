@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService } from 'src/app/services/user-service/user-data.service';
 import Swal from 'sweetalert2';
-
+import { SafeUrl } from '@angular/platform-browser';
+import { User } from 'src/app/services/authenication-service/authentication.service';
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { NotificationType } from 'src/app/enum/header-type.enum';
+import { Education } from 'src/app/services/education-service/education-data.service';
+import { Employment } from 'src/app/services/employment-service/employment-data.service';
 
 export class UserList{
   constructor(
@@ -11,13 +18,15 @@ export class UserList{
    public email: string,
    public enabled: boolean,
    public birthday: Date,
-   public profilePicUrl: string,
+   public profilePicUrl: SafeUrl | string,
    public phoneNumber: string,
    public city: string,
    public country: string,
    public bio: string,
    public skills: { name: string }[], 
    public interests: {  name: string }[], 
+   public educationHistories: Education[],
+   public employmentHistories: Employment[],
    public role: string
 
   ){}
@@ -33,18 +42,42 @@ export class ListUsersComponent implements OnInit{
   users: UserList[] = [];
   dtOptions: DataTables.Settings = {};
   selectedUser: UserList | null = null;
+  profilePicUrl: SafeUrl | string = '';
+  userEmail: string = ''; 
+  profilePicUrls: string[] = [];
+
+
+
 
   constructor(
-    private userService: UserDataService
+    private userService: UserDataService,
+    private sanitizer: DomSanitizer,
+    private http: HttpClient,
+    private notificationService: NotificationService,
   ){}
 
   ngOnInit(): void {
-    this.userService.listAllUsers().subscribe(
-      response => {
-        console.log(response);
-        this.users = response;
-      }
-    )
+
+      this.userService.listAllUsers().subscribe(
+        async (users: UserList[]) => {
+          for (const user of users) {
+
+            console.log("user-> " + user.email);
+            console.log("user education-> " + user.educationHistories);
+            this.userService.getUserProfilePic(user.email).subscribe(
+              (url: SafeUrl) => {
+                user.profilePicUrl = url;
+              },
+              (error) => {
+                this.notificationService.notify(NotificationType.ERROR,  'Error fetching profile picture pf users');
+                console.error('Error fetching profile picture:', error);
+              }
+            );
+          }
+          this.users = users;
+        }
+      );
+  
     
     this.dtOptions = {
       pagingType: 'full_numbers',

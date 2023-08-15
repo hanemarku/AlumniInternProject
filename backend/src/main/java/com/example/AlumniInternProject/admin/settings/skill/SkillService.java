@@ -10,6 +10,7 @@ public interface SkillService {
     SkillGetDto update(UUID id, SkillDto dto);
     void delete(UUID id);
     List<TopSkillGetDto> getTopSkills();
+    List<SkillGetDto> sortByName();
 
 
 }

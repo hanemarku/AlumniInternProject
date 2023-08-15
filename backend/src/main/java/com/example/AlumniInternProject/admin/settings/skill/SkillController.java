@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping(path = "api/v1/skills")
 @RequiredArgsConstructor
@@ -41,5 +42,10 @@ public class SkillController {
     @GetMapping("/top-skills")
     public List<TopSkillGetDto> getTopSkills(){
         return skillService.getTopSkills();
+    }
+
+    @GetMapping("/sort-name")
+    public List<SkillGetDto> sortByName(){
+        return skillService.sortByName();
     }
 }

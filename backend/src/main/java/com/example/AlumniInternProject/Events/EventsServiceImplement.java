@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class EventsServiceImplement implements EventsService {
 
     private final EventsRepository eventsRepository;
-
     private EventGetDto map(Events e){
         var dto = new EventGetDto();
         dto.setId(e.getId());
@@ -44,13 +43,13 @@ public class EventsServiceImplement implements EventsService {
         * when the login is finished. This is only a dumb
         * part of code i saw on net :)*/
        // eDto.setCreatedBy(SecurityContextHolder.getContext().getAuthentication());
+
         var saved = eventsRepository.save(eDto);
         return map(saved);
     }
 
     @Override
     public List<EventGetDto> findAll() {
-
         return eventsRepository.findAll()
                 .stream().map(e -> map(e))
                 .collect(Collectors.toList());
@@ -103,18 +102,6 @@ public class EventsServiceImplement implements EventsService {
         return matched;
     }
 
-    /*Return true when it matches the city*/
-  /*
-  *   public boolean isCity(String city, EventGetDto eventDtos){
-        Set<City> cityEvent = eventDtos.getCities();
-        for(City c : cityEvent){
-            if (c.getName().toLowerCase().contains(city.toLowerCase(Locale.ROOT))){
-                return true;
-            }
-        }
-        // ? , sepse do e kthej gjithsesi nje false ne fund
-        return false;
-    }*/
     public boolean eventExists(EventDto eventDto){
         for (EventGetDto eventGetDto : findAll()){
             if (eventDto.getName().toLowerCase().
@@ -124,31 +111,4 @@ public class EventsServiceImplement implements EventsService {
         }
         return false;
     }
-
-     /*
-   *  @Override
-    public List<EventGetDto> orderAsc(Set<EventGetDto> eventDtos) {
-        List<EventGetDto> order = eventDtos.stream().
-                sorted(Comparator.comparing(EventGetDto::getDate)).
-                collect(Collectors.toList());
-        return order;
-    }
-
-    @Override
-    public List<EventGetDto> orderDesc(Set<EventGetDto> eventDtos) {
-        List<EventGetDto> order = eventDtos.stream().
-                sorted(Comparator.comparing(EventGetDto::getDate).reversed()).
-                collect(Collectors.toList());
-        return order;
-    }
-   *
-   * */
-
-    /*When creating a new event we also need to make sure
-     * that the event is not dublicated.
-     *   1. Event name must be different
-     * (if the event name is the same we can add
-     * only date and city)
-     */
-
 }

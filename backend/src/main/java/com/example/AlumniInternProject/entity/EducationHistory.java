@@ -32,15 +32,18 @@ public class EducationHistory extends IdBaseEntity{
     @Column(length = 100, nullable = false)
     private String website;
 
+    @Column(length = 45)
+    private String city;
+
     @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    @JoinColumn(name = "country_id")
+    private Country country;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public EducationHistory(String institutionName, String fieldOfQualification, String fieldOfStudy, LocalDate startDate, LocalDate endDate, double finalGrade, String website) {
+    public EducationHistory(String institutionName, String fieldOfQualification, String fieldOfStudy, LocalDate startDate, LocalDate endDate, double finalGrade, String website, String city, Country country) {
         this.institutionName = institutionName;
         this.fieldOfQualification = fieldOfQualification;
         this.fieldOfStudy = fieldOfStudy;
@@ -48,5 +51,7 @@ public class EducationHistory extends IdBaseEntity{
         this.endDate = endDate;
         this.finalGrade = finalGrade;
         this.website = website;
+        this.city = city;
+        this.country = country;
     }
 }

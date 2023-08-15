@@ -1,0 +1,178 @@
+<body id="top">
+  <header class="d-print-none" >
+    <div class="container text-center text-lg-start py-3 clearfix">
+      <h1 class="site-title mb-0">{{ user.firstname }} {{ user.lastname }}</h1>
+      <div class="site-nav">
+        <nav role="navigation">
+          <ul class="nav justify-content-center">
+            <li class="nav-item"><a class="nav-link" href="https://twitter.com/templateflip" title="Twitter"><i class="fab fa-twitter"></i><span class="menu-title sr-only">Twitter</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/templateflip" title="Facebook"><i class="fab fa-facebook"></i><span class="menu-title sr-only">Facebook</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/templateflip" title="Instagram"><i class="fab fa-instagram"></i><span class="menu-title sr-only">Instagram</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/templateflip" title="Github"><i class="fab fa-github"></i><span class="menu-title sr-only">Github</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  
+  <div class="page-content">
+    <div class="container py-3" >
+      <div class="cover shadow-lg bg-white py-3 px-3 p-lg-4 text-white " >
+        <div class="row" >
+          <div class="col-lg-4 col-md-5" >
+            <div class="avatar hover-effect bg-white shadow-sm p-1"><img [src]="user.profilePicUrl" width="200" height="200" /></div>
+          </div>
+          <div class="col-lg-8 col-md-7 text-center text-md-start" >
+            <h2 class="h1 mt-2" style="color: black;" data-aos="fade-left" data-aos-delay="0">{{ user.firstname }} {{ user.lastname }}</h2>
+            <!-- <p data-aos="fade-left" data-aos-delay="100">Graphic Designer & Web Developer</p> -->
+            <div class="d-print-none" data-aos="fade-left" data-aos-delay="200">
+              <a class="btn btn-light text-dark shadow-sm mt-1 me-1" href="right-resume.pdf" target="_blank">Download CV</a>
+              <a class="btn btn-success shadow-sm mt-1" href="#contact">Hire Me</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-section pt-4 px-3 px-lg-4 mt-1">
+        <div class="row py-5">
+          <div class="col-md-6">
+            <h2 class="h3 mb-3">About Me</h2>
+            <p>{{ user.bio }}</p>
+            <span *ngIf="user2.interests.length > 0">Interests:</span> <span style="width: 80px; color:black;"  *ngFor="let interest of user.interests" class="text-dark badge bg-warning me-2">{{ getSkillName(interest) }}</span>
+
+          </div>
+          <div class="col-md-5 offset-md-1">
+            <div class="row mt-2">
+              <div class="col-sm-4">
+                <div class="pb-1">Age</div>
+              </div>
+              <div class="col-sm-8">
+                <div class="pb-1 text-secondary">{{findAge(user.birthday)}} </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="pb-1">Email</div>
+              </div>
+              <div class="col-sm-8">
+                <div class="pb-1 text-secondary">{{user.email}}</div>
+              </div>
+              <div class="col-sm-4">
+                <div class="pb-1">Phone</div>
+              </div>
+              <div class="col-sm-8">
+                <div class="pb-1 text-secondary">{{user.phoneNumber}}</div>
+              </div>
+              <div class="col-sm-4">
+                <div class="pb-1">Address</div>
+              </div>
+              <div class="col-sm-8">
+                <div class="pb-1 text-secondary">{{user.city}} [ <strong>{{getCountryName(user.country)}}</strong> ] </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <hr class="d-print-none" />
+      
+      <div class="skills-section px-3 px-lg-4" *ngIf="user2.skills.length > 0">
+        <h2 class="h3 mb-3">Professional Skills</h2>
+        <div class="row">
+          <div class="col">
+            <!-- <div class="mb-4"> -->
+              <div class="progress my-1" >
+                <span style="width: 100px;"  *ngFor="let skill of user.skills" class="badge bg-primary me-2">{{ getSkillName(skill) }}</span>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let work of user.employmentHistories" class="card-body">
+        <li>{{work.occupationPosition}}</li>
+
+    </div>
+    <div *ngFor="let edu of user.educationHistories">
+        <li>{{edu.institutionName}}</li>
+    </div>
+
+
+      <hr class="d-print-none" />
+      
+      <div class="work-experience-section px-3 px-lg-4" *ngIf="user2.employmentHistories.length > 0">
+        <h2 class="h3 mb-4">Work Experience</h2>
+        <div class="timeline">
+          <div *ngFor="let work of user2.employmentHistories" class="timeline-card timeline-card-primary card shadow-sm">
+            <div  class="card-body">
+                <div class="h5 mb-1 d-flex justify-content-between align-items-center">
+                    <span>{{work.occupationPosition}} at {{work.companyName}}</span>
+                    <span class="text-muted h6"> {{work.department}}</span>
+                    <span>{{work.city}} [ {{getCountryName(work.country)}} ]</span>
+                  </div>
+              <div class="text-muted text-small mb-2">{{work.fromDate}} - {{work.toDate}}</div>
+              <div><strong>Main acitvities:</strong> {{work.mainActivities}}</div>
+              <div>Key Competencies and Proficiencies for this job : 
+                <span style="width: 100px;"  *ngFor="let skill of user.skills" class="badge bg-primary me-2">{{ getSkillName(skill) }}</span>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <hr class="d-print-none" />
+      
+      <div class="education-section px-3 px-lg-4 pb-4" *ngIf="user2.educationHistories.length > 0">
+        <h2 class="h3 mb-4">Education</h2>
+        <div class="timeline">
+          <div  *ngFor="let edu of user2.educationHistories" class="timeline-card timeline-card-success card shadow-sm">
+            <div class="card-body">
+              <div class="h5 mb-1 d-flex justify-content-between align-items-center">
+                <p><span>{{edu.fieldOfQualification}} in {{edu.fieldOfStudy}} </span>
+                <span class="text-muted h6">from {{edu.institutionName}}</span></p>
+                
+                <span>{{edu.city}} [ {{getCountryName(edu.country)}} ]</span>
+            </div>
+              <div class="text-muted text-small mb-2">{{edu.startDate}} - {{edu.endDate}}</div>
+              <div>Final Grade: {{edu.finalGrade}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <hr class="d-print-none" />
+      
+      <div class="contant-section px-3 px-lg-4 pb-4" id="contact">
+        <h2 class="h3 text mb-3">Contact</h2>
+        <div class="row">
+          <div class="col-md-7 d-print-none">
+            <div class="my-2">
+              <form action="https://formspree.io/your@email.com" method="POST">
+                <div class="row">
+                  <div class="col-6">
+                    <input class="form-control" type="text" id="name" name="name" placeholder="Your Name" required>
+                  </div>
+                  <div class="col-6">
+                    <input class="form-control" type="email" id="email" name="_replyto" placeholder="Your E-mail" required>
+                  </div>
+                </div>
+                <div class="form-group my-2">
+                  <textarea class="form-control" style="resize: none;" id="message" name="message" rows="4" placeholder="Your Message" required></textarea>
+                </div>
+                <button class="btn btn-primary mt-2" type="submit">Send</button>
+              </form>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mt-2">
+              <h3 class="h6">Address</h3>
+              <div class="pb-2 text-secondary">140, City Center, New York, U.S.A</div>
+              <h3 class="h6">Phone</h3>
+              <div class="pb-2 text-secondary">+0718-111-0011</div>
+              <h3 class="h6">Email</h3>
+              <div class="pb-2 text-secondary">Joyce@company.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+

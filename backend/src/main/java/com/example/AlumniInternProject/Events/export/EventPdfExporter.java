@@ -1,6 +1,6 @@
 package com.example.AlumniInternProject.Events.export;
 
-import com.example.AlumniInternProject.user.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;

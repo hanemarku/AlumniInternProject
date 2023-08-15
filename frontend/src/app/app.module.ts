@@ -8,11 +8,35 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
 import { SkillListComponent } from './skill/skill.component';
 import { EditSkillDialogComponent } from './skill/edit-skill-dialog/edit-skill-dialog.component';
 import { EditInterestDialogComponent } from './interest/edit-interest-dialog/edit-interest-dialog.component';
-import { InterestComponent, InterestListComponent } from './interest/interest.component';
+import { InterestListComponent } from './interest/interest.component';
+import { SingupComponent } from './user/singup/singup.component';
+import { CountryComponent } from './country/country.component';
+import { CityComponent } from './city/city.component';
+import { EducationComponent } from './education/education.component';
+import { CountryCitySelectorComponent } from './country-city-selector/country-city-selector.component';
+import { SkillInterestComponentComponent } from './skill-interest-component/skill-interest-component.component';
+import { SkillSearchComponent } from './skill-search/skill-search.component';
+import { FilterPipe } from './filter.pipe';
+import { InterestSearchComponent } from './interest-search/interest-search.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
+import { EmploymentComponent } from './employment/employment.component';
+import { SuccessPageComponent } from './user/success-page/success-page.component';
+import { SigninComponent } from './user/signin/signin.component';
+import { NotificationModule } from './notification.module';
+import { NotificationService } from './services/notification-service/notification.service';
+import { UserDataService } from './services/user-service/user-data.service';
+import { AuthenticationGuard } from './guard/authentication.guard';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { HeaderComponent } from './header/header.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FooterComponent } from './footer/footer.component';
+import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +45,26 @@ import { InterestComponent, InterestListComponent } from './interest/interest.co
     SkillListComponent,
     EditSkillDialogComponent,
     EditInterestDialogComponent,
-    InterestListComponent
+    InterestListComponent,
+    SingupComponent,
+    CountryComponent,
+    CityComponent,
+    EducationComponent,
+    CountryCitySelectorComponent,
+    SkillInterestComponentComponent,
+    SkillSearchComponent,
+    FilterPipe,
+    InterestSearchComponent,
+    EmploymentComponent,
+    SuccessPageComponent,
+    SigninComponent,
+    ErrorPageComponent,
+    HeaderComponent,
+    HomepageComponent,
+    UserProfileComponent,
+    FooterComponent,
+    UpdateCountryDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -30,10 +73,14 @@ import { InterestComponent, InterestListComponent } from './interest/interest.co
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatDialogModule
-
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    MatDialogModule,
+    NotificationModule
   ],
-  providers: [],
+  providers: [AuthenticationGuard],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

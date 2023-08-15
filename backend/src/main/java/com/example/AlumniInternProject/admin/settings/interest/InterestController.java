@@ -1,5 +1,4 @@
 package com.example.AlumniInternProject.admin.settings.interest;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +35,11 @@ public class InterestController  {
     @DeleteMapping("{id}")
     public void delete(@PathVariable UUID id){
         interestService.delete(id);
+    }
+
+    @GetMapping("/sort-name")
+    public List<InterestGetDto> sortByName(){
+        return interestService.sortByName();
     }
 
 }

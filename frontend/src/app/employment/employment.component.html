@@ -1,0 +1,200 @@
+<!-- Employment Form -->
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="addEmployment()" #employmentForm="ngForm" (keydown.enter)="$event.preventDefault()">
+            <div class="row align-items-center p-1">
+              <div class="col">
+                <div class="row">
+                  <div class="col-md-5">
+                    <textarea
+                      id="mainActivities"
+                      name="mainActivities"
+                      [(ngModel)]="newEmployment.mainActivities"
+                      class="form-control bg-light custom-textarea"
+                      placeholder="Main Activities*"
+                      required
+                    ></textarea>
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-md">
+                        <input
+                          id="occupationPosition"
+                          name="occupationPosition"
+                          [(ngModel)]="newEmployment.occupationPosition"
+                          class="form-control bg-light"
+                          placeholder="Occupation Position*"
+                          required
+                        />
+                      </div>
+                      <div class="col-md">
+                        <input
+                          id="companyName"
+                          name="companyName"
+                          [(ngModel)]="newEmployment.companyName"
+                          class="form-control bg-light"
+                          placeholder="Company Name*"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="row py-2">
+                      <div class="col-md-5">
+                        From:
+                        <input
+                          id="fromDate"
+                          name="fromDate"
+                          type="date"
+                          [(ngModel)]="newEmployment.fromDate"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-5">
+                        To:
+                        <input
+                          *ngIf="!newEmployment.ongoing"
+                          id="toDate"
+                          name="toDate"
+                          type="date"
+                          [(ngModel)]="newEmployment.toDate"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+  
+                      <div class="col-md-2 form-check form-switch d-flex flex-column align-items-center align-md-items-start">
+                        <label class="form-check-label labelOngoing mb-2 " for="flexSwitchCheckDefault">Ongoing</label>
+                        <div class="form-check">
+                          <input class="form-check-input btn-lg" type="checkbox" role="switch" id="flexSwitchCheckDefault" [checked]="newEmployment.ongoing" (change)="onOngoingChange($event)" />
+                        </div>
+                      </div>
+                      
+                    </div>
+
+                  </div>
+              
+                </div>
+
+                <div class="row py-2">
+                  <div class="col-md">
+                    <div class="row">
+                      <div class="col-md-5 pt-4">
+                        <input
+                          id="department"
+                          name="department"
+                          [(ngModel)]="newEmployment.department"
+                          class="form-control bg-light"
+                          placeholder="Department"
+                        />
+                      </div>
+                      <div class="col-md-7">
+                        <app-country-city-selector
+                        [countries]="countries"
+                        [cities]="cities"
+                        (selectedCountryChange)="onSelectedCountryChange($event)"
+                        (selectedCityChange)="onSelectedCityChange($event)"
+                      ></app-country-city-selector>
+                      </div>
+                     
+                    </div>
+                  </div>
+                </div>
+                <div>
+                <app-skill-search  (selectedSkillsChange)="onSelectedSkillsChange($event)"></app-skill-search> 
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Add Work Experience</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="card-title mb-0">Work Experience</h5>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let employment of employments; let i = index" class="mb-3">
+            <div class="card">
+              <div class="card-body" style="background-color: rgb(246, 249, 255);">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 class="card-title mb-3">{{ employment.companyName }}</h5>
+                  </div>
+                  <div class="col-md-4">
+                    <p class="card-text mb-2 left"><strong> {{getCountryName(employment)}}</strong> {{ employment.city }}</p>
+
+                  </div>
+
+                </div>
+        
+                <p class="card-text mb-2">
+                  <strong>Position:</strong> {{ employment.occupationPosition }}
+                </p>
+                <div class="row">
+                  <p class="col">
+                    <strong>Main Activities:</strong> {{ employment.mainActivities }}
+                  </p>
+                  <p class="col">
+                    <strong>Department:</strong> {{ employment.department }}
+                  </p>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-6">
+                    <ng-container *ngIf="(employment.fromDate && employment.toDate) || (employment.fromDate && employment.ongoing); else noDatesSelected">
+                      <p class="card-text">From: {{ employment.fromDate }}</p>
+                      <!-- <p class="card-text">To: {{ employment.toDate }}</p> -->
+                   
+                      <ng-container *ngIf="!employment.ongoing; else ongoingSection">
+                        <p class="card-text">To: {{ employment.toDate }}</p>
+                      </ng-container>
+                      <ng-template #ongoingSection>
+                        <p class="card-text">Ongoing</p>
+                      </ng-template>
+            
+                      
+                    </ng-container>
+                  </div>
+
+                  <div class="col-md-6">
+                    <p class="card-text">Skills:</p>
+                    <div>
+                      <span *ngFor="let skill of employment.skills" class="badge bg-primary me-2">{{ getSkillName(skill) }}</span>
+                    </div>
+                  </div>
+                  
+                </div>
+                <hr />
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-danger me-2" (click)="removeEmployment(i)">Delete</button>
+                  <button class="btn btn-primary" (click)="editEmployment(i)">Edit</button>
+                </div>
+              </div>
+            </div>
+
+      
+
+            <ng-template #noDatesSelected>
+              <p class="card-text">No dates selected.</p>
+            </ng-template>
+          </div>
+          <div *ngIf="employments.length === 0" class="text-center">
+            <p>No employment records found.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

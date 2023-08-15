@@ -1,9 +1,9 @@
-package com.example.AlumniInternProject.admin.settings.role;
-
-import com.example.AlumniInternProject.entity.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.UUID;
-
-public interface RoleRepository extends JpaRepository<Role, UUID> {
-}
+//package com.example.AlumniInternProject.admin.settings.role;
+//
+//import com.example.AlumniInternProject.entity.Role;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//import java.util.UUID;
+//
+//public interface RoleRepository extends JpaRepository<Role, UUID> {
+//}

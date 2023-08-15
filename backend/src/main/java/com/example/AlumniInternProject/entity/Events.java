@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,21 +32,12 @@ public class Events extends IdBaseEntity {
 
     private UUID createdBy;
 
-    /*One event may have many members.
-    * One member may be part of many events.
-    * We create a new table for this many to many relationship
-    *
-    *     @OneToMany(mappedBy = "event")
-    private List<UserEvents> userEvents;
-    * */
-
-
     /*One event can have many specifics.
     * Such as date , city that is held.
     * So we establish the relationship one to many*/
     @OneToMany(mappedBy = "events")
+    @JsonIgnore
     private List<EventSpecifics> eventSpecifics;
-
 
     public Events(String name,
                   String topic,

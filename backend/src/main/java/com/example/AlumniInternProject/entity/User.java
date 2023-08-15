@@ -1,9 +1,13 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.enumerations.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,7 +15,8 @@ import java.util.*;
 @Getter
 @Setter
 @Table(name = "users")
-public class User extends IdBaseEntity{
+@NoArgsConstructor
+public class User extends IdBaseEntity implements Serializable {
 
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstname;
@@ -32,16 +37,23 @@ public class User extends IdBaseEntity{
     @Column(length = 15)
     private String phoneNumber;
 
+    private String token;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities = new HashSet<>();
+
     @Column(length = 45)
     private String city;
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 
-    //    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "city_id")
-//
-//    private City city;
+
     @Column(length = 64, nullable = false)
     private String password;
 
@@ -64,16 +76,14 @@ public class User extends IdBaseEntity{
     )
     private Set<Interest> interests = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "role_id")
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "role_id")
+//    private Role role;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<UserEvents> userEvents;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Post> posts = new ArrayList<>();
-//
 
     @OneToMany(mappedBy = "requester")
     private List<ConnectionRequest> sentConnectionRequests;
@@ -88,12 +98,20 @@ public class User extends IdBaseEntity{
     @OneToMany(mappedBy = "recommendedUser")
     private Set<Recommendation> recommendedUser;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EmploymentHistory> employmentHistories = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EducationHistory> educationHistories = new HashSet<>();
+
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "userLikes")
     private Collection<Like> like;
-
 
 
     @Transient
@@ -102,10 +120,9 @@ public class User extends IdBaseEntity{
 
         return "/user-images/" + super.getId() + "/" + this.profilePicUrl;
     }
-    public User() {
-    }
 
-    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role) {
+
+    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -120,6 +137,23 @@ public class User extends IdBaseEntity{
         this.skills = skills;
         this.interests = interests;
         this.role = role;
+        this.employmentHistories = employmentHistories;
+        this.educationHistories = educationHistories;
+        this.authorities = authorities;
     }
 
+    public Set<EducationHistory> getEducationHistories() {
+        Set<EducationHistory> educationHistories = new HashSet<>();
+        for (EducationHistory educationHistory : this.educationHistories) {
+            EducationHistory educationHistory1 = new EducationHistory();
+            educationHistory1.setId(educationHistory.getId());
+            educationHistory1.setFieldOfQualification(educationHistory.getFieldOfQualification());
+            educationHistory1.setInstitutionName(educationHistory.getInstitutionName());
+            educationHistory1.setFieldOfStudy(educationHistory.getFieldOfStudy());
+            educationHistory1.setStartDate(educationHistory.getStartDate());
+            educationHistory1.setEndDate(educationHistory.getEndDate());
+            educationHistories.add(educationHistory1);
+        }
+        return educationHistories;
+    }
 }

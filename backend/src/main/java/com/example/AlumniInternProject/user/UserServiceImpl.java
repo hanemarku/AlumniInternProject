@@ -1,71 +1,190 @@
 package com.example.AlumniInternProject.user;
 
-import com.example.AlumniInternProject.admin.settings.city.CityRepository;
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
-import com.example.AlumniInternProject.entity.Country;
-import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.entity.*;
+import com.example.AlumniInternProject.enumerations.Role;
+import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
+import com.example.AlumniInternProject.user.DTOs.*;
+import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
+
 import java.util.stream.Collectors;
+
+import static com.example.AlumniInternProject.constants.UserImplConstants.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+
 public class UserServiceImpl implements UserService{
+    private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
-    private final CountryRepository countryRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final CountryRepository countryRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
+//    private final EmailService emailService;
+//    private LoginAttemptService loginAttemptService;
+
+//    private ModelMapper modelMapper = new ModelMapper();
+
     @Override
-    public UserGetDto save(UserDTO userDto) {
-       String encodedPassword = encodePassword(userDto.getPassword());
+    public UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException {
+        validateNewEmail(StringUtils.EMPTY, userDto.getEmail());
+        String password = encodePassword(userDto.getPassword());
+
+        Set<Authority> authorities = Role.ROLE_USER.getAuthorities().stream()
+                .map(Authority::new)
+                .filter(authority -> !authorityRepository.existsByName(authority.getName()))
+                .collect(Collectors.toSet());
+
+//        String profileImageUrl = "";
+//
+//            if(userDto.getProfilePicUrl() == null) {
+//                profileImageUrl = getTemporaryProfileImageUrl(userDto.getFirstname());
+//            }else {
+//                profileImageUrl = generateRrofileImageUrl(userDto.getEmail());
+//            }
+
+
+
+        authorities.forEach(authorityRepository::save);
+        authorities = authorityRepository.findAll().stream().collect(Collectors.toSet());
+        authorities = authorities.stream().filter(authority -> Role.ROLE_USER.getAuthorities().contains(authority.getName())).collect(Collectors.toSet());
+
         var user = new User(
-            userDto.getFirstname(),
-            userDto.getLastname(),
-            userDto.getEmail(),
-            userDto.isEnabled(),
-            userDto.getBirthday(),
-            userDto.getProfilePicUrl(),
-            userDto.getPhoneNumber(),
-            userDto.getCity(),
-            userDto.getCountry(),
-            encodedPassword,
-            userDto.getBio(),
-            userDto.getSkills(),
-            userDto.getInterests(),
-            userDto.getRole()
+                userDto.getFirstname(),
+                userDto.getLastname(),
+                userDto.getEmail(),
+                true,
+                userDto.getBirthday(),
+                userDto.getProfilePicUrl(),
+//                getTemporaryProfileImageUrl(userDto.getFirstname()),
+                userDto.getPhoneNumber(),
+                userDto.getCity(),
+                userDto.getCountry(),
+                password,
+                userDto.getBio(),
+                userDto.getSkills(),
+                userDto.getInterests(),
+                Role.ROLE_USER,
+                userDto.getEmploymentHistories(),
+                userDto.getEducationHistories(),
+                userDto.getAuthorities()
+//                true,
+//                true
         );
-        var saved = userRepository.save(user);
-        return map(saved);
-//        var savedUser = userRepository.save(user);
-//        var userGetDto = modelMapper.map(savedUser, UserGetDto.class);
-//        return userGetDto;
+
+        userDto.setAuthorities(authorities);
+        user.setAuthorities(authorities);
+        userDto.getEmploymentHistories().forEach(employmentDto -> employmentDto.setUser(user));
+        userDto.getEducationHistories().forEach(educationDto -> educationDto.setUser(user));
+
+        var savedUser = userRepository.save(user);
+        LOGGER.info("New user was created with password: " + user.getPassword());
+//        emailService.sendNewPasswordEmail(userDto.getFirstname(), userDto.getEmail(), password);
+//        emailService.sendNewPasswordEmail(userDto.getFirstname(), password, userDto.getEmail());
+
+        return map(savedUser);
+    }
+
+
+
+    private User validateNewEmail(String currentEmail, String newEmail) throws UserNotFoundException, EmailExistException {
+        if(StringUtils.isNotBlank(currentEmail)) {
+            User currentUser = findUserByEmail(currentEmail);
+            if(currentUser == null) {
+                throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + currentEmail);
+            }
+            User userByEmail1 = findUserByEmail(newEmail);
+            if(userByEmail1 != null && !currentUser.getId().equals(userByEmail1.getId())) {
+                throw new EmailExistException(EMAIL_ALREADY_EXISTS);
+            }
+            return currentUser;
+        }else {
+            User userByEmail = findUserByEmail(newEmail);
+            if(userByEmail != null) {
+                throw new EmailExistException(EMAIL_ALREADY_EXISTS);
+            }
+            return null;
+        }
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     @Override
-    public List<UserGetDto> findAll() {
+    public String generateRrofileImageUrl(String email) {
+        String[] emailParts = email.split("@");
+        if (emailParts.length == 2) {
+            email = emailParts[0];
+        }
+        email = email.replace(".", "_");
+        return email;
+    }
+
+    @Override
+    public String fixProfileImagePath(String profileImagePath) {
+        String forwardSlashesPath = profileImagePath.replace("\\", "/");
+        int startIndex = forwardSlashesPath.indexOf("user-photos");
+        if (startIndex == -1) {
+            return forwardSlashesPath;
+        }
+        String relativePath = forwardSlashesPath.substring(startIndex);
+        return relativePath;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            LOGGER.error("User not found by email: " + email);
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+        }else {
+            userRepository.save(user);
+            ALumniUserDetails userDetails = new ALumniUserDetails(user);
+            LOGGER.info("Returning found user by email: " + email);
+            return userDetails;
+        }
+    }
+
+
+    @Override
+    public UsersListingDTO findByEmail(String email) throws UserNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+//                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
+        return mapForListing(user);
+    }
+
+
+    @Transactional
+    @Override
+    public List<UsersListingDTO> findAll() {
         List<User> users = userRepository.findAll();
+
         return users.stream()
-                .map(user -> map(user))
+                .map(user -> mapForListing(user))
                 .collect(Collectors.toList());
     }
 
 
-    private UserGetDto map(User user) {
-        var dto = new UserGetDto();
-        dto.setId(user.getId());
+    private UsersListingDTO mapForListing(User user) {
+        var dto = new UsersListingDTO();;
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
@@ -75,26 +194,63 @@ public class UserServiceImpl implements UserService{
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCity(user.getCity());
         dto.setCountry(user.getCountry());
-        dto.setPassword(user.getPassword());
         dto.setBio(user.getBio());
         dto.setBirthday(user.getBirthday());
         dto.setSkills(user.getSkills());
         dto.setInterests(user.getInterests());
         dto.setRole(user.getRole());
+        dto.setAuthorities(user.getAuthorities());
+        List<EducationHistoryDTO> educationHistories = user.getEducationHistories().stream()
+                .map(e -> new EducationHistoryDTO(e.getInstitutionName(), e.getFieldOfQualification(), e.getFieldOfStudy(), e.getStartDate(), e.getEndDate(), e.getFinalGrade(), e.getWebsite(), e.getCity(), e.getCountry()))
+                .collect(Collectors.toList());
+        dto.setEducationHistories(educationHistories);
+
+
+        List<EmploymentHistoryDTO> employmentHistories = user.getEmploymentHistories().stream()
+                .map(e -> new EmploymentHistoryDTO(e.getMainActivities(), e.getOccupationPosition(), e.getCompanyName(), e.getDepartment(), e.isOngoing(), e.getFromDate(), e.getToDate(), e.getCity(), e.getCountry(), e.getSkills()))
+                .collect(Collectors.toList());
+        dto.setEmploymentHistories(employmentHistories);
         return dto;
     }
 
-    public List<Country> listAllCountries() {
-        return (List<Country>) countryRepository.findAll();
+
+    private UserGetDto map(User user) {
+        String profileImageUrl = "";
+
+        if(user.getProfilePicUrl() == null) {
+            profileImageUrl = getTemporaryProfileImageUrl(user.getFirstname());
+        }else {
+            profileImageUrl = generateRrofileImageUrl(user.getEmail());
+        }
+        var dto = new UserGetDto();
+        dto.setId(user.getId());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setEmail(user.getEmail());
+        dto.setEnabled(user.isEnabled());
+        dto.setBirthday(user.getBirthday());
+        dto.setProfilePicUrl(profileImageUrl);
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setCity(user.getCity());
+        dto.setCountry(user.getCountry());
+        dto.setBio(user.getBio());
+        dto.setBirthday(user.getBirthday());
+        dto.setSkills(user.getSkills());
+        dto.setInterests(user.getInterests());
+        dto.setRole(user.getRole());
+        dto.setAuthorities(user.getAuthorities());
+        dto.setEducationHistories(user.getEducationHistories());
+        dto.setEmploymentHistories(user.getEmploymentHistories());
+
+        return dto;
     }
 
-    @Override
-    public boolean isEmailUnique(UUID id, String email) {
-        User existingUser = userRepository.findUserByEmail(email);
-        if (existingUser != null && existingUser.getId().equals(id)) {
-            return false;
-        }
-        return true;
+
+
+
+
+    public List<Country> listAllCountries() {
+        return (List<Country>) countryRepository.findAll();
     }
 
     @Override
@@ -103,7 +259,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserGetDto update(UUID id, UserDTO dto) {
+    public UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException {
         try {
             var user = userRepository.findById(id).get();
             user.setFirstname(dto.getFirstname());
@@ -115,7 +271,6 @@ public class UserServiceImpl implements UserService{
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setCity(dto.getCity());
             user.setCountry(dto.getCountry());
-            user.setPassword(dto.getPassword());
             user.setBio(dto.getBio());
             user.setSkills(dto.getSkills());
             user.setInterests(dto.getInterests());
@@ -123,7 +278,7 @@ public class UserServiceImpl implements UserService{
             var savedUser = userRepository.save(user);
             return map(savedUser);
         } catch (NoSuchElementException e) {
-            throw new UsernameNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
     }
 
@@ -131,7 +286,7 @@ public class UserServiceImpl implements UserService{
         try {
             return userRepository.findById(id).get();
         } catch (NoSuchElementException e) {
-            throw new UserNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
     }
 
@@ -141,11 +296,52 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public boolean isEmailAvailable(String email) {
+        User user = userRepository.findUserByEmail(email);
+        if (user != null) {
+            return false;
+        }
+        return true;
+    }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
+//        User user = userRepository.findUserByEmail(email);
+//        if (user == null) {
+//            LOGGER.error("User not found in the database" + email);
+//            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+//        }else{
+//            validateLoginAttempt(user);
+//            userRepository.save(user);
+//            ALumniUserDetails userDetails = new ALumniUserDetails(user);
+//            LOGGER.info(USER_FOUND_BY_EMAIL + email);
+//            return userDetails;
+//        }
+//    }
+
+//    private void validateLoginAttempt(User user) {
+//        if(user.isNotLocked()){
+//            if(loginAttemptService.hasExceededMaxAttempts(user.getEmail())){
+//                user.setNotLocked(false);
+//            }else{
+//                user.setNotLocked(true);
+//            }
+//        }else{
+//            loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
+//        }
+//    }
+
+    private String getTemporaryProfileImageUrl(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
+    }
+
+
+    @Override
     public void delete(UUID id) throws UserNotFoundException {
         var countById = userRepository.countUserById(id);
         var user = userRepository.findById(id).get();
         if (countById == 0) {
-            throw new UserNotFoundException("User with id " + id + " does not exist");
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
         }
         user.getInterests().clear();
         user.getSkills().clear();
@@ -157,4 +353,10 @@ public class UserServiceImpl implements UserService{
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+//    @Override
+//    public User updateProfileImage(UUID id, MultipartFile profileImage) throws UserNotFoundException {
+//        return null;
+//    }
+
 }

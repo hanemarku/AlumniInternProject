@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <div class="mb-3">
+        <input
+        type="text"
+        class="form-control"
+        placeholder="Search skills"
+        #searchInput
+        (input)="onSearch(searchInput.value)"
+        (keyup.enter)="onEnterKeyPress($event)"
+      />
+    </div>
+
+    <div *ngIf="filteredSkills.length == 0 && searchTerm">
+        <p>No suggestions found. Press Enter to add "<strong>{{ searchTerm }}</strong>" to the skills.</p>
+    </div>
+    
+
+    <div class="row">
+        <div class="col">
+            <span *ngIf="filteredSkills.length != 0">Available skills</span>
+          <div *ngFor="let skill of filteredSkills">
+            <span class="badge bg-secondary me-2" (click)="onAddSkill(skill)">{{ getSkillName(skill)}}</span>
+          </div>
+        </div>
+      </div>
+  
+    <div class="row">
+      <div class="col">
+        <span *ngIf="selectedSkills.length != 0">Selected skills</span>
+        <div *ngFor="let skill of selectedSkills">
+          <span class="badge bg-primary me-2">{{ getSkillName(skill) }}</span>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+  

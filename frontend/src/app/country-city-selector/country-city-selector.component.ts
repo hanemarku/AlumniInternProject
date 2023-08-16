@@ -87,14 +87,14 @@ export class CountryCitySelectorComponent implements OnInit {
       this.selectedCountry = null;
     }
     if (selectedCountryValue) {
-      this.cityDataService.getCitiesByCountry(selectedCountryValue).subscribe(
-        (cities: CityList[]) => {
-          this.cities[selectedCountryValue] = cities;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+      // this.cityDataService.getCitiesByCountry(selectedCountryValue).subscribe(
+      //   (cities: CityList[]) => {
+      //     this.cities[selectedCountryValue] = cities;
+      //   },
+      //   (error) => {
+      //     console.error(error);
+      //   }
+      // );
     }
     this.updateCityValidity();
     console.log("selected country emit 2" + this.selectedCountry);

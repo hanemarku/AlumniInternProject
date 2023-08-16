@@ -14,6 +14,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CountryComponent } from './country/country.component';
+import { CityComponent } from './city/city.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
+  {path: 'cities', component: CityComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

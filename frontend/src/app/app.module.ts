@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListUsersComponent } from './user/list-users/list-users.component';
@@ -37,6 +36,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
+import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +64,7 @@ import { UpdateCountryDialogComponent } from './country/update-country-dialog/up
     UserProfileComponent,
     FooterComponent,
     UpdateCountryDialogComponent,
+    UpdateCityDialogComponent
 
   ],
   imports: [

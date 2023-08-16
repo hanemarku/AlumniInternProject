@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,7 +41,7 @@ import { ListUsersComponent } from './user/list-users/list-users.component';
 import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
-
+import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +75,9 @@ import { SuccessPageComponent } from './user/success-page/success-page.component
     EventEditComponent,
     EventDeleteComponent,
     EventSearchByComponent,
-    EventSpecificsComponent
+    EventSpecificsComponent,
+    UpdateCityDialogComponent,
+
   ],
   imports: [
     BrowserModule,

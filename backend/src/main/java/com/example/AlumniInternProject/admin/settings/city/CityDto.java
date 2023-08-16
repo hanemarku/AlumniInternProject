@@ -8,15 +8,16 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CityDto {
-    private UUID id;
+//    private UUID id;
     private String name;
+    private UUID countryId;
 
     public CityDto() {
 
     }
 
-    public CityDto(UUID id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+//    public CityDto(UUID id, String name) {
+//        this.id = id;
+//        this.name = name;
+//    }
 }

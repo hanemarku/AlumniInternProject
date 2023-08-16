@@ -1,1 +1,76 @@
-<p>city works!</p>
+<section class="heading-section">
+  <h1 class="title is-1 has-text-centered">Cities</h1>
+</section>
+
+<div class="container">
+  <div class="add-city-box">
+    <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+      <h2 class="title is-5">Add City</h2>
+
+      <div class="field is-grouped" style="margin: 0">
+        <p class="control is-expanded">
+          <input ngModel #cityTextField="ngModel" required maxlength="45" name="cityName" class="input" type="text"
+            placeholder="Type city name here">
+        </p>
+
+
+        <div class="select is-normal" style="margin-right: 12px">
+          <select [(ngModel)]="selectedCountryId" name="selectedCountryId">
+            <option value="" disabled selected>Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.id">
+              {{ country.name }}
+            </option>
+          </select>
+        </div>
+
+
+        <p class="control">
+          <button type="submit" class="button alt-gradient-button">
+            <i class="material-icons">add</i>
+            Add
+          </button>
+        </p>
+      </div>
+
+      <div *ngIf="cityTextField.invalid && showValidationErrors">
+        <p class="help is-danger" *ngIf="cityTextField.errors?.['required']">Please enter city name.</p>
+        <p class="help is-danger" *ngIf="cityTextField.errors?.['maxlength']">City name must not be more than 45
+          characters long.</p>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="city-container">
+      <select class="form-control m-2 mt-5" style="height: 300px" size="3">
+        <option *ngFor="let city of cities" class="city-item" (click)="onCityClick(city)">
+          {{ city.name }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <!-- <label class="col-form-label mt-2">City Name:</label> -->
+      <div class="col-md">
+        <input type="text" class="form-control mt-3" placeholder="City Name" [(ngModel)]="selectedCity.name"
+          disabled="disabled">
+      </div>
+      <!-- <label class="col-form-label mt-2">Code:</label> -->
+      <div class="col-md-3">
+        <input type="text" class="form-control mt-3" placeholder="Country" [(ngModel)]="selectedCountryName"
+          disabled="disabled">
+      </div>
+      
+
+
+      <div class="col-lg-4 mt-3 text-right">
+        <input type="button" class="btn btn-secondary text-black" value="Update" [disabled]="!showCity"
+          (click)="onUpdateClicked(selectedCity)">
+        <input type="button" class="btn btn-danger" value="Delete" [disabled]="!showCity && !showCountry"
+          (click)="openConfirmationDialog(selectedCity.id)">
+      </div>
+    </div>
+  </div>
+</section>

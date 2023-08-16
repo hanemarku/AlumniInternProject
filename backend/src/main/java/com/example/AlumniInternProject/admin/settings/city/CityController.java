@@ -1,12 +1,13 @@
 package com.example.AlumniInternProject.admin.settings.city;
 
+import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
 import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Country;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -15,32 +16,34 @@ import java.util.UUID;
 public class CityController {
 
     private final CityRepository cityRepository;
+    private final CountryRepository countryRepository;
 
-    @GetMapping("list_by_country/{id}")
-    public List<CityDto> listByCountry(@PathVariable("id") UUID countryId) {
-        List<City> listCities = cityRepository.findByCountryOrderByNameAsc(new Country(countryId));
-        List<CityDto> result = new ArrayList<>();
-
-        for (City city : listCities) {
-            result.add(new CityDto(city.getId(), city.getName()));
-        }
-        return result;
-    }
-
-    //list all cities
     @GetMapping("")
     public List<City> list() {
-        return (List<City>) cityRepository.findAll();
+        return cityRepository.findAllByOrderByNameAsc();
     }
 
-    @PostMapping("save")
-    public String save(@RequestBody City city) {
+    @PostMapping()
+    public City save(@RequestBody CityDto cityDto) {
+        Optional<Country> optionalCountry = countryRepository.findById(cityDto.getCountryId());
+
+        if (optionalCountry.isEmpty()) {
+            return null;
+        }
+
+        Country country = optionalCountry.get();
+        City city = new City(cityDto.getName(), country);
         City savedCity = cityRepository.save(city);
-        return String.valueOf(savedCity.getId());
+        return savedCity;
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable("id") UUID id) {
         cityRepository.deleteById(id);
+    }
+
+    @GetMapping("/countries/{id}")
+    public List<City> findByCountryIdOrderByNameAsc(@PathVariable("id") UUID id) {
+        return cityRepository.findByCountryIdOrderByNameAsc(id);
     }
 }

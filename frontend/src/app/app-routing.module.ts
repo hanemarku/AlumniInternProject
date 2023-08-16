@@ -19,6 +19,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ListUsersComponent } from './user/list-users/list-users.component';
 import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
+import { CityComponent } from './city/city.component';
+
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -38,6 +40,7 @@ const routes: Routes = [
   {path:'event-delete', component:EventDeleteComponent},
   {path:'event-search-by', component:EventSearchByComponent},
   {path: 'event-specifics', component: EventSpecificsComponent},
+  {path: 'cities', component: CityComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

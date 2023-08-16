@@ -20,9 +20,11 @@ public class CountryController {
     }
 
     @PostMapping()
-    public String save(@RequestBody Country country){
+    public Country save(@RequestBody CountryDTO countryDto){
+        Country country = new Country(countryDto.getName(), countryDto.getCode());
         Country savedCountry = countryRepository.save(country);
-        return String.valueOf(savedCountry.getId());
+        return savedCountry;
+
     }
 
     @DeleteMapping("{id}")

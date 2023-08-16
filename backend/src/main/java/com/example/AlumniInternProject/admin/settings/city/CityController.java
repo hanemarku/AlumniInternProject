@@ -41,4 +41,9 @@ public class CityController {
     public void delete(@PathVariable("id") UUID id) {
         cityRepository.deleteById(id);
     }
+
+    @GetMapping("/countries/{id}")
+    public List<City> findByCountryOrderByNameAsc(Country country) {
+        return cityRepository.findByCountryOrderByNameAsc(country);
+    }
 }

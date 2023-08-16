@@ -43,7 +43,7 @@ public class CityController {
     }
 
     @GetMapping("/countries/{id}")
-    public List<City> findByCountryOrderByNameAsc(Country country) {
-        return cityRepository.findByCountryOrderByNameAsc(country);
+    public List<City> findByCountryIdOrderByNameAsc(@PathVariable("id") UUID id) {
+        return cityRepository.findByCountryIdOrderByNameAsc(id);
     }
 }

@@ -92,7 +92,7 @@ export class CityComponent implements OnInit {
 
 
   refreshCities() {
-    this.cityDataService.listAllCities().subscribe(
+    this.cityDataService.listCities().subscribe(
       (response: any[]) => {
         console.log(response);
         this.cities = response;

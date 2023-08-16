@@ -13,7 +13,7 @@ export class CityDataService {
     private http: HttpClient
   ) { }
 
-  listAllCities(){
+  listCities(){
     return this.http.get<any>("http://localhost:8080/api/v1/cities");
   }
 

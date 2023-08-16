@@ -27,7 +27,11 @@ export class CityDataService {
 
   updateCity(cityId: string, updatedCity: any){
     return this.http.patch(`http://localhost:8080/api/v1/cities/${cityId}`, updatedCity);
-  } 
+  }
+  
+  getCitiesByCountry(countryId: string){
+    return this.http.get<any>(`http://localhost:8080/api/v1/cities/countries/${countryId}`);
+  }
 
 
 }

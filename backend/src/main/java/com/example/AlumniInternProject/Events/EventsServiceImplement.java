@@ -4,9 +4,7 @@ import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -40,12 +38,14 @@ public class EventsServiceImplement implements EventsService {
                 edto.getEventSpecifics()
         );
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null && auth.getPrincipal() instanceof UserDetails) {
+        String auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        eDto.setCreatedBy(auth);
+       /*
+       *  if(auth != null && auth.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             String eventCreator = userDetails.getUsername();
             eDto.setCreatedBy(eventCreator);
-        }
+        }*/
         var saved = eventsRepository.save(eDto);
         return map(saved);
     }

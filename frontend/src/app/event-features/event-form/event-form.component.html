@@ -30,9 +30,10 @@
       </div>
       <div>
         <label for="imgUrl">Image URL:</label>
-        <input type="text" class="form-control" id="imgUrl"
-        required
+        <input type="file" class="form-control" id="imgUrl"
+        required (change)="onSelectFile($event)"
         [(ngModel)]="eventModel.imgUrl" name="imgUrl" #imgUrl="ngModel" >
+        <img *ngIf="eventModel.imgUrl" [src]="fullUrl"/>
         <div [hidden]="imgUrl.valid || imgUrl.pristine" class="alert alert-danger">
           <span>Image Path is required</span>
       </div>

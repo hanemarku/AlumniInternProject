@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CityList } from 'src/app/city/city.component';
 
@@ -21,5 +21,5 @@ export class CityDataService {
   listCities(): Observable<CityList[]>{
     return this.http.get<CityList[]>(this.apiUrl);
   }
- 
+
 }

@@ -22,12 +22,15 @@ export class UpdateCityDialogComponent implements OnInit {
     private countryDataService: CountryDataService 
   ) {
     // this.updatedCity = { ...city };
-    this.updatedCity = { ...city, countryId: city.country.id };
-
     this.listCountries(); 
+    this.updatedCity = { ...city, countryId: city.country.id };
+    this.updatedCountry = city.country.id;
+    
   }
 
   ngOnInit(): void {
+    
+    this.updatedCountry = this.city.country.id;
   }
 
   close() {
@@ -37,6 +40,8 @@ export class UpdateCityDialogComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     if (form.invalid) return;
     this.updatedCity.name = form.value.name;
+    this.updatedCountry = form.value.selectedCountryId;
+    console.log('updated city', this.updatedCity);
     this.dialogRef.close(this.updatedCity);
     console.log('country id', this.updatedCity.countryId);
   }

@@ -35,6 +35,7 @@ export class CityComponent implements OnInit {
   showValidationErrors: boolean = false;
   selectedCity: CityList = new CityList( '', '', null);
   showCity = false;
+  showCountry = false;
   countries: CountryList[] = [];
   selectedCountryId: string = '';
   selectedCountryName: string = '';
@@ -65,7 +66,6 @@ export class CityComponent implements OnInit {
       console.log('countryId', countryId);
       this.selectedCountry = this.countries.find(country => country.id === countryId);
       console.log('selectedCountry', this.selectedCountry);
-      // console.log('city id', this.selectedCity.id )
 
       const city: City = {
         name: form.value.cityName,
@@ -124,18 +124,11 @@ export class CityComponent implements OnInit {
   onCityClick(city: CityList) {
     console.log('city clicked', city);
     this.selectedCity = city;
-    // this.selectCountryById(this.selectedCity.country?.id);
     this.selectedCountryName = this.selectedCity.country?.name || '';
     console.log('selectedCountry', this.selectedCountry);
     console.log('test', city.country?.id);
-    // this.countryDataService.findCountryById(city.countryId).subscribe(
-    //   response => {
-    //     console.log(response);
-    //     this.selectedCountryName = response.name;
-    //   }
-    // );
-
     this.showCity = true;
+    this.showCountry = true;
   }
 
 
@@ -183,13 +176,16 @@ export class CityComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         console.log('Updated City Data:', result);
+        this.deleteCity(this.selectedCity.id);
         this.updateCity(city.id, result);
+        this.onCityClick(this.selectedCity);
       }
     });
   }
 
   updateCity(cityId: string, updatedCity: any) {
     console.log(`update city ${cityId}`);
+
     this.cityDataService.saveCity(updatedCity).subscribe(
       response => {
         console.log(response);

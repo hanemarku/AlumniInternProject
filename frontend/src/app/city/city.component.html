@@ -68,7 +68,7 @@
       <div class="col-lg-4 mt-3 text-right">
         <input type="button" class="btn btn-secondary text-black" value="Update" [disabled]="!showCity"
           (click)="onUpdateClicked(selectedCity)">
-        <input type="button" class="btn btn-danger" value="Delete" [disabled]="!showCity"
+        <input type="button" class="btn btn-danger" value="Delete" [disabled]="!showCity && !showCountry"
           (click)="openConfirmationDialog(selectedCity.id)">
       </div>
     </div>

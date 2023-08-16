@@ -8,14 +8,20 @@
                 </div>
                 <div class="control">
                     <div class="select is-normal" style="margin-right: 12px">
-                        <select [(ngModel)]="updatedCity.country" name="selectedCountryId">
+                        <!-- <select [(ngModel)]="updatedCity.country" name="selectedCountryName">
                             <option value="" disabled selected>Select Country</option>
                             <option *ngFor="let country of countries" [value]="country.id">
                                 {{ country.name }}
                             </option>
-                        </select>
+                        </select> -->
+
+                        <select [(ngModel)]="updatedCity.countryId" name="selectedCountryName">
+                            <option value="" disabled>Select Country</option>
+                            <option *ngFor="let country of countries" [value]="country.id">
+                              {{ country.name }}
+                            </option>
+                          </select>
                     </div>
-                    <!-- <input type="text" class="input" [(ngModel)]="updatedCity.country" name="country" required maxlength="5" placeholder="Type country here..."> -->
                 </div>
 
                 

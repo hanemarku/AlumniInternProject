@@ -10,6 +10,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/countries")
+@CrossOrigin(origins="http://localhost:4200")
 public class CountryController {
     private final CountryRepository countryRepository;
 

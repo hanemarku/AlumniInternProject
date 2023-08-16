@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface CityRepository extends CrudRepository<City, UUID> {
     public List<City> findByCountryOrderByNameAsc(Country country);
+    public List<City> findAllByOrderByNameAsc();
 }

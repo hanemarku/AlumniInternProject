@@ -1,12 +1,11 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UserList } from 'src/app/user/list-users/list-users.component';
 import { Education } from '../education-service/education-data.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
 import { Employment } from '../employment-service/employment-data.service';
-import { HttpParams } from '@angular/common/http';
 
 
 export interface User{

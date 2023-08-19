@@ -1,21 +1,25 @@
 package com.example.AlumniInternProject.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
-public class VerificationToken {
+public class VerificationToken implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
     private String token;
     private Timestamp expirationDate;

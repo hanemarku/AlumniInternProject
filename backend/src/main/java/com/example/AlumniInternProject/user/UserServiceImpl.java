@@ -230,7 +230,8 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    private UsersListingDTO mapForListing(User user) {
+    @Override
+    public UsersListingDTO mapForListing(User user) {
         var dto = new UsersListingDTO();
         dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());

@@ -33,7 +33,10 @@ public interface UserService {
     UsersListingDTO findByID(UUID id) throws UserNotFoundException;
 
    boolean resetPassword(String token, String newPassword) throws UserNotFoundException;
-    String encodePassword(String password);
+   String encodePassword(String password);
+   UsersListingDTO mapForListing(User user);
+
+
 
 
 

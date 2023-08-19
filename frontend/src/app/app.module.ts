@@ -42,6 +42,19 @@ import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
 import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city-dialog.component';
+import { MessageComponent } from './message/message.component';
+import { SettingsComponent } from './setting-folder/settings/settings.component';
+import { GeneralSettingComponent } from './setting-folder/general-setting/general-setting.component';
+import { MailServerComponent } from './setting-folder/mail-server/mail-server.component';
+import { UserVerificationTemplateComponent} from './setting-folder/email-template/user-verification-template.component';
+import { AccountVerificationComponent } from './account-verification/account-verification.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
+import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import { NotificationsComponent } from './user/notifications/notifications.component';
+import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +90,18 @@ import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city
     EventSearchByComponent,
     EventSpecificsComponent,
     UpdateCityDialogComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
+    UserVerificationTemplateComponent,
+    ForgotEmailTemplateComponent,
+    SuggestionsComponent,
+    NotificationsComponent,
+    ProfileSliderComponent,
+    MessageComponent,
+    SettingsComponent,
+    GeneralSettingComponent,
+    MailServerComponent,
+    AccountVerificationComponent,
 
   ],
   imports: [
@@ -91,7 +116,8 @@ import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city
     NgbModule,
     MatDialogModule,
     NotificationModule,
-    CommonModule
+    CommonModule,
+    AngularEditorModule
   ],
   providers: [AuthenticationGuard],
 

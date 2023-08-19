@@ -67,7 +67,8 @@ public class UserController extends ExceptionHandling {
             User loginUser = userService.findUserByEmail(user.getEmail());
             ALumniUserDetails userDetails = new ALumniUserDetails(loginUser);
             HttpHeaders jwtHeader = getJwtHeader(userDetails);
-            return ResponseEntity.ok().headers(jwtHeader).body(loginUser);
+            UsersListingDTO userForLogin = userService.mapForListing(loginUser);
+            return ResponseEntity.ok().headers(jwtHeader).body(userForLogin);
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
@@ -106,20 +107,19 @@ public class UserController extends ExceptionHandling {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<String> getAllUsers() {
-//        int savedUsers = userService.findAll().size();
-//        if (savedUsers != 0) {
-//            return ResponseEntity.status(HttpStatus.CREATED).body("there are " + savedUsers + " users in the database" );
-//        } else {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list users");
-//        }
-//    }
-
     @GetMapping
     public List<UsersListingDTO> getAllUsers() {
-
         return userService.findAll();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ConnectUserDTO>> getUsers() {
+        List<UsersListingDTO> allUsers = userService.findAll();
+        List<ConnectUserDTO> userDtos = allUsers.stream()
+                .map(user -> new ConnectUserDTO(user.getId() ,user.getEmail(), user.getFirstname(), user.getLastname(), user.getProfilePicUrl()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDtos);
     }
 
 
@@ -149,17 +149,6 @@ public class UserController extends ExceptionHandling {
 //    }
 
 
-//    @PostMapping("/verify")
-//    public ResponseEntity<String> verifyUser(@RequestBody VerificationRequest request) {
-//        User user = userRepository.findByVerificationCode(request.getVerificationCode());
-//        if (user != null) {
-//            user.setEnabled(true);
-//            userRepository.save(user);
-//            return ResponseEntity.ok("User verified successfully");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification code");
-//        }
-//    }
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) throws UserNotFoundException, EmailExistException {

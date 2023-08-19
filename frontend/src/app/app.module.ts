@@ -50,8 +50,6 @@ import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-temp
 import { SuggestionsComponent } from './user/suggestions/suggestions.component';
 import { NotificationsComponent } from './user/notifications/notifications.component';
 import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
-import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.component';
-
 
 
 @NgModule({
@@ -92,8 +90,6 @@ import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.compo
     SuggestionsComponent,
     NotificationsComponent,
     ProfileSliderComponent,
-    ProfilesSwiperComponent
-
   ],
   imports: [
     BrowserModule,

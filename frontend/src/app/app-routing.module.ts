@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListUsersComponent } from './user/list-users/list-users.component';
 import { SingupComponent } from './user/singup/singup.component';
-import { EducationComponent } from './education/education.component';
-import { SkillSearchComponent } from './skill-search/skill-search.component';
 import { SkillListComponent } from './skill/skill.component';
 import { InterestListComponent } from './interest/interest.component';
 import { SigninComponent } from './user/signin/signin.component';
@@ -18,7 +16,10 @@ import { SettingsComponent } from './setting-folder/settings/settings.component'
 import { CountryComponent } from './country/country.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
-import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
+import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import { NotificationsComponent } from './user/notifications/notifications.component';
+import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
+import { ProfilesSwiperComponent} from './profiles-swiper/profiles-swiper.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
@@ -33,8 +34,13 @@ const routes: Routes = [
   {path: 'error-page', component: ErrorPageComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
+  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthenticationGuard]},
+  {path: 'suggestions', component:SuggestionsComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'profileSlider', component: ProfileSliderComponent},
+  {path: 'profilesSwiper', component: ProfilesSwiperComponent},
+
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 ]
 

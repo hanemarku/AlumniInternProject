@@ -7,6 +7,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 import { Employment } from '../employment-service/employment-data.service';
 import { HttpParams } from '@angular/common/http';
+import { UserDto } from '../connection-request/connection-request.service';
 
 
 export interface User{
@@ -35,6 +36,8 @@ export interface UserTest {
   bio: string;
   phoneNumber: string;
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -116,6 +119,10 @@ export class UserDataService {
     const url = `${this.apiUrl}/reset-password`;
     const resetPass = {token, newPassword }; 
     return this.http.post<any>(url, resetPass, { observe: 'response' });
+  }
+
+  getAllUsers(): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${this.apiUrl}/all`);
   }
 
 }

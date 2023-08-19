@@ -47,6 +47,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
+import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import { NotificationsComponent } from './user/notifications/notifications.component';
+import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
+import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.component';
 
 
 
@@ -84,7 +88,11 @@ import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-temp
     ResetPasswordComponent,
     ForgotPasswordComponent,
     UserVerificationTemplateComponent,
-    ForgotEmailTemplateComponent
+    ForgotEmailTemplateComponent,
+    SuggestionsComponent,
+    NotificationsComponent,
+    ProfileSliderComponent,
+    ProfilesSwiperComponent
 
   ],
   imports: [

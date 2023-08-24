@@ -55,6 +55,16 @@ import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-temp
 import { SuggestionsComponent } from './user/suggestions/suggestions.component';
 import { NotificationsComponent } from './user/notifications/notifications.component';
 import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
+import { NotificationService } from './services/notification-service/notification.service';
+import { AuthenticationService } from './services/authenication-service/authentication.service';
+import { UserDataService } from './services/user-service/user-data.service';
+import { ChatComponent } from './chat/chat.component';
+import { MessageListComponent } from './message-list/message-list.component';
+import { MessageInputComponent } from './message-input/message-input.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { PrivateChatComponent } from './private-chat/private-chat.component';
+import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
+import { RoomComponent } from './room/room.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +112,13 @@ import { ProfileSliderComponent } from './profile-slider/profile-slider.componen
     GeneralSettingComponent,
     MailServerComponent,
     AccountVerificationComponent,
+    ChatComponent,
+    MessageListComponent,
+    MessageInputComponent,
+    UserListComponent,
+    PrivateChatComponent,
+    PrivateChatWindowComponent,
+    RoomComponent,
 
   ],
   imports: [
@@ -119,8 +136,17 @@ import { ProfileSliderComponent } from './profile-slider/profile-slider.componen
     CommonModule,
     AngularEditorModule
   ],
-  providers: [AuthenticationGuard],
-
+  providers: [NotificationService ,AuthenticationGuard,
+    AuthenticationService, UserDataService
+  ],
+  
+  // providers: [NotificationService ,AuthenticationGuard,
+  //   AuthenticationService, UserDataService, 
+  //   {
+  //     provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+  //   } 
+  // ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

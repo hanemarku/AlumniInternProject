@@ -26,6 +26,9 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
 import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.component';
+import { PrivateChatComponent } from './private-chat/private-chat.component';
+import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
+import { RoomComponent } from './room/room.component';
 
 
 const routes: Routes = [
@@ -53,6 +56,10 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'profileSlider', component: ProfileSliderComponent},
   {path: 'profilesSwiper', component: ProfilesSwiperComponent},
+  {path: 'private-chat/:userId', component: PrivateChatComponent }, 
+  {path: 'chat', component: PrivateChatComponent},
+  {path: 'private', component: PrivateChatWindowComponent},
+  {path: 'room', component: RoomComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

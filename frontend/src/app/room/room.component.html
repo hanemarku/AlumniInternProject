@@ -1,0 +1,51 @@
+<ul class="chat-messages">
+  <li *ngFor="let chat of publicChats; let i = index" >
+
+    <div class="message-data">{{ chat.message }}</div>
+
+  </li>
+</ul>
+
+<div class="container">
+    <div *ngIf="userData.connected" class="chat-box">
+      <div class="member-list">
+        <ul>
+          <li (click)="setTab('CHATROOM')" [ngClass]="{ 'active': tab === 'CHATROOM' }">Chatroom</li>
+          <li *ngFor="let name of privateChats.keys()" (click)="setTab(name)" [ngClass]="{ 'active': tab === name }">{{ name }}</li>
+        </ul>
+      </div>
+      <div *ngIf="tab === 'CHATROOM'" class="chat-content">
+        <!-- Public chat content -->
+        <ul class="chat-messages">
+          <li *ngFor="let chat of publicChats; let i = index" class="message" [ngClass]="{ 'self': chat.senderName === userData.username }">
+            <div *ngIf="chat.senderName !== userData.username" class="avatar">{{ chat.senderName }}</div>
+            <div class="message-data">{{ chat.message }}</div>
+            <div *ngIf="chat.senderName === userData.username" class="avatar self">{{ chat.senderName }}</div>
+          </li>
+        </ul>
+        <div class="send-message">
+          <input type="text" class="input-message" placeholder="enter the message" [(ngModel)]="userData.message" />
+          <button type="button" class="send-button" (click)="sendValue()">send</button>
+        </div>
+      </div>
+      <div *ngIf="tab !== 'CHATROOM'" class="chat-content">
+        <!-- Private chat content -->
+        <ul class="chat-messages">
+          <li *ngFor="let chat of privateChats.get(tab); let i = index" class="message" [ngClass]="{ 'self': chat.senderName === userData.username }">
+            <div *ngIf="chat.senderName !== userData.username" class="avatar">{{ chat.senderName }}</div>
+            <div class="message-data">{{ chat.message }}</div>
+            <div *ngIf="chat.senderName === userData.username" class="avatar self">{{ chat.senderName }}</div>
+          </li>
+        </ul>
+        <div class="send-message">
+          <input type="text" class="input-message" placeholder="enter the message" [(ngModel)]="userData.message" />
+          <button type="button" class="send-button" (click)="sendPrivateValue()">send</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!userData.connected" class="register">
+      <input id="user-name" placeholder="Enter your name" name="userName" [(ngModel)]="userData.username" />
+      <button type="button" (click)="registerUser()">Connect</button>
+    </div>
+  </div>
+  

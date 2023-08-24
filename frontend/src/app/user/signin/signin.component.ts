@@ -67,9 +67,10 @@ export class SigninComponent implements OnInit, OnDestroy {
               this.showLoading = false;
               const userLoggedIn = this.authenticationService.getUserFromLocalStorage();
               this.notificationService.notify(NotificationType.SUCCESS, `Welcome ${userLoggedIn.firstname} ${userLoggedIn.lastname}`);
-              this.router.navigateByUrl('/users').then(() => {
-                window.location.reload();
-              });
+              this.router.navigateByUrl('/users');
+              // this.router.navigateByUrl('/users').then(() => {
+              //   window.location.reload();
+              // });
             } else {
               this.authenticationService.logout();
               this.showLoading = false;

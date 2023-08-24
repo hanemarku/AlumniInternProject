@@ -1,8 +1,10 @@
 package com.example.AlumniInternProject.user.security;
 
+import com.example.AlumniInternProject.user.LoginAttemptService;
 import com.example.AlumniInternProject.user.filter.JwtAccessDeniedHandler;
 import com.example.AlumniInternProject.user.filter.JwtAuthenticationEntryPoint;
 import com.example.AlumniInternProject.user.filter.JwtAuthorizationFilter;
+import com.example.AlumniInternProject.user.listeners.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,22 +30,32 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-        private JwtAuthorizationFilter jwtAuthorizationFilter;
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
-        @Bean
-        public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
-            return new JwtAuthenticationEntryPoint();
-        }
+    @Bean
+    public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint();
+    }
 
-        @Bean
-        public UserDetailsService userDetailsService() {
-            return new AlumniUserDetailsService();
-        }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new AlumniUserDetailsService();
+    }
 
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+//    @Bean
+//    public LoginAttemptService loginAttemptService() {
+//        return new LoginAttemptService();
+//    }
+
+    @Autowired
+    private LoginAttemptService loginAttemptService;
+
+
 
     private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
@@ -84,12 +96,17 @@ public class WebSecurityConfig {
                             .usernameParameter("email")
                             .defaultSuccessUrl("/homepage2")
                             .permitAll()
+                            .successHandler(customAuthenticationSuccessHandler())
                     )
                     .httpBasic(withDefaults())
                     .authenticationProvider(authenticationProvider());
             return http.build();
         }
 
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler(loginAttemptService);
+    }
         private RequestMatcher matchers(String pattern) {
             return new AntPathRequestMatcher(pattern);
         }

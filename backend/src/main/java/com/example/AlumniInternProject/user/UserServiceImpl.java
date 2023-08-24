@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService{
     private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
     private final VerificationTokenService verificationTokenService;
+    private final LoginAttemptService loginAttemptService;
 //    private final EmailService emailService;
 //    private LoginAttemptService loginAttemptService;
 
@@ -177,19 +178,37 @@ public class UserServiceImpl implements UserService{
         return relativePath;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-        if(user == null) {
-            LOGGER.error("User not found by email: " + email);
-            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
-        }else {
-            userRepository.save(user);
-            ALumniUserDetails userDetails = new ALumniUserDetails(user);
-            LOGGER.info("Returning found user by email: " + email);
-            return userDetails;
+
+
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UserNotFoundException {
+//        User user = userRepository.findUserByEmail(email);
+//        if(user == null) {
+//            LOGGER.error("User not found by email: " + email);
+//            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+//        }else {
+//            userRepository.save(user);
+//            ALumniUserDetails userDetails = new ALumniUserDetails(user);
+//            LOGGER.info("Returning found user by email: " + email);
+//            return userDetails;
+//        }
+//    }
+
+        @Override
+        public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
+            User user = userRepository.findUserByEmail(email);
+            if (user == null) {
+                LOGGER.error("User not found in the database" + email);
+                throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
+            }else{
+//                validateLoginAttempt(user);
+                userRepository.save(user);
+                ALumniUserDetails userDetails = new ALumniUserDetails(user);
+                LOGGER.info(USER_FOUND_BY_EMAIL + email);
+                return userDetails;
+            }
         }
-    }
+
 
 
 
@@ -354,32 +373,6 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws  UserNotFoundException {
-//        User user = userRepository.findUserByEmail(email);
-//        if (user == null) {
-//            LOGGER.error("User not found in the database" + email);
-//            throw new UserNotFoundException(USER_NOT_FOUND_BY_EMAIL + email);
-//        }else{
-//            validateLoginAttempt(user);
-//            userRepository.save(user);
-//            ALumniUserDetails userDetails = new ALumniUserDetails(user);
-//            LOGGER.info(USER_FOUND_BY_EMAIL + email);
-//            return userDetails;
-//        }
-//    }
-
-//    private void validateLoginAttempt(User user) {
-//        if(user.isNotLocked()){
-//            if(loginAttemptService.hasExceededMaxAttempts(user.getEmail())){
-//                user.setNotLocked(false);
-//            }else{
-//                user.setNotLocked(true);
-//            }
-//        }else{
-//            loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
-//        }
-//    }
 
     private String getTemporaryProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
@@ -398,6 +391,18 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
         userRepository.deleteById(id);
 
+    }
+
+    private void validateLoginAttempt(User user) {
+        if(user.isEnabled()){
+            if(loginAttemptService.hasExceededMaxAttempts(user.getEmail())){
+                user.setEnabled(false);
+            }else{
+                user.setEnabled(true);
+            }
+        }else{
+            loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
+        }
     }
 
     @Override

@@ -90,6 +90,8 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService{
         }
     }
 
+
+
     public Map<ConnectUserDTO, Integer> getProfileSuggestions(UUID userId) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(userId);
 

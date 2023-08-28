@@ -10,7 +10,7 @@ import { Event } from "../../Models/Event";
 export class EventDeleteComponent implements OnInit {
   @Input()
   event?: Event;
-  selectedEvent?: Event;
+  //selectedEvent?: Event;
 
   ngOnInit(): void {
   }

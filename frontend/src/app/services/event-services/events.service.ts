@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Event } from "../../Models/Event";
 
 @Injectable({
@@ -25,12 +25,16 @@ export class EventsService{
   createEvent(event: any): any{
     return this.http.post(this.BASE_URL, event);
   }
-
-  getEventsById(id: string): Observable<Event>{
+  
+  getEventsById(id: string): Observable<Event> {
     const url = `${this.BASE_URL}/${id}`;
-    return this.http.get<Event>(url);
+    return this.http.get<Event>(url).pipe(
+      catchError(error => {
+        console.error('Error fetching event by id:', error);
+        return throwError(error);
+      })
+    );
   }
-
   updateDetails(id: string,event: Event): any {
     const url = `${this.BASE_URL}/${id}`;
     return this.http.patch(url, event);
@@ -42,6 +46,6 @@ export class EventsService{
   }
 
   saveEventSpecifics(eventSpecifics: any): any{
-    this.http.post(this.SPECIFICS_URL, eventSpecifics);
+   return this.http.post(this.SPECIFICS_URL, eventSpecifics);
   }
 }

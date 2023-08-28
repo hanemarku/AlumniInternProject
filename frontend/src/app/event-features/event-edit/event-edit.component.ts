@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventsService } from 'src/app/services/event-services/events.service';
 
@@ -11,7 +12,7 @@ export class EventEditComponent  implements OnInit{
 
   @Input()
   event?: Event;
-  selectedEvent?: Event;
+  selectedEvent!: Event;
 
   submitted = false;
 
@@ -20,7 +21,8 @@ export class EventEditComponent  implements OnInit{
   }
   
   constructor(
-    private eventService: EventsService
+    private eventService: EventsService,
+    private router: Router
   ){
   }
 
@@ -35,5 +37,10 @@ updateEvent() {
     }
     );
 }
+
+  addSpecifics() {
+    this.router.navigate(['/event-specifics']);
+    return this.eventService.getEventsById(this.selectedEvent.id).subscribe();
+  }
 
 }

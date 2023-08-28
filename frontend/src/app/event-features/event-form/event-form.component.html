@@ -1,5 +1,5 @@
   <h1>Create a new event</h1>
-{{eventModel | json}}
+  {{eventModel | json }}
 <div [hidden]="submitted">
 <form (ngSubmit)="onSubmit()" #eventForm="ngForm" >
     <div>
@@ -38,7 +38,6 @@
           <span>Image Path is required</span>
       </div>
       </div>
-      <app-event-specifics></app-event-specifics>
       <div>
         <label for="maxParticipants">Max Participants:</label>
         <input type="number" class="form-control" id="maxParticipants"
@@ -48,5 +47,5 @@
           <span>The maximum of participants field is required</span>
       </div>
       </div>
-      <button type="submit" class="btn btn-default" [disabled]="!eventForm.form.valid" (click)="newEvent()">New Event</button>
-
+      <button type="submit" class="btn btn-default" [disabled]="!eventForm.form.valid" (click)="newEvent(); OnSelect(eventModel)">New Event</button>
+    

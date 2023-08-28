@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CityList } from 'src/app/city/city.component';
 
 
 @Injectable({
@@ -9,12 +7,14 @@ import { CityList } from 'src/app/city/city.component';
 })
 export class CityDataService {
 
+  private BASE_URL: string = 'http://localhost:8080/api/v1/cities';
+
   constructor(
     private http: HttpClient
   ) { }
 
   listCities(){
-    return this.http.get<any>("http://localhost:8080/api/v1/cities");
+    return this.http.get<any>(this.BASE_URL);
   }
 
   saveCity(city: any){

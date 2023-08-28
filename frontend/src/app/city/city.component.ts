@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CityDataService } from '../services/city-service/city-data.service';
-import { FormControl, NgForm, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import Swal from 'sweetalert2';
+import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateCityDialogComponent } from './update-city-dialog/update-city-dialog.component';
-import { CountryDataService } from '../services/country-service/country-data.service';
+import Swal from 'sweetalert2';
 import { CountryList } from '../country/country.component';
+import { CityDataService } from '../services/city-service/city-data.service';
+import { CountryDataService } from '../services/country-service/country-data.service';
+import { UpdateCityDialogComponent } from './update-city-dialog/update-city-dialog.component';
 
 export class CityList {
   constructor(

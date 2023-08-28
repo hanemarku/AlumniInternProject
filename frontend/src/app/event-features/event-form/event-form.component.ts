@@ -36,7 +36,15 @@ export class EventFormComponent implements OnInit{
   idCreated!: string;
 
   OnSelect(event: Event) {
-    this.router.navigate(['/event-specifics'],{ queryParams: { refresh: 'true' } });
+    this.router.navigate(
+      ['/event-specifics'],
+      {
+        queryParams: {
+          refresh: 'true'
+          //,eventData: JSON.stringify(event)
+        }
+      }
+      );
   }
 
   onSubmit() {

@@ -2,6 +2,7 @@ package com.example.AlumniInternProject.Events;
 
 import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @CrossOrigin("http://localhost:4200/events")
 public class EventController {
     private final EventsService eventsService;
+    private final EventsRepository eventsRepository;
 
     @PostMapping
     public EventGetDto save(@RequestBody EventDto eventDto){
@@ -22,7 +24,7 @@ public class EventController {
     }
 
     @GetMapping("{id}")
-    public EventGetDto findById(@PathVariable UUID id) { return eventsService.findById(id);}
+    public Events findById(@PathVariable UUID id) { return eventsRepository.findEventsById(id);}
 
     @GetMapping
     public List<EventGetDto> findAll(){ return eventsService.findAll();}

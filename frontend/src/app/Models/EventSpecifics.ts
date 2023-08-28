@@ -1,7 +1,9 @@
+import { City } from "../city/city.component";
+import { Event } from "./Event";
 
 export interface EventSpecifics{
     id: string;
-    date: Date | null;
-    eventId: string;
-    cityId: string;
+    date: string;
+    event: Event | null;
+    city: City | null;
 }

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, catchError, throwError } from 'rxjs';
+import { City } from 'src/app/city/city.component';
 
 
 @Injectable({
@@ -15,6 +17,17 @@ export class CityDataService {
 
   listCities(){
     return this.http.get<any>(this.BASE_URL);
+  }
+
+
+  getCityById(id: string): Observable<City>{
+    const url =`${this.BASE_URL}/${id}`;
+    return this.http.get<City>(url).pipe(
+      catchError(error => {
+        console.log('Error fetching city with this id:', error);
+        return throwError(error);
+      })
+    )
   }
 
   saveCity(city: any){

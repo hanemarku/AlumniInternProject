@@ -4,11 +4,15 @@ import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
 import com.example.AlumniInternProject.entity.IdBaseEntity;
 import com.example.AlumniInternProject.entity.UserEvents;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,7 +25,8 @@ import java.util.UUID;
 public class EventSpecifics extends IdBaseEntity {
     /*When adding We should have unique date and city
     * combination for the same event id*/
-    private LocalDateTime date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
+    private LocalDate date;
     /*Many events have only one specification*/
     @ManyToOne
     @JoinColumn(name = "event_id")
@@ -35,12 +40,12 @@ public class EventSpecifics extends IdBaseEntity {
     @JsonIgnore
     private Set<UserEvents> userEvents;
 
- public EventSpecifics(LocalDateTime date,
+ public EventSpecifics(LocalDate date,
                           UUID eventId,
                           UUID cityId) {
         this.date = date;
     }
-    public EventSpecifics(LocalDateTime date,
+    public EventSpecifics(LocalDate date,
                           Events events,
                           City city) {
      this.date = date;

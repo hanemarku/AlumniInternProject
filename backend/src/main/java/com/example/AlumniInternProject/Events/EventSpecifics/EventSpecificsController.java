@@ -37,6 +37,9 @@ public class EventSpecificsController {
         eventSpecificsService.delete(id);
     }
 
+    @DeleteMapping("/event/{id}")
+    private void deleteByEvent(@PathVariable("id") UUID id){eventSpecificsService.deleteByEventId(id);}
+
     @GetMapping("/orderByDate/asc")
     private List<EventSpecificGetDto> orderAsc(@RequestBody Set<EventSpecificGetDto> eventDtos){
         return eventSpecificsService.orderAsc(eventDtos);

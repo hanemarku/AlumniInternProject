@@ -48,4 +48,10 @@ export class EventsService{
   saveEventSpecifics(eventSpecifics: any): any{
    return this.http.post(this.SPECIFICS_URL, eventSpecifics);
   }
+
+  deleteEventSpecifics(id: string){
+    const url = `${this.SPECIFICS_URL}/event/${id}`;
+    return this.http.delete(url);
+  }
+
 }

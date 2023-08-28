@@ -2,7 +2,6 @@ package com.example.AlumniInternProject.Events.EventSpecifics;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificDto;
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +65,11 @@ public class EventSpecificsServiceImplementation implements
     @Override
     public void delete(UUID id) {
         eventSpecificsRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByEventId(UUID id) {
+        eventSpecificsRepository.findEventSpecificsByEvents_Id(id);
     }
 
     @Override

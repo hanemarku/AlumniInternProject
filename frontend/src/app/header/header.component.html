@@ -10,34 +10,34 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="loggedIn">
             <a class="nav-link" href="#">
               <i class="fas fa-home"></i> Home
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li class="nav-item" *ngIf="loggedIn">
+            <a class="nav-link" routerLink="/profile">
               <i class="fas fa-user"></i> Profile
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li class="nav-item" *ngIf="loggedIn">
+            <a class="nav-link"  routerLink="/suggestions">
               <i class="fas fa-users"></i> Network
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="loggedIn">
             <a class="nav-link" href="#">
               <i class="fas fa-briefcase"></i> Jobs
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="loggedIn">
             <a class="nav-link" href="#">
               <i class="fas fa-comment-dots"></i> Messaging
             </a>
           </li>
     
-            <li class="nav-item">
-                <a class="nav-link" href="#">
+            <li class="nav-item" *ngIf="loggedIn">
+                <a class="nav-link" routerLink="/notifications">
                     <i class="fas fa-bell"></i> Notifications
                 </a>
             </li>

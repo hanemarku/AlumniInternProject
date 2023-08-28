@@ -1,0 +1,37 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        <div *ngFor="let userSuggestion of suggestions" class="card mb-3 shadow">
+          <div class="row g-0">
+            <div class="col-md-3 bg-primary text-center py-3">
+              <img width="100px" height="100px" [src]="userSuggestion.user.profilePicUrl" alt="Profile Picture" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-md-9">
+              <div class="card-body py-3">
+                <h4 class="card-title">{{ userSuggestion.user.firstName }} {{ userSuggestion.user.lastName}}</h4>
+
+                <h6 class="card-subtitle text-muted">{{ userSuggestion.count }} friend in common</h6>
+                <ng-container *ngIf="userSuggestion.user.followStatus === 'follow'; else pendingOrFollowButton">
+                  <button class="btn btn-success disabled">Following</button>
+                </ng-container>
+                <h1></h1>
+                <ng-template #pendingOrFollowButton>
+                  <div class="btn-group" role="group">
+                    <button [disabled]="userSuggestion.user.followStatus === 'pending' || userSuggestion.user.followStatus === 'accepted' || userSuggestion.user.followStatus === 'rejected'" 
+                            [class.btn-warning]="userSuggestion.user.followStatus === 'pending'"
+                            [class.btn-primary]="userSuggestion.user.followStatus !== 'pending' && userSuggestion.user.followStatus !== 'accepted' && userSuggestion.user.followStatus !== 'rejected'"
+                            [class.btn-success]="userSuggestion.user.followStatus === 'accepted'"
+                            [class.btn-danger]="userSuggestion.user.followStatus === 'rejected'"
+                            class="btn" (click)="sendFollowRequest(userSuggestion.user.id)">
+                            {{ userSuggestion.user.followStatus === 'pending' ? 'Pending' : (userSuggestion.user.followStatus === 'accepted' ? 'Accepted' : (userSuggestion.user.followStatus === 'rejected' ? 'Rejected' : 'Follow')) }}
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

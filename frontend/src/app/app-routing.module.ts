@@ -20,6 +20,12 @@ import { ListUsersComponent } from './user/list-users/list-users.component';
 import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { CityComponent } from './city/city.component';
+import { NotificationsComponent } from './user/notifications/notifications.component';
+import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
+import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.component';
 
 
 const routes: Routes = [
@@ -41,6 +47,12 @@ const routes: Routes = [
   {path:'event-search-by', component:EventSearchByComponent},
   {path: 'event-specifics', component: EventSpecificsComponent},
   {path: 'cities', component: CityComponent, canActivate: [AuthenticationGuard]},
+  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthenticationGuard]},
+  {path: 'suggestions', component:SuggestionsComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'profileSlider', component: ProfileSliderComponent},
+  {path: 'profilesSwiper', component: ProfilesSwiperComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

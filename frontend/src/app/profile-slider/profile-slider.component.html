@@ -1,0 +1,10 @@
+<div class="slider-container">
+  <div class="slider">
+    <div *ngFor="let user of users" class="slide">
+      <img [src]="user.profilePicUrl" alt="Profile Pic">
+      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+      <p>{{ user.bio }}</p>
+      <button (click)="followUser(user)" class="follow-button">Follow</button>
+    </div>
+  </div>
+</div>

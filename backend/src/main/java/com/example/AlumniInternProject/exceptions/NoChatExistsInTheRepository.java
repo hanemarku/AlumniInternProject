@@ -1,4 +1,4 @@
-package com.codreal.chatservice.exceptions;
+package com.example.AlumniInternProject.exceptions;
 
 public class NoChatExistsInTheRepository extends Throwable {
 }

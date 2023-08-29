@@ -3,6 +3,7 @@ package com.example.AlumniInternProject.user;
 import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
 import com.example.AlumniInternProject.Verfication.VerificationTokenService;
 import com.example.AlumniInternProject.admin.settings.country.CountryRepository;
+import com.example.AlumniInternProject.chat.models.UserChatDTO;
 import com.example.AlumniInternProject.entity.*;
 import com.example.AlumniInternProject.enumerations.Role;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -122,9 +124,7 @@ public class UserServiceImpl implements UserService{
                 return false;
             }
             user.setPassword(passwordEncoder.encode(newPassword));
-            System.out.println("test1");
             userRepository.save(user);
-            System.out.println("test2");
             verificationTokenService.removeTokenByUserAndType(user.getId(), VerificationType.PASSWORD_RESET);
             return true;
         }
@@ -178,6 +178,10 @@ public class UserServiceImpl implements UserService{
         return relativePath;
     }
 
+    @Override
+    public User getUserByFirstname(String firstName) {
+        return userRepository.getUserByFirstname(firstName);
+    }
 
 
 //    @Override
@@ -403,6 +407,42 @@ public class UserServiceImpl implements UserService{
         }else{
             loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
         }
+    }
+
+    @Override
+    public UserChatDTO mapUserToDto(User user){
+        var dto = new UserChatDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setProfilePicUrl(user.getProfilePicUrl());
+        return dto;
+    }
+
+    @Override
+    public String getUserFullName(UUID id) throws UserNotFoundException {
+        User user = userRepository.findUserById(id);
+        if (user == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND_BY_ID + id);
+        }else{
+            return user.getFirstname() + " " + user.getLastname();
+        }
+    }
+
+    @Override
+    public List<UserChatDTO> searchInChat(String keyword) {
+       List<UserChatDTO> users = userRepository.findByKeyword(keyword).stream()
+               .map(this::mapUserToDto)
+               .toList();
+       return users;
+    }
+
+    public List<UserChatDTO> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::mapUserToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

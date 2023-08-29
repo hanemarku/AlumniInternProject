@@ -3,6 +3,7 @@ package com.example.AlumniInternProject.user;
 import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
 import com.example.AlumniInternProject.Verfication.VerificationTokenService;
+import com.example.AlumniInternProject.chat.models.UserChatDTO;
 import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.VerificationToken;
@@ -305,11 +306,30 @@ public class UserController extends ExceptionHandling {
     }
 
 
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String username) throws UserNotFoundException {
+        return new ResponseEntity<User>(userService.getUserByFirstname(username), HttpStatus.OK);
+    }
 
     @GetMapping("/email")
     public UsersListingDTO getUserByEmail(@RequestParam("email") String email) throws UserNotFoundException {
         return userService.findByEmail(email);
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserChatDTO>> search(@RequestParam(value = "keyword", required = false) String keyword) {
+        List<UserChatDTO> users;
+
+        if (keyword == null || keyword.isEmpty()) {
+            users = userService.findAllUsers();
+        } else {
+            users = userService.searchInChat(keyword);
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
 
 
     private void authenticate(String email, String password) {

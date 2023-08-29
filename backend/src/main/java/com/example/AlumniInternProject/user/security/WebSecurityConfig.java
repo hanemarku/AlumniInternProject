@@ -94,7 +94,6 @@ public class WebSecurityConfig {
                     .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin(login -> login
                             .usernameParameter("email")
-                            .defaultSuccessUrl("/homepage2")
                             .permitAll()
                             .successHandler(customAuthenticationSuccessHandler())
                     )

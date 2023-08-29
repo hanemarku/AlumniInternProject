@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,5 +24,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     User findUserById(UUID id);
 
     User findByVerificationCode(String verificationCode);
+
+    User getUserByFirstname(String firstName);
+
+    @Query("SELECT u FROM User u WHERE u.firstname LIKE %:keyword% OR u.lastname LIKE %:keyword%")
+    List<User> findByKeyword(@Param("keyword") String keyword);
 
 }

@@ -29,6 +29,8 @@ import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.compo
 import { PrivateChatComponent } from './private-chat/private-chat.component';
 import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
 import { RoomComponent } from './room/room.component';
+import { ChatComponent } from './chat/chat.component';
+import { MessageComponent } from './message/message.component';
 
 
 const routes: Routes = [
@@ -59,7 +61,9 @@ const routes: Routes = [
   {path: 'private-chat/:userId', component: PrivateChatComponent }, 
   {path: 'chat', component: PrivateChatComponent},
   {path: 'private', component: PrivateChatWindowComponent},
+  {path: 'message', component: MessageComponent},
   {path: 'room', component: RoomComponent},
+  {path: 'test', component: ChatComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

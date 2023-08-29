@@ -1,72 +1,134 @@
-
 <div class="container">
     <div class="row clearfix">
-        <div class="col-lg-12">
-            <div class="card chat-app">
-                <div id="plist" class="people-list">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search...">
+      <div class="col-lg-12">
+        <div class="card chat-app">
+          <div id="plist" class="people-list">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input
+              type="text"
+              [(ngModel)]="searchUser"
+              (input)="onSearchChange($event)"
+              class="form-control"
+              placeholder="Search..."
+            />
+            </div>
+
+            <ul class="list-unstyled chat-list mt-2 mb-0">
+                <li class="clearfix" *ngFor="let result of searchResults" (click)="addToPrivateChat(result)">
+                  <img [src]="result.profilePicUrl" alt="{{ result.firstname }} {{ result.lastname }}" />
+                  <div class="about">
+                    <div class="name">{{ result.firstname }} {{ result.lastname }}</div>
+                  </div>
+                </li>
+            </ul>
+  
+            <div class="private-chats py-4">
+                <h5><i class="bi bi-chat-dots"></i> <span class="private-chats-title">Private Chats</span></h5>
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                  <li class="clearfix" *ngFor="let user of privateChatUsers" (click)="selectUser(user)">
+                    <img [src]="user.profilePicUrl" alt="{{ user.firstname }} {{ user.lastname }}" />
+                    <div class="about">
+                      <div class="name"> {{user.firstname}} {{user.lastname}}</div>
+                      <div class="status"><i class="bi bi-circle"></i> left 7 mins ago</div>
                     </div>
+                  </li>
+                </ul>
+                <button class="btn btn-link" (click)="toggleUserList()">
+                  {{ showAllUsers ? 'Show Less' : 'Show All' }} Chats
+                </button>
+            </div>
 
-                    <ul class="list-unstyled chat-list mt-2 mb-0">
-                        <li class="clearfix" *ngFor="let user of connectedUsers" (click)="registerUser(user)">
-                            <img [src]="user.profilePicUrl" alt="{{ user.firstName }} {{ user.lastName }}">
-                            <div class="about">
-                                <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
-                                <div class="status"><i class="bi bi-circle"></i> left 7 mins ago</div>
+            <div class="group-chats py-4">
+                <h5><i class="bi bi-chat-dots"></i> <span class="private-chats-title">Group Chats</span></h5>
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                  <li class="clearfix" >
+                    <img [src]="">
+                    <div class="about">
+                      <div class="name"></div>
+                    </div>
+                  </li>
+                </ul>
+                <button class="btn btn-link" (click)="toggleGroupList()">
+                  {{ showAllGroups ? 'Show Less' : 'Show All' }} Groups
+                </button>
+            </div>
+        </div>
+            <div class="chat" >
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                <img [src]="loggedInUser.profilePicUrl" alt="avatar">
+                            </a>
+                            <div class="chat-about">
+                                <h6 class="m-b-0">{{ loggedInUser.firstname }} {{ loggedInUser.lastname }}</h6>
+                                <small>Last seen: 2 hours ago</small>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="chat">
-                    <div class="chat-header clearfix">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                    <img [src]="loggedInUser.profilePicUrl" alt="avatar">
-                                </a>
-                                <div class="chat-about">
-                                    <h6 class="m-b-0">{{ loggedInUser.firstname }} {{ loggedInUser.lastname }}</h6>
-                                    <small>Last seen: 2 hours ago</small>
-                                    <h6 class="m-b-0">{{ selectedUserName }}</h6>
-                                    <small>ID: {{ selectedUserId }}</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 d-none d-sm-block text-end">
-                                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="bi bi-camera"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="bi bi-image"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-info"><i class="bi bi-gear"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="bi bi-question"></i></a>
-                            </div>
+                        </div>
+                        <div class="col-lg-6 d-none d-sm-block text-end">
+                            <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="bi bi-camera"></i></a>
+                            <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="bi bi-image"></i></a>
+                            <a href="javascript:void(0);" class="btn btn-outline-info"><i class="bi bi-gear"></i></a>
+                            <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="bi bi-question"></i></a>
                         </div>
                     </div>
                     
-                    <div class="chat-history">
-                        <ul class="m-b-0">
-                            <li class="clearfix" *ngFor="let chat of publicChats; let i = index">
-                                <div class="message-data">
-                                    <span>{{ selectedUserName }}</span>
-                                    <span class="message-data-time">{{chat.timestamp}}</span>
-                                </div>
-                                <div class="message my-message">{{ chat.content }}</div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="chat-message clearfix">
-                        <div class="input-group mb-0">
-                            <input type="text" class="form-control" placeholder="Enter text here..." [(ngModel)]="userData.content">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" (click)="sendValue()"><i class="bi bi-send-fill"></i></span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                <div class="no-chat-selected" *ngIf="!selectedUser">
+                    <p>No chat selected</p>
+                </div>
+
+                <!-- <div class="chat-history">
+                  <ul class="m-b-0">
+                    <li class="clearfix">
+                      <div class="message-data text-right" style="padding-left: 80%;">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                          <span class="message-data-time">10:10 AM, Today</span>
+                        </div>
+                        <div class="message other-message float-right">
+                          Hi Aiden, how are you? How is the project coming along?
+                        </div>
+                      
+                    </li>
+                  </ul>
+                </div> -->
+
+                
+                <div *ngIf="selectedUser && stompClient">
+                  <div class="chat-history" >
+                    <span> {{selectedUser.firstname}} {{selectedUser.lastname}}</span>
+                      
+                  </div>
+                  <ul class="list-unstyled chat-history">
+                    <li class="clearfix" *ngFor="let message of getSelectedChatMessages()">
+                      <div [ngClass]="{'message-data text-end': isMessageSent(message), 'message-data text-start': !isMessageSent(message)}">
+                        <span class="message-data-time">{{ message.time }}</span>
+                        <span class="message-data-name">
+                          {{ isMessageSent(message) ? '' : selectedUser?.firstname + ' ' + selectedUser?.lastname }}
+                        </span>
+                      </div>
+                      <div [ngClass]="{'message other-message text-end': isMessageSent(message), 'message my-message text-start': !isMessageSent(message)}">
+                        {{ message.message }}
+                      </div>
+                    </li>
+                  </ul>
+                  
+                  <div class="chat-message clearfix">
+                      <div class="input-group mb-0">
+                          <input type="text" class="form-control" placeholder="Enter text here..." [(ngModel)]="message" />
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" (click)="sendMessage()" ><i class="bi bi-send-fill"></i></span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+            </div>
             </div>
         </div>
     </div>
 </div>
+
 
 

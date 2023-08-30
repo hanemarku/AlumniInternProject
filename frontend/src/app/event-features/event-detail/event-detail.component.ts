@@ -43,6 +43,20 @@ export class EventDetailComponent {
     }
   return null;
   }
+  registered = true;
+  onRegister(){
+    this.registered = !this.registered;
+    this.selectedEvent = this.event;
+    if(this.selectedEvent){
+      console.log(this.selectedEvent.id);
+      return this.eventsService.getEventsById(this.selectedEvent.id).subscribe(
+        data => {
+          console.log(data);
+        }
+      );
+    }
+   return null;
+  }
   
   constructor(
     private eventsService: EventsService

@@ -17,7 +17,7 @@ public interface EventSpecificsService {
     List<EventSpecificGetDto> findAll();
     EventSpecificGetDto findById(UUID id);
     void delete(UUID id);
-    void deleteByEventId(UUID id);
+    void deleteEventSpecificsByEvents_Id(UUID id);
     List<EventSpecificGetDto> orderAsc(Set<EventSpecificGetDto> eventDtos);
     List<EventSpecificGetDto> orderDesc(Set<EventSpecificGetDto> eventDtos);
     Set<EventSpecificGetDto> findByKeyword(String keyWord, Set<EventSpecificGetDto> eventDtos);

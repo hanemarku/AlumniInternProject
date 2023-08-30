@@ -22,9 +22,13 @@ public class EventSpecificDto extends EventSpecifics {
     private Events events;
     private City city;
 
+    public Events getEvents() {
+        return this.events;
+    }
+
     public EventSpecificDto(LocalDate date,
-                          UUID eventId,
-                          UUID cityId) {
+                            UUID eventId,
+                            UUID cityId) {
         this.date = date;
         this.events.setId(eventId);
         this.city.setId(cityId);

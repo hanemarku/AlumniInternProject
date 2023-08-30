@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { CityList } from 'src/app/city/city.component';
+import { AuthenticationService } from 'src/app/services/authenication-service/authentication.service';
 import { CityDataService } from 'src/app/services/city-service/city-data.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
+import { RegistUsersService } from 'src/app/services/event-services/regist-users.service';
 
 @Component({
   selector: 'app-event-specifics',
@@ -11,15 +14,20 @@ import { EventsService } from 'src/app/services/event-services/events.service';
   styleUrls: ['./event-specifics.component.sass']
 })
 export class EventSpecificsComponent implements OnInit {
+  
 /*TODO: CHECK WHY IT IS NOT ADDING THE EVENT IN DB EVENT THOUGH IS CORRECTLY CONNECTED*/
   constructor(
     private eventService: EventsService,
-    private citiesService: CityDataService
+    private registerService: RegistUsersService,
+    private citiesService: CityDataService,
+    private authServices: AuthenticationService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.listCities();
     this.listEvents();
+    console.log(this.authServices.getUserFromLocalStorage().email);
   }
 
   cities: CityList[] = [];
@@ -30,7 +38,7 @@ export class EventSpecificsComponent implements OnInit {
   eventSpecificsModel: EventSpecifics = {
     id: '',
     date: '',
-    event: null,
+    events: null,
     city: null
   };
 
@@ -57,6 +65,7 @@ export class EventSpecificsComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
   }
+
   addSpecifics() {
     this.submitted = true;
   
@@ -67,17 +76,18 @@ export class EventSpecificsComponent implements OnInit {
     
     this.eventService.getEventsById(this.lastEvent).subscribe(
       eventData => {
-        this.eventSpecificsModel.event = eventData;
-        console.log(this.eventSpecificsModel.event.name);
+        this.eventSpecificsModel.events = eventData;
+        console.log(this.eventSpecificsModel.events.name);
+        
         this.citiesService.getCityById(this.selectedCityId).subscribe(
           cityData => {
             this.eventSpecificsModel.city = cityData;
             console.log(this.eventSpecificsModel.city.name);
 
-            this.eventService.saveEventSpecifics(this.eventSpecificsModel).subscribe(
+            this.registerService.saveEventSpecifics(this.eventSpecificsModel).subscribe(
               () => {
                 console.log("City ID: " + this.eventSpecificsModel.city!.name);
-                console.log("Event ID: " + this.eventSpecificsModel.event!.id);
+                console.log("Event ID: " + this.eventSpecificsModel.events!.id);
               }
             );
           }
@@ -85,5 +95,4 @@ export class EventSpecificsComponent implements OnInit {
       }
     );
   }
-  
 }

@@ -1,29 +1,31 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
+import { UserEvents } from 'src/app/Models/UserEvents';
 import { Event } from "../../Models/Event";
+import { User } from '../user-service/user-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService{
-
-  private BASE_URL: string = 'http://localhost:8080/api/v1/events';
-  private SPECIFICS_URL: string = 'http://localhost:8080/api/v1/specifics';
-
-  httpOptions = {
-    headers:new HttpHeaders({'Content-Type': 'application/json'})
-  }
   constructor(
     private http: HttpClient
   ) { }
+  httpOptions = {
+    headers:new HttpHeaders({'Content-Type': 'application/json'})
+  }
+
+
+  private BASE_URL: string = 'http://localhost:8080/api/v1/events';
+  private REGISTER_URL: string= '/api/v1/eventsAndUsers';
 
   getEvents(): Observable<Event[]>{
     return this.http.get<Event[]>(this.BASE_URL);
   }
 
-  createEvent(event: any): any{
-    return this.http.post(this.BASE_URL, event);
+  createEvent(event: Event): any{
+    return this.http.post(this.BASE_URL,event)
   }
   
   getEventsById(id: string): Observable<Event> {
@@ -45,13 +47,17 @@ export class EventsService{
     return this.http.delete(url);
   }
 
-  saveEventSpecifics(eventSpecifics: any): any{
-   return this.http.post(this.SPECIFICS_URL, eventSpecifics);
+  getUsersByEventId(eventId: string): Observable<User[]>{
+    const url = `${this.REGISTER_URL}/events/${eventId}/users`;
+    return this.http.get<User[]>(url);
   }
 
-  deleteEventSpecifics(id: string){
-    const url = `${this.SPECIFICS_URL}/event/${id}`;
-    return this.http.delete(url);
+  register(toRegister: UserEvents){
+    this.http.post(this.REGISTER_URL, toRegister);
   }
 
+  getUsersByStatus(status: string): Observable<User[]>{
+    const url = `${this.REGISTER_URL}/${status}`;
+    return this.http.get<User[]>(url);
+  }
 }

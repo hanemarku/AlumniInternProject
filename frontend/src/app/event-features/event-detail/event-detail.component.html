@@ -12,3 +12,5 @@
   <app-event-edit [hidden]="updated" [event]="selectedEvent" ></app-event-edit>
   <button type="submit" (click)="onDeleted()" href="/event-delete">delete</button>
   <app-event-delete [hidden]="deleted" [event]="selectedEvent" ></app-event-delete>
+  <button type="submit" (click)="onRegister()">register</button>
+  <app-event-register [hidden]="registered" [event]="selectedEvent" ></app-event-register>

@@ -1,0 +1,13 @@
+{{ registerModel | json}}
+<div>
+    <p>CONFIRM YOUR PRESENSE!</p>
+    <div>
+        User: {{ User.firstname }} | {{ User.lastname }}
+    </div>
+    <div>
+        Event: {{ event?.name }} | {{ event?.topic }} 
+        <div *ngFor=" let eventSpecifics">
+            eventSpecifics : {{ eventSpecifics?.event?.id }}
+        </div>
+    </div>
+</div>

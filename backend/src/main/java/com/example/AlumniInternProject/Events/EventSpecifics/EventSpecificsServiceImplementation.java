@@ -4,6 +4,7 @@ import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificDt
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,8 +69,16 @@ public class EventSpecificsServiceImplementation implements
     }
 
     @Override
-    public void deleteByEventId(UUID id) {
-        eventSpecificsRepository.findEventSpecificsByEvents_Id(id);
+    @Transactional
+    public void deleteEventSpecificsByEvents_Id(UUID id) {
+        List<EventSpecifics> listOfEventSpecifics = eventSpecificsRepository.findAll();
+        for(EventSpecifics es : listOfEventSpecifics){
+            if (es.getId().toString().toLowerCase().contains(id.toString().toLowerCase(Locale.ROOT))){
+                delete(es.getId());
+            }
+        }
+
+      //  eventSpecificsRepository.deleteEventSpecificsByEvents_Id(id);
     }
 
     @Override

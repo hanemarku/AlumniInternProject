@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
+import { AuthenticationService } from 'src/app/services/authenication-service/authentication.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
+import { UserDataService } from 'src/app/services/user-service/user-data.service';
 
 @Component({
   selector: 'app-event-form',
@@ -12,15 +14,21 @@ import { EventsService } from 'src/app/services/event-services/events.service';
 export class EventFormComponent implements OnInit{
     constructor(
         private eventService: EventsService,
-        private router: Router
+        private router: Router,
+        private authService: AuthenticationService,
+        private userService: UserDataService
     ){}
 
+
     ngOnInit(): void {
+    this.eventModel.createdby = this.authService.getUserFromLocalStorage().email;
+    console.log(this.authService.getUserFromLocalStorage().email);
     }
+    
 
     eventModel: Event = {
     id:'',
-    createdby:'',
+    createdby: '',
     eventSpecifics:[],
     name: 'hardcoded',
     topic: 'hardcoded',
@@ -32,15 +40,12 @@ export class EventFormComponent implements OnInit{
   @ViewChild('eventForm', { static: false }) eventForm!: NgForm;
 
   submitted = false;
-
-  idCreated!: string;
-
   OnSelect(event: Event) {
     this.router.navigate(
       ['/event-specifics'],
       {
         queryParams: {
-          refresh: 'true'
+          //refresh: 'true'
           //,eventData: JSON.stringify(event)
         }
       }
@@ -52,12 +57,23 @@ export class EventFormComponent implements OnInit{
   }
 
   newEvent(){
+    console.log("Inside the newEventMeth : " + this.eventModel.createdby);
     this.eventService.createEvent(this.eventModel).subscribe(
-      () => {
+      (createdEvent: Event) => {
         this.eventModel.imgUrl = '';
+        this.router.navigate(
+          ['/event-specifics'],
+          {
+            queryParams: {
+              refresh: 'true',
+              eventId: createdEvent.id
+            }
+          }
+          );
       }
     );
   }
+  
   fullUrl : string | undefined;
   onSelectFile(imgFile: any) {
     if(imgFile.target.files && imgFile.target.files.length > 0){

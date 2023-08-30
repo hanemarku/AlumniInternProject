@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/specifics")
-@CrossOrigin("http://localhost:4200/events")
+@CrossOrigin("http://localhost:4200/event-specifics")
 public class EventSpecificsController {
     private final EventSpecificsService eventSpecificsService;
     @PostMapping
@@ -38,7 +38,9 @@ public class EventSpecificsController {
     }
 
     @DeleteMapping("/event/{id}")
-    private void deleteByEvent(@PathVariable("id") UUID id){eventSpecificsService.deleteByEventId(id);}
+    private void deleteByEvent(@PathVariable("id") UUID id){
+        eventSpecificsService.deleteEventSpecificsByEvents_Id(id);
+    }
 
     @GetMapping("/orderByDate/asc")
     private List<EventSpecificGetDto> orderAsc(@RequestBody Set<EventSpecificGetDto> eventDtos){

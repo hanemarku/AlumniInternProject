@@ -1,7 +1,8 @@
-import { UserProfileComponent } from "../user-profile/user-profile.component";
 
 export interface UserEvents{
- //miguht also be needed as number and by number show the role, thats how it is saved in the db
+    id:string;
+    userId: string;
+    eventSpecificsId: string | undefined;
     membershipRole: string;
-    user: UserProfileComponent;
+    status: string;
 }

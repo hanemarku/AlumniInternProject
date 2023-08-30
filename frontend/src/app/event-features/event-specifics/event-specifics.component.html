@@ -7,13 +7,22 @@
       <label for="date">Choose a date:</label>
       <input type="date" id="date" name="date" [(ngModel)]="eventSpecificsModel.date" #dateInput="ngModel">
     </div>
-    <div>
+      <div>
       <label for="cities">Choose a city:</label>
       <select id="cities" name="selectedCityId" [(ngModel)]="selectedCityId">
         <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
       </select>
     </div>
+ 
     <button type="submit" (click)="addSpecifics()">Submit</button>
   </form>
-  
+  <app-event-register [eventSpecifics]="eventSpecificsModel"></app-event-register>
+
+</div>
+
+<div *ngIf="eventSpecificsModel">
+  <h2>Newly Created Event Specifics</h2>
+  <p>Date: {{ eventSpecificsModel.date }}</p>
+  <p>City: {{ eventSpecificsModel.city?.name }}</p>
+  <p>Event: {{ eventSpecificsModel.events?.id }}</p>
 </div>

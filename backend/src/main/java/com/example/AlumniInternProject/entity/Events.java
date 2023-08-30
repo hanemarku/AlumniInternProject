@@ -34,6 +34,7 @@ public class Events extends IdBaseEntity {
 
     private int maxParticipants;
 
+    @Column(length = 1500, nullable = true)
     private String createdBy;
     /*One event can have many specifics.
     * Such as date , city that is held.
@@ -45,12 +46,15 @@ public class Events extends IdBaseEntity {
     public Events(String name,
                   String topic,
                   String description,
+                  int maxParticipants,
                   String imgUrl,
-                  int maxParticipants, Set<EventSpecifics> eventSpecifics){
+                  Set<EventSpecifics> eventSpecifics,
+                  String createdBy){
         this.name = name;
         this.topic = topic;
         this.description = description;
         this.maxParticipants = maxParticipants;
         this.imgUrl = imgUrl;
+        this.createdBy = createdBy;
     }
 }

@@ -8,7 +8,11 @@ import { EventsService } from "../services/event-services/events.service";
   styleUrls: ['./event.component.sass']
 })
 export class EventComponent {
-
+  /*TODO: REGISTER USERS*/
+  /*TODO: LIST BY CONFIRMATION STATUS*/
+  /*TODO: ****** GET THE USER WHO IS LOGGED*/
+  /*TODO: DELETE EVENT SPECIFICS NOT ONLY THE EVENT*/
+  
   selectedEvent?: Event;
   event: Event[] = [];
 

@@ -95,4 +95,19 @@ export class EventSpecificsComponent implements OnInit {
       }
     );
   }
+  eventSpecificsList: EventSpecifics[] = [];
+  
+  findAllEventSpecifics(){
+    const lastIndex = this.events.length - 1;
+    const lastEventCreated = this.events[lastIndex];
+  
+    this.lastEvent = lastEventCreated.id
+    if(this.lastEvent){
+    this.registerService.getAllEventSpecifics().subscribe(
+      data => {
+        this.eventSpecificsList = data;
+      }
+    );
+    }
+  }
 }

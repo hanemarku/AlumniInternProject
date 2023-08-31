@@ -40,5 +40,5 @@ export class RegistUsersService {
      const url = `${this.BASE_URL}/event/${id}`;
      return this.http.delete(url);
    }
- 
+
 }

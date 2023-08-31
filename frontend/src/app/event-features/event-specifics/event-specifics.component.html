@@ -26,3 +26,12 @@
   <p>City: {{ eventSpecificsModel.city?.name }}</p>
   <p>Event: {{ eventSpecificsModel.events?.id }}</p>
 </div>
+<div>
+<ul class="container">
+  <li *ngFor="let e of eventSpecificsList">
+      <p>{{ e.events?.name }}</p>
+      <p>{{ e.date }}</p>
+      <p>{{ e.city?.name }}</p>
+  </li>
+</ul>
+</div>

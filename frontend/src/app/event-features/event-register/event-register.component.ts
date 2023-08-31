@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { UserEvents } from 'src/app/Models/UserEvents';
+import { MembershipRole } from 'src/app/enum/membership-role.enum';
+import { Status } from 'src/app/enum/status.enum';
 import { AuthenticationService } from 'src/app/services/authenication-service/authentication.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
 import { UserDataService } from 'src/app/services/user-service/user-data.service';
@@ -24,7 +26,7 @@ export class EventRegisterComponent implements OnInit{
   ){}
   
   @Input()
-  eventSpecifics?: EventSpecifics;
+  eventSpecifics!: EventSpecifics;
   @Input()
   event?:Event;
 
@@ -44,10 +46,10 @@ export class EventRegisterComponent implements OnInit{
   
   registerModel : UserEvents ={
     id:'',
-    userId: 'this.theCurrentLoggedUser',
-    eventSpecificsId: 'this.event?.id',
-    membershipRole: '',
-    status: ''
+    user: this.User,
+    eventSpecifics: this.eventSpecifics,
+    membershipRole: MembershipRole.Creator,
+    status: Status.PENDING
   }
     
   register(){

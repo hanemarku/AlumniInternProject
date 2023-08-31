@@ -8,5 +8,5 @@ export interface Event{
   maxParticipants: number;
   imgUrl: string;
   eventSpecifics: EventSpecifics[];
-  createdby: string;
+  createdBy: string;
 }

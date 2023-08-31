@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Event } from "../Models/Event";
+import { EventSpecifics } from '../Models/EventSpecifics';
 import { EventsService } from "../services/event-services/events.service";
 
 @Component({
@@ -10,9 +11,6 @@ import { EventsService } from "../services/event-services/events.service";
 export class EventComponent {
   /*TODO: REGISTER USERS*/
   /*TODO: LIST BY CONFIRMATION STATUS*/
-  /*TODO: ****** GET THE USER WHO IS LOGGED*/
-  /*TODO: DELETE EVENT SPECIFICS NOT ONLY THE EVENT*/
-  
   selectedEvent?: Event;
   event: Event[] = [];
 
@@ -33,4 +31,19 @@ export class EventComponent {
     this.selectedEvent = event;
     return this.eventsService.getEventsById(this.selectedEvent.id).subscribe();
   }
+
+  eventSpecificsList: EventSpecifics[] = [];
+
+  listEventSpecifics(event: Event){
+    this.selectedEvent = event;
+    if(this.selectedEvent){
+    this.eventsService.getEventSpecificsByEventId(this.selectedEvent.id).subscribe(
+      data => {
+        console.log("im being called");
+        this.eventSpecificsList = data;
+      }
+    );
+    }
+  }
+
 }

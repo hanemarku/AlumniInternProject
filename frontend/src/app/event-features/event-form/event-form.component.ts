@@ -21,14 +21,14 @@ export class EventFormComponent implements OnInit{
 
 
     ngOnInit(): void {
-    this.eventModel.createdby = this.authService.getUserFromLocalStorage().email;
+    this.eventModel.createdBy = this.authService.getUserFromLocalStorage().email;
     console.log(this.authService.getUserFromLocalStorage().email);
     }
     
 
     eventModel: Event = {
     id:'',
-    createdby: '',
+    createdBy: '',
     eventSpecifics:[],
     name: 'hardcoded',
     topic: 'hardcoded',
@@ -57,7 +57,7 @@ export class EventFormComponent implements OnInit{
   }
 
   newEvent(){
-    console.log("Inside the newEventMeth : " + this.eventModel.createdby);
+    console.log("Inside the newEventMeth : " + this.eventModel.createdBy);
     this.eventService.createEvent(this.eventModel).subscribe(
       (createdEvent: Event) => {
         this.eventModel.imgUrl = '';

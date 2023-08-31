@@ -15,11 +15,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentServiceImplementation implements CommentService{
 
-    @Autowired
     private final CommentRepository commentRepository;
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final PostRepository postRepository;
 
     @Override

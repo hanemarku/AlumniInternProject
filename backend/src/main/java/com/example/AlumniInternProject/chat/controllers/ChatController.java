@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.chat.repositories.ChatRepository;
 import com.example.AlumniInternProject.chat.services.ChatService;
 import com.example.AlumniInternProject.connectionRequest.ConnectionRequestDTO;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.exceptions.ChatNotFoundException;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
 import com.example.AlumniInternProject.user.UserRepository;
 import com.example.AlumniInternProject.user.UserService;
@@ -18,10 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -94,6 +92,58 @@ public class ChatController {
         }
     }
 
+    @GetMapping("/newgroupchat")
+    public ResponseEntity<Map<String, String>> newGroupChat(@ModelAttribute ChatGroupRequest chatRequest) throws UserNotFoundException {
+        String name = chatRequest.getName();
+        UUID groupAdmin = chatRequest.getId();
+        System.out.println(name);
+        System.out.println(groupAdmin);
+
+        try {
+            Chat createdChat = chatService.createGroupChat(name, groupAdmin);
+            Map<String, String> response = new HashMap<>();
+            response.put("chatId", createdChat.getId().toString());
+            response.put("chatName", createdChat.getName());
+
+            return ResponseEntity.ok(response);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/addUsersToChat")
+    public ResponseEntity<Map<String, String>> addUsersToChat(@RequestBody UsersToGroupDTO dto) throws UserNotFoundException {
+        Map<String, String> response = new HashMap<>();
+        UUID chatId = dto.getGroupId();
+        Set<UUID> userIds = dto.getUserIds();
+        System.out.println("chat id: " + chatId);
+        System.out.println("user ids: " + userIds);
+        try {
+            chatService.addUsersToChat(chatId, userIds);
+            response.put("message", "Users added to chat");
+            return ResponseEntity.ok(response);
+        } catch (ChatNotFoundException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/addUserToChat")
+    public ResponseEntity<Map<String, String>> addUserToChat(@RequestBody UserToGroupDTO dto) throws UserNotFoundException {
+        Map<String, String> response = new HashMap<>();
+        UUID chatId = dto.getGroupId();
+        UUID userId = dto.getUserId();
+        System.out.println("chat id: " + chatId);
+        System.out.println("user id: " + userId);
+        try {
+            chatService.addUserToChat(chatId, userId);
+            response.put("message", "User added to chat");
+            return ResponseEntity.ok(response);
+        } catch (ChatNotFoundException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+
 
     @GetMapping("/loggedInUser")
     public ResponseEntity<ALumniUserDetails> getLoggedInUser() {
@@ -107,6 +157,8 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+
 
 
 }

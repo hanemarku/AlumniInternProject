@@ -8,13 +8,11 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class AuthenticationFailureListener {
 
 
-    private LoginAttemptService loginAttemptService;
+    private final LoginAttemptService loginAttemptService;
 
-    @Autowired
     public AuthenticationFailureListener(LoginAttemptService loginAttemptService) {
         this.loginAttemptService = loginAttemptService;
     }

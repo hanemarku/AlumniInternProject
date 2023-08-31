@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,12 +22,9 @@ import java.util.UUID;
 public class MessageController {
 
     private final MessageService messageService;
-    private final ChatService chatService;
-    private final ChatRepository chatRepository;
 
     @PostMapping("/newMessage")
     public ResponseEntity<MessageDTO> newMessage(@RequestBody MessageRequest request){
-        System.out.println("message: "+request.getChatId());
         try{
             MessageDTO messageDTO = messageService.newMessage(request.getMessage(), request.getSenderId(), request.getChatId());
             return ResponseEntity.ok(messageDTO);
@@ -39,13 +37,14 @@ public class MessageController {
     @MessageMapping("/{id}")
     @SendTo("/group/{id}")
     public Message greeting(Message message, @DestinationVariable("id") String id) throws Exception, ChatNotFoundException {
-        System.out.println("message: "+message.getMessage());
-        System.out.println("id: "+id);
-        System.out.println("sender id" + message.getSenderId());
         Message msg = messageService.sendMessage(message, UUID.fromString(id));
         return msg;
+    }
 
-
+    @GetMapping("/getMessagesOfChat/{chatId}")
+    public ResponseEntity<List<ChatMessageDTO>> getMessagesOfChat(@PathVariable UUID chatId) throws ChatNotFoundException {
+        List<ChatMessageDTO> messages = messageService.getMessagesOfChat(chatId);
+        return ResponseEntity.ok(messages);
     }
 
 }

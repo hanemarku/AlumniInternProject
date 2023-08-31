@@ -33,8 +33,7 @@ public class CityController {
 
         Country country = optionalCountry.get();
         City city = new City(cityDto.getName(), country);
-        City savedCity = cityRepository.save(city);
-        return savedCity;
+        return cityRepository.save(city);
     }
 
     @DeleteMapping("{id}")

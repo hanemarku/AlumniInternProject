@@ -16,6 +16,5 @@ public interface ConnectionRequestRepository extends JpaRepository<ConnectionReq
     Optional<ConnectionRequest> findByRequesterIdAndRequesteeId(UUID senderId, UUID receiverId);
     Optional<ConnectionRequest> findByIdAndRequesterId(UUID id, UUID senderId);
     Optional<ConnectionRequest> findByIdAndRequesteeId(UUID id, UUID receiverId);
-    ConnectionRequest save(ConnectionRequest connectionRequest);
     List<ConnectionRequest> findByStatus(ConnectionRequestStatus status);
 }

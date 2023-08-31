@@ -1,9 +1,6 @@
 package com.example.AlumniInternProject.chat.services;
 
-import com.example.AlumniInternProject.chat.models.Chat;
-import com.example.AlumniInternProject.chat.models.ChatDTO;
-import com.example.AlumniInternProject.chat.models.ChatType;
-import com.example.AlumniInternProject.chat.models.UserChatDTO;
+import com.example.AlumniInternProject.chat.models.*;
 import com.example.AlumniInternProject.chat.repositories.ChatRepository;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.ChatNotFoundException;
@@ -70,11 +67,11 @@ public class ChatServiceImpl implements ChatService{
         }
         List<Chat> userChats = chatRepository.findAllByUsersId(userId);
 
-        List<ChatDTO> privateChats = userChats.stream()
-                .filter(chat -> chat.getType() == ChatType.GROUP  && !chat.getAdmin().equals(userId))
+        List<ChatDTO> groupChats = userChats.stream()
+                .filter(chat -> chat.getType() == ChatType.GROUP && chat.getUsers().contains(user))
                 .map(this::mapChatToChatDTO)
                 .collect(Collectors.toList());
-        return privateChats;
+        return groupChats;
     }
 
 
@@ -137,14 +134,64 @@ public class ChatServiceImpl implements ChatService{
                 sender.getChats().add(chat);
                 receiver.getChats().add(chat);
                 chatRepository.save(chat);
-
-                System.out.println("New chat id: " + chat.getId());
                 return chat;
             }else {
                 throw new UserNotFoundException("User not found");
             }
     }
 
+    @Override
+    public Chat createGroupChat(String name, UUID groupAdmin) throws UserNotFoundException {
+        User admin = userService.get(groupAdmin);
+        if (admin != null) {
+            Chat chat = new Chat();
+            chat.setAdmin(admin.getId());
+            chat.setType(ChatType.GROUP);
+            chat.setName(name);
+            chat.getUsers().add(admin);
+            admin.getChats().add(chat);
+            chatRepository.save(chat);
+            return chat;
+        }else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    @Override
+    public void addUsersToChat(UUID chatId, Set<UUID> userIds) throws ChatNotFoundException, UserNotFoundException {
+        Chat chat = chatRepository.findById(chatId).orElse(null);
+        if (chat == null) {
+            throw new ChatNotFoundException();
+        }else {
+            for (UUID userId : userIds) {
+                User user = userService.get(userId);
+                if (user != null) {
+                    chat.getUsers().add(user);
+                    user.getChats().add(chat);
+                }else {
+                    throw new UserNotFoundException("User not found");
+                }
+            }
+            chatRepository.save(chat);
+        }
+    }
+
+    @Override
+    public void addUserToChat(UUID chatId, UUID userId) throws ChatNotFoundException, UserNotFoundException {
+        Chat chat = chatRepository.findById(chatId).orElse(null);
+        if (chat == null) {
+            throw new ChatNotFoundException();
+        }else {
+            User user = userService.get(userId);
+            if (user != null) {
+                chat.getUsers().add(user);
+                user.getChats().add(chat);
+            }else {
+                throw new UserNotFoundException("User not found");
+            }
+            chatRepository.save(chat);
+        }
+    }
 
     @Override
     public ChatDTO mapChatToChatDTO(Chat chat){

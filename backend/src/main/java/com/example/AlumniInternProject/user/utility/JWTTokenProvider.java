@@ -33,7 +33,7 @@ public class JWTTokenProvider {
 
     public String generateJwtToken(ALumniUserDetails userDetails) {
         String[] claims = getClaimsFromUser(userDetails);
-        return JWT.create().withIssuer(GET_ARRAYS_LLC).withAudience(GET_ARRAYS_ADMINISTRATION)
+        return JWT.create().withIssuer(GET_ARRAYS_LLC)
                 .withIssuedAt(new Date()).withSubject(userDetails.getUsername()).withArrayClaim(AUTHORITIES, claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(secret.getBytes()));
     

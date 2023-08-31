@@ -10,6 +10,8 @@ import { format } from 'date-fns';
 import { ChatResponse, ChatServiceService } from '../services/chat-service.service';
 import { MessageService } from '../services/message.service';
 import Swal from 'sweetalert2';
+import { Inject } from '@angular/core';
+
 
 export interface User {
   id: string;
@@ -98,7 +100,7 @@ export class PrivateChatWindowComponent implements OnInit, AfterViewInit{
     private connectionService: ConnectionRequestService,
     private chatService: ChatServiceService,
     private zone: NgZone,
-    private messageService: MessageService,
+    @Inject(MessageService) private messageService: MessageService,
     private renderer: Renderer2,
     private cdRef: ChangeDetectorRef, 
   ){}

@@ -40,19 +40,25 @@
             </div>
 
             <div class="group-chats py-4">
-                <h5><i class="bi bi-chat-dots"></i> <span class="private-chats-title">Group Chats</span></h5>
-                <ul class="list-unstyled chat-list mt-2 mb-0">
-                  <li class="clearfix" >
-                    <img [src]="">
-                    <div class="about">
-                      <div class="name"></div>
-                    </div>
+              <h5><i class="bi bi-chat-dots"></i> <span class="private-chats-title">Group Chats</span></h5>
+              <button class="btn btn-primary" data-bs-toggle="modal"  [attr.data-bs-target]="'#groupModal'">
+                  Add Group
+              </button>
+          
+              <ul class="list-unstyled chat-list mt-2 mb-0">
+                  <li class="clearfix"  *ngFor="let group of groupChats" (click)="selectGroup(group)">
+                      <img [src]="">
+                      <div class="about">
+                          <div class="name">{{group.name}}</div>
+                      </div>
                   </li>
-                </ul>
-                <button class="btn btn-link" (click)="toggleGroupList()">
+              </ul>
+              <button class="btn btn-link" (click)="toggleGroupList()">
                   {{ showAllGroups ? 'Show Less' : 'Show All' }} Groups
-                </button>
-            </div>
+              </button>
+          </div>
+
+          
         </div>
             <div class="chat" >
                 <div class="chat-header clearfix">
@@ -75,60 +81,157 @@
                     </div>
                     
                 </div>
-                <div class="no-chat-selected" *ngIf="!selectedUser">
+                <div class="no-chat-selected" *ngIf="!selectedUser && !selectedGroup">
                     <p>No chat selected</p>
                 </div>
 
-                <!-- <div class="chat-history">
-                  <ul class="m-b-0">
-                    <li class="clearfix">
-                      <div class="message-data text-right" style="padding-left: 80%;">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                          <span class="message-data-time">10:10 AM, Today</span>
-                        </div>
-                        <div class="message other-message float-right">
-                          Hi Aiden, how are you? How is the project coming along?
-                        </div>
-                      
-                    </li>
-                  </ul>
-                </div> -->
+                <div class="chat-container"  #chatContainer *ngIf="selectedUser && stompClient">
+                  <span class="center">{{ selectedUser.firstname }} {{ selectedUser.lastname }}</span>
 
+                  <div *ngFor="let message of getSelectedChatMessages()">
+                    <div *ngIf="isMessageSent(message)" class="message my-message">
+                      <div class="message-content">
+                        <div class="message-time">{{ message.time | date:'h:mm a, MMM d, y' }}</div>
+                        <div class="message-text">  {{ message.message }}</div>
+                      </div>
+                    </div>
                 
-                <div *ngIf="selectedUser && stompClient">
-                  <div class="chat-history" >
-                    <span> {{selectedUser.firstname}} {{selectedUser.lastname}}</span>
-                      
+                    <div *ngIf="!isMessageSent(message)" class="message other-message">
+                      <img   [src]="selectedUser?.profilePicUrl" alt="Avatar" class="message-img">
+                      <div class="message-content">
+                        <div class="message-time">{{ message.time | date:'h:mm a, MMM d, y' }}</div>
+                        <div class="message-text">  {{ message.message }}?</div>
+                      </div>
+                    </div>
                   </div>
-                  <ul class="list-unstyled chat-history">
-                    <li class="clearfix" *ngFor="let message of getSelectedChatMessages()">
-                      <div [ngClass]="{'message-data text-end': isMessageSent(message), 'message-data text-start': !isMessageSent(message)}">
-                        <span class="message-data-time">{{ message.time }}</span>
-                        <span class="message-data-name">
-                          {{ isMessageSent(message) ? '' : selectedUser?.firstname + ' ' + selectedUser?.lastname }}
-                        </span>
-                      </div>
-                      <div [ngClass]="{'message other-message text-end': isMessageSent(message), 'message my-message text-start': !isMessageSent(message)}">
-                        {{ message.message }}
-                      </div>
-                    </li>
-                  </ul>
-                  
-                  <div class="chat-message clearfix">
+
+                    <div class="chat-message clearfix">
                       <div class="input-group mb-0">
                           <input type="text" class="form-control" placeholder="Enter text here..." [(ngModel)]="message" />
                           <div class="input-group-prepend">
                               <span class="input-group-text" (click)="sendMessage()" ><i class="bi bi-send-fill"></i></span>
                           </div>
                       </div>
-                  </div>
-              </div>
+                    </div>
+                </div>
 
+                <div class="chat-containerr"   *ngIf="selectedGroup != null && stompClient">
+                  <span>{{privateChatName}}</span> - 
+                  <span *ngIf="isUserAdminOfSelectedGroup()">You're the admin of this group chat, which means you have the privilege to add other users.</span> 
+
+                  <div class="input-group" *ngIf="isUserAdminOfSelectedGroup()">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input
+                    type="text"
+                    [(ngModel)]="addToGroupSearch"
+                    (input)="onSearchUsersGroupChange($event)"
+                    class="form-control"
+                    placeholder="Add people to this group..."
+                  />
+                  </div>
+      
+                  <div class="participants-list">
+                    <ul class="list-unstyled chat-list mt-2 mb-0">
+                      <li class="clearfix" *ngFor="let result of searchGroupResults" (click)="addUserToGroupChat(result)">
+                        <img class="message-img" [src]="result.profilePicUrl" alt="{{ result.firstname }} {{ result.lastname }}" />
+                        <div class="about">
+                          <div class="name">{{ result.firstname }} {{ result.lastname }}</div>
+                        </div>
+                        <button class="btn btn-primary" >
+                          Add
+                        </button>
+                      </li>
+                    </ul>
+                  </div>  
+
+                  <div *ngFor="let message of getSelectedChatMessages()">
+                    <div *ngIf="isMessageSent(message)" class="message my-message">
+                      <div class="message-content">
+                        <div class="message-time">{{ message.time | date:'h:mm a, MMM d, y' }}</div>
+                        <div class="message-text">  {{ message.message }}</div>
+                      </div>
+                    </div>
+                
+                    <div *ngIf="!isMessageSent(message)" class="message other-message">
+                      <span>{{getSenderName(message.senderId)}}</span>
+                      <div class="message-content">
+                        <div class="message-time">{{ message.time | date:'h:mm a, MMM d, y' }}</div>
+                        <div class="message-text">  {{ message.message }}?</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="chat-message clearfix">
+                    <div class="input-group mb-0">
+                        <input type="text" class="form-control" placeholder="Enter text here..." [(ngModel)]="message" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" (click)="sendMessage()" ><i class="bi bi-send-fill"></i></span>
+                        </div>
+                    </div>
+                  </div>
+                </div>            
+              </div>
             </div>
             </div>
         </div>
     </div>
-</div>
+
+    
+    <div class="modal fade" id="groupModal" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="addChatModalLabel">Add Group</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="mb-3">
+                      <label for="chatName" class="form-label">Chat Name</label>
+                      <input type="text" class="form-control" id="chatName" [(ngModel)]="newGroupName">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="groupNameTaken || !newGroupName" 
+                    (click)="createNewGroup()"
+                  >
+                    Create Chat
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
 
 
+<!-- Add People Modal -->
+<!-- <div class="modal fade" id="addPeopleModal" tabindex="-1" aria-labelledby="addPeopleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPeopleModalLabel">Add People to Chat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>Select users to add to the chat:</h6>
+        <form #addPeopleForm="ngForm">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let user of connectedUsers">
+              <label class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="user.selected"  name="selectedUsers">
+                {{ user.firstName }} {{ user.lastName }}
+              </label>
+            </li>
+          </ul>
+          <input type="hidden" name="selectedUserIds" [value]="getSelectedUserIds()">
+        </form>
+      </div>      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addSelectedUsersToChat()">Add Users</button>
+      </div>
+    </div>
+  </div>
+</div> -->
 

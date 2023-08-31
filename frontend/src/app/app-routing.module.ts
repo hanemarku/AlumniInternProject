@@ -26,11 +26,11 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ProfileSliderComponent } from './profile-slider/profile-slider.component';
 import { ProfilesSwiperComponent } from './profiles-swiper/profiles-swiper.component';
-import { PrivateChatComponent } from './private-chat/private-chat.component';
 import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
 import { RoomComponent } from './room/room.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessageComponent } from './message/message.component';
+import { SettingsComponent } from './setting-folder/settings/settings.component';
 
 
 const routes: Routes = [
@@ -58,12 +58,11 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'profileSlider', component: ProfileSliderComponent},
   {path: 'profilesSwiper', component: ProfilesSwiperComponent},
-  {path: 'private-chat/:userId', component: PrivateChatComponent }, 
-  {path: 'chat', component: PrivateChatComponent},
   {path: 'private', component: PrivateChatWindowComponent},
   {path: 'message', component: MessageComponent},
   {path: 'room', component: RoomComponent},
   {path: 'test', component: ChatComponent},
+  {path: 'settings', component: SettingsComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

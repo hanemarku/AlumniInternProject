@@ -42,11 +42,32 @@ export class ChatServiceService {
     return this.http.get<string>(url);
   }
 
+  createGroupChat(id: string, name: string): Observable<any> {
+    const url = `${this.baseUrl}/newgroupchat?id=${id}&name=${name}`;
+    return this.http.get(url);
+  }
+  
+
   getUserChatInfo(userId: string): Observable<ChatResponse> {
     const url = `${this.baseUrl}/user_chats?id=${userId}`;
     return this.http.get<any>(url);
   }
+
+  addUsersToGroup(groupId: string, userIds: string[]): Observable<any> {
+    const userAdditionDTO = { 
+      groupId: groupId, 
+      userIds: userIds 
+    };
+    return this.http.post(`${this.baseUrl}/addUsersToChat`, userAdditionDTO);
+  }
   
+  addUserToGroup(groupId: string, userId: string): Observable<any> {
+    const userAdditionDTO = { 
+      groupId: groupId, 
+      userId: userId
+    };
+    return this.http.post(`${this.baseUrl}/addUserToChat`, userAdditionDTO);
+  }
 
   // createPrivateChat(id: string): Observable<string> {
   //   const jwtToken = this.authService.getToken();

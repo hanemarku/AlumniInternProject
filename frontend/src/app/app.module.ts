@@ -59,12 +59,10 @@ import { NotificationService } from './services/notification-service/notificatio
 import { AuthenticationService } from './services/authenication-service/authentication.service';
 import { UserDataService } from './services/user-service/user-data.service';
 import { ChatComponent } from './chat/chat.component';
-import { MessageListComponent } from './message-list/message-list.component';
-import { MessageInputComponent } from './message-input/message-input.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { PrivateChatComponent } from './private-chat/private-chat.component';
 import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
 import { RoomComponent } from './room/room.component';
+import { ReversePipe } from './services/ReversePipe';
 
 @NgModule({
   declarations: [
@@ -113,13 +111,10 @@ import { RoomComponent } from './room/room.component';
     MailServerComponent,
     AccountVerificationComponent,
     ChatComponent,
-    MessageListComponent,
-    MessageInputComponent,
     UserListComponent,
-    PrivateChatComponent,
     PrivateChatWindowComponent,
     RoomComponent,
-
+    ReversePipe
   ],
   imports: [
     BrowserModule,

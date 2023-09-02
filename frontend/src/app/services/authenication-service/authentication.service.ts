@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { environment } from "src/environments/environment";
 
 
 
@@ -41,6 +42,7 @@ export interface User{
 })
 
 export class AuthenticationService {
+  public host = environment.apiUrl;
   private token: string;
   private loggedInEmail: string | null;
   private jwtHelper = new JwtHelperService();

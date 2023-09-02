@@ -31,12 +31,13 @@ public class UserDTO {
     private Set<EducationHistory> educationHistories;
     private Set<Authority> authorities = new HashSet<>();
     private Role role;
+    private String verificationCode;
 
     public UserDTO() {
 
     }
 
-    public UserDTO(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities) {
+    public UserDTO(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities, String verificationCode) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -54,6 +55,7 @@ public class UserDTO {
         this.employmentHistories = employmentHistories;
         this.educationHistories = educationHistories;
         this.authorities = authorities;
+        this.verificationCode = verificationCode;
     }
 
 

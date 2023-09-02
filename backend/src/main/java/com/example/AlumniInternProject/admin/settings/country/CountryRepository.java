@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CountryRepository extends CrudRepository<Country, UUID> {
-    public List<Country> findAllByOrderByNameAsc();
+    List<Country> findAllByOrderByNameAsc();
 }

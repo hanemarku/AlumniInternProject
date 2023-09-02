@@ -1,0 +1,15 @@
+<div *ngIf="event">
+  <h2>{{event.name | uppercase}} Details</h2>
+  <div >
+    <p>Name: {{event.name}}</p>
+    <p>Created by: {{event.createdby}}</p>
+    <p>Topic: {{event.topic}}</p>
+    <p>Description: {{event.description}}</p>
+    <p>Img url: {{event.imgUrl}}</p>
+    <p>Members: {{event.maxParticipants}}</p>
+  </div>
+
+  <button type="submit" (click)="onUpdateded()">update</button>
+  <app-event-edit [hidden]="updated" [event]="selectedEvent" ></app-event-edit>
+  <button type="submit" (click)="onDeleted()" href="/event-delete">delete</button>
+  <app-event-delete [hidden]="deleted" [event]="selectedEvent" ></app-event-delete>

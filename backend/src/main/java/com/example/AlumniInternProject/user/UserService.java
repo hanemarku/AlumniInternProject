@@ -1,5 +1,6 @@
 package com.example.AlumniInternProject.user;
 
+import com.example.AlumniInternProject.chat.models.UserChatDTO;
 import com.example.AlumniInternProject.entity.Country;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public interface UserService {
     UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException;
     List<UsersListingDTO> findAll();
-    User findById(UUID id);
+
     UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException;
     void delete(UUID id) throws UserNotFoundException;
     List<Country> listAllCountries();
@@ -30,6 +31,21 @@ public interface UserService {
     String fixProfileImagePath(String profileImagePath);
 
     UsersListingDTO findByEmail(String email) throws UserNotFoundException;
+    UsersListingDTO findByID(UUID id) throws UserNotFoundException;
+
+   boolean resetPassword(String token, String newPassword) throws UserNotFoundException;
+   String encodePassword(String password);
+   UsersListingDTO mapForListing(User user);
+
+    User getUserByFirstname(String firstName);
+    UserChatDTO mapUserToDto(User user);
+
+    String getUserFullName(UUID id) throws UserNotFoundException;
+
+    List<UserChatDTO> searchInChat(String keyword);
+    List<UserChatDTO> findAllUsers();
+
+
 
 
 

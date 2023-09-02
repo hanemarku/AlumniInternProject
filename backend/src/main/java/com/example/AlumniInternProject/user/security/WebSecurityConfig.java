@@ -1,14 +1,17 @@
 package com.example.AlumniInternProject.user.security;
 
+import com.example.AlumniInternProject.user.LoginAttemptService;
 import com.example.AlumniInternProject.user.filter.JwtAccessDeniedHandler;
 import com.example.AlumniInternProject.user.filter.JwtAuthenticationEntryPoint;
 import com.example.AlumniInternProject.user.filter.JwtAuthorizationFilter;
+import com.example.AlumniInternProject.user.listeners.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,24 +29,34 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class WebSecurityConfig {
-        private JwtAuthorizationFilter jwtAuthorizationFilter;
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
-        @Bean
-        public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
-            return new JwtAuthenticationEntryPoint();
-        }
+    @Bean
+    public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint();
+    }
 
-        @Bean
-        public UserDetailsService userDetailsService() {
-            return new AlumniUserDetailsService();
-        }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new AlumniUserDetailsService();
+    }
 
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+//    @Bean
+//    public LoginAttemptService loginAttemptService() {
+//        return new LoginAttemptService();
+//    }
+
+    @Autowired
+    private LoginAttemptService loginAttemptService;
+
+
 
     private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
@@ -82,14 +95,18 @@ public class WebSecurityConfig {
                     .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin(login -> login
                             .usernameParameter("email")
-                            .defaultSuccessUrl("/homepage2")
                             .permitAll()
+                            .successHandler(customAuthenticationSuccessHandler())
                     )
                     .httpBasic(withDefaults())
                     .authenticationProvider(authenticationProvider());
             return http.build();
         }
 
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler(loginAttemptService);
+    }
         private RequestMatcher matchers(String pattern) {
             return new AntPathRequestMatcher(pattern);
         }

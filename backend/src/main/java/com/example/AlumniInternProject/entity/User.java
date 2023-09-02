@@ -1,11 +1,14 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.chat.models.Chat;
 import com.example.AlumniInternProject.enumerations.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -53,6 +56,9 @@ public class User extends IdBaseEntity implements Serializable {
     @JoinColumn(name = "country_id")
     private Country country;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
 
     @Column(length = 64, nullable = false)
     private String password;
@@ -67,6 +73,8 @@ public class User extends IdBaseEntity implements Serializable {
     )
     private Set<Skill> skills = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<VerificationToken> verificationTokens;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -114,6 +122,11 @@ public class User extends IdBaseEntity implements Serializable {
     private Collection<Like> like;
 
 
+    @ManyToMany(mappedBy = "users")
+    private Set<Chat> chats = new HashSet<>();
+
+
+
     @Transient
     public String getImagePath() {
         if (super.getId() == null) return "/images/image-thumbnail.png";
@@ -122,7 +135,7 @@ public class User extends IdBaseEntity implements Serializable {
     }
 
 
-    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities) {
+    public User(String firstname, String lastname, String email, boolean enabled, LocalDate birthday, String profilePicUrl, String phoneNumber, String city, Country country, String password, String bio, Set<Skill> skills, Set<Interest> interests, Role role, Set<EmploymentHistory> employmentHistories, Set<EducationHistory> educationHistories, Set<Authority> authorities, String verificationCode) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -140,6 +153,7 @@ public class User extends IdBaseEntity implements Serializable {
         this.employmentHistories = employmentHistories;
         this.educationHistories = educationHistories;
         this.authorities = authorities;
+        this.verificationCode = verificationCode;
     }
 
     public Set<EducationHistory> getEducationHistories() {

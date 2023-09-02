@@ -20,12 +20,12 @@ export class CountryList {
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.sass']
 })
+
 export class CountryComponent implements OnInit {
   countries: CountryList[] = [];
   showValidationErrors: boolean = false;
   selectedCountry: CountryList = new CountryList('', '', '', []);
   showCountry = false;
-
   constructor(
     private countryDataService: CountryDataService,
     private dialog: MatDialog
@@ -137,7 +137,7 @@ export class CountryComponent implements OnInit {
       if (result) {
         console.log('Updated Country Data:', result);
         this.deleteCountry(this.selectedCountry.id);
-        this.updateCountry(this.selectedCountry.id, result); // Call the updateCountry method here
+        this.updateCountry(this.selectedCountry.id, result);
         this.onCountryClick(result);
       }
     });
@@ -155,8 +155,6 @@ export class CountryComponent implements OnInit {
       }
     );
   }
-
-
   
 }
 

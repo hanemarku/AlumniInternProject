@@ -1,8 +1,13 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
+import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
+import com.example.AlumniInternProject.Verfication.VerificationTokenService;
+import com.example.AlumniInternProject.chat.models.UserChatDTO;
 import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
+import com.example.AlumniInternProject.entity.VerificationToken;
+import com.example.AlumniInternProject.entity.VerificationType;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.ExceptionHandling;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
@@ -30,6 +35,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,11 +50,15 @@ import static com.example.AlumniInternProject.constants.SecurityConstants.JWT_TO
 public class UserController extends ExceptionHandling {
     private final UserService userService;
 
-    @Autowired
-    private AlumniAuthenticationProvider authenticationProvider;
+    private final AlumniAuthenticationProvider authenticationProvider;
 
-    @Autowired
-    private JWTTokenProvider jwtTokenProvider;
+    private final JWTTokenProvider jwtTokenProvider;
+
+    private final VerificationTokenService verificationTokenService;
+
+    private final EmailService emailService;
+
+    private final UserRepository userRepo;
 
     @PostMapping("/signin")
     @CrossOrigin(origins = "http://localhost:4200")
@@ -58,15 +68,12 @@ public class UserController extends ExceptionHandling {
             User loginUser = userService.findUserByEmail(user.getEmail());
             ALumniUserDetails userDetails = new ALumniUserDetails(loginUser);
             HttpHeaders jwtHeader = getJwtHeader(userDetails);
-            return ResponseEntity.ok().headers(jwtHeader).body(loginUser);
+            UsersListingDTO userForLogin = userService.mapForListing(loginUser);
+            return ResponseEntity.ok().headers(jwtHeader).body(userForLogin);
         } catch (AuthenticationException ex) {
-            // If authentication fails, return a 401 Unauthorized response
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
-
-
-
 
     private HttpHeaders getJwtHeader(ALumniUserDetails userDetails) {
         HttpHeaders headers = new HttpHeaders();
@@ -75,20 +82,45 @@ public class UserController extends ExceptionHandling {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<String> getAllUsers() {
-//        int savedUsers = userService.findAll().size();
-//        if (savedUsers != 0) {
-//            return ResponseEntity.status(HttpStatus.CREATED).body("there are " + savedUsers + " users in the database" );
-//        } else {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list users");
-//        }
-//    }
+    @GetMapping("/verify")
+    public ResponseEntity<Map<String, Boolean>> verifyEmail(@RequestParam("token") String token) throws UserNotFoundException, EmailExistException {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isActivated = false;
+        VerificationToken verificationToken = verificationTokenService.findByToken(token);
+        User user = verificationToken.getUser();
+        System.out.println(verificationToken);
+
+        if (!user.isEnabled() || token != null) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            if (verificationToken.getExpirationDate().before(timestamp)) {
+                isActivated = false;
+            }else {
+                user.setEnabled(true);
+                userRepo.save(user);
+                isActivated = true;
+//                verificationTokenService.removeTokenByUserAndType(user.getId(), VerificationType.EMAIL_VERIFICATION);
+
+            }
+        }
+        response.put("isActivated", isActivated);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+    }
+
 
     @GetMapping
     public List<UsersListingDTO> getAllUsers() {
-
         return userService.findAll();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ConnectUserDTO>> getUsers() {
+        List<UsersListingDTO> allUsers = userService.findAll();
+        List<ConnectUserDTO> userDtos = allUsers.stream()
+                .map(user -> new ConnectUserDTO(user.getId() ,user.getEmail(), user.getFirstname(), user.getLastname(), user.getProfilePicUrl()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDtos);
     }
 
 
@@ -132,6 +164,8 @@ public class UserController extends ExceptionHandling {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
 
     @GetMapping("/get-profile-pic")
     @CrossOrigin
@@ -178,6 +212,67 @@ public class UserController extends ExceptionHandling {
     }
 
 
+    @GetMapping("/check-email-exists")
+    public ResponseEntity<Map<String, Boolean>> checkEmailExists(@RequestParam("email") String email) {
+        boolean emailExists;
+        User user = userService.findUserByEmail(email);
+        if(user == null) {
+            emailExists = false;
+        }else{
+            emailExists = true;
+        }
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", emailExists);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/send-forgot-password-email")
+    public ResponseEntity<Map<String, Boolean>> sendForgotPasswordEmail(@RequestParam String email) {
+        Map<String, Boolean> response = new HashMap<>();
+        User user = userService.findUserByEmail(email);
+        if (user == null) {
+            response.put("message", false);
+        }else{
+            String token = UUID.randomUUID().toString();
+            verificationTokenService.save(user , token, VerificationType.PASSWORD_RESET);
+            emailService.sendForgotPasswordEmail(user);
+            response.put("message", true);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+//    @PostMapping("/reset-password")
+//    public ResponseEntity<Map<String, Boolean>> resetPassword(@RequestBody ForgotPassDTO forgotPassDTO) throws UserNotFoundException {
+//        System.out.println(forgotPassDTO.getToken());
+//        System.out.println(forgotPassDTO.getNewPassword());
+//        Map<String, Boolean> response = new HashMap<>();
+//        boolean passwordChanged = userService.resetPassword(forgotPassDTO.getToken(), forgotPassDTO.getNewPassword());
+//        response.put("passwordChanged", passwordChanged);
+//        return ResponseEntity.ok(response);
+//    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, Boolean>> resetPassword(@RequestBody ForgotPassDTO forgotPassDTO) throws UserNotFoundException {
+        boolean passwordChanged = false;
+        Map<String, Boolean> response = new HashMap<>();
+        VerificationToken verificationToken = verificationTokenService.findByToken(forgotPassDTO.getToken());
+        User user = verificationToken.getUser();
+
+        if (!user.isEnabled() || forgotPassDTO.getToken() != null) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            if (verificationToken.getExpirationDate().before(timestamp)) {
+                passwordChanged = false;
+            }else {
+                user.setPassword(userService.encodePassword(forgotPassDTO.getNewPassword()));
+                userRepo.save(user);
+                passwordChanged = true;
+//                verificationTokenService.removeToken(Long.valueOf(forgotPassDTO.getToken()));
+                verificationTokenService.removeTokenByUserAndType(user.getId(), VerificationType.PASSWORD_RESET);
+            }
+        }
+        response.put("passwordChanged", passwordChanged);
+        return ResponseEntity.ok(response);
+    }
 
 
     @PatchMapping("edit/{id}")
@@ -193,10 +288,12 @@ public class UserController extends ExceptionHandling {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") UUID id) throws UserNotFoundException {
         try {
-            userService.get(id);
+            User user = userService.get(id);
+            verificationTokenService.deleteAllByUser(user);
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         }
+
         userService.delete(id);
     }
 
@@ -209,11 +306,30 @@ public class UserController extends ExceptionHandling {
     }
 
 
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String username) throws UserNotFoundException {
+        return new ResponseEntity<User>(userService.getUserByFirstname(username), HttpStatus.OK);
+    }
 
     @GetMapping("/email")
     public UsersListingDTO getUserByEmail(@RequestParam("email") String email) throws UserNotFoundException {
         return userService.findByEmail(email);
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserChatDTO>> search(@RequestParam(value = "keyword", required = false) String keyword) {
+        List<UserChatDTO> users;
+
+        if (keyword == null || keyword.isEmpty()) {
+            users = userService.findAllUsers();
+        } else {
+            users = userService.searchInChat(keyword);
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
 
 
     private void authenticate(String email, String password) {

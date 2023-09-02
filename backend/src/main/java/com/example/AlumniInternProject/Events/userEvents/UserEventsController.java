@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/eventsAndUsers")
+@CrossOrigin("http://localhost:4200/event")
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;

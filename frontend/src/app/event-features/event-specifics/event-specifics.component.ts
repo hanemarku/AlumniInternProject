@@ -15,7 +15,6 @@ import { EventsService } from 'src/app/services/event-services/events.service';
 })
 export class EventSpecificsComponent implements OnInit {
   
-/*TODO: CHECK WHY IT IS NOT ADDING THE EVENT IN DB EVENT THOUGH IS CORRECTLY CONNECTED*/
   constructor(
     private eventService: EventsService,
     private eventSpecificsService: EventSpecificsService,

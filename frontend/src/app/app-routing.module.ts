@@ -9,6 +9,7 @@ import { EventEditComponent } from './event-features/event-edit/event-edit.compo
 import { EventFormComponent } from './event-features/event-form/event-form.component';
 import { EventRegisterComponent } from './event-features/event-register/event-register.component';
 import { EventSearchByComponent } from './event-features/event-search-by/event-search-by.component';
+import { EventSpecificsDetailsComponent } from './event-features/event-specifics-details/event-specifics-details.component';
 import { EventSpecificsComponent } from './event-features/event-specifics/event-specifics.component';
 import { EventComponent } from "./event/event.component";
 import { AuthenticationGuard } from './guard/authentication.guard';
@@ -47,7 +48,8 @@ const routes: Routes = [
   {path:'event-delete', component:EventDeleteComponent, canActivate: [AuthenticationGuard]},
   {path:'event-search-by', component:EventSearchByComponent, canActivate: [AuthenticationGuard]},
   {path: 'event-specifics', component: EventSpecificsComponent, canActivate: [AuthenticationGuard]},
-  {path: 'event-register', component: EventRegisterComponent},
+  {path: 'event-register', component: EventRegisterComponent, canActivate: [AuthenticationGuard]},
+  {path: 'event-specifics-details', component: EventSpecificsDetailsComponent, canActivate:[AuthenticationGuard]},
   {path: 'cities', component: CityComponent, canActivate: [AuthenticationGuard]},
   {path: 'notifications', component: NotificationsComponent, canActivate: [AuthenticationGuard]},
   {path: 'suggestions', component:SuggestionsComponent},

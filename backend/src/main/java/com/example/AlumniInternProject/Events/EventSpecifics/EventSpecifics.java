@@ -25,7 +25,7 @@ import java.util.UUID;
 public class EventSpecifics extends IdBaseEntity {
     /*When adding We should have unique date and city
     * combination for the same event id*/
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     /*Many events have only one specification*/
     @ManyToOne

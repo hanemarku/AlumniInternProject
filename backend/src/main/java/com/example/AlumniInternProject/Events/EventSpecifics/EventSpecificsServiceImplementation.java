@@ -63,6 +63,21 @@ public class EventSpecificsServiceImplementation implements
 
         throw new RuntimeException("Event specific with this id does not exist!");
     }
+
+    @Override
+    public List<EventSpecifics> findByEventId(String id) {
+        List<EventSpecifics> allEventSpecifics = eventSpecificsRepository.findAll();
+        List<EventSpecifics> matched = new ArrayList<>();
+
+        for(EventSpecifics es : allEventSpecifics){
+            String toCompare = es.getEvents().getId().toString();
+            if(toCompare.contains(id)){
+                matched.add(es);
+            }
+        }
+        return matched;
+    }
+
     @Override
     public void delete(UUID id) {
         eventSpecificsRepository.deleteById(id);

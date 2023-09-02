@@ -13,25 +13,6 @@
         <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
       </select>
     </div>
- 
     <button type="submit" (click)="addSpecifics()">Submit</button>
   </form>
-  <app-event-register [eventSpecifics]="eventSpecificsModel"></app-event-register>
-
-</div>
-
-<div *ngIf="eventSpecificsModel">
-  <h2>Newly Created Event Specifics</h2>
-  <p>Date: {{ eventSpecificsModel.date }}</p>
-  <p>City: {{ eventSpecificsModel.city?.name }}</p>
-  <p>Event: {{ eventSpecificsModel.events?.id }}</p>
-</div>
-<div>
-<ul class="container">
-  <li *ngFor="let e of eventSpecificsList">
-      <p>{{ e.events?.name }}</p>
-      <p>{{ e.date }}</p>
-      <p>{{ e.city?.name }}</p>
-  </li>
-</ul>
 </div>

@@ -1,13 +1,35 @@
+<h1>Register</h1>
+<div *ngIf="eventSpecifics">
+  <h2>Event Specifics for {{ eventSpecifics.events?.name }}</h2>
+  <p><strong>City:</strong> {{ eventSpecifics.city?.name }}</p>
+  <p><strong>Date:</strong> {{ eventSpecifics.date }}</p>
+</div>
+<div>
+  <p><strong>Name:</strong> {{ currentUser.firstname }}</p>
+  <p><strong>Lastname:</strong> {{ currentUser.lastname }}</p>
+</div>
+{{ registUserEventModel | json }}
+<button type="button" (click)="registerUserToEvent()">Confirm participation</button>
+<!--
+
 {{ registerModel | json}}
+
+<button type="submit" (click)="register()">register</button>
+
 <div>
     <p>CONFIRM YOUR PRESENSE!</p>
     <div>
         User: {{ User.firstname }} | {{ User.lastname }}
     </div>
-    <div>
-        Event: {{ event?.name }} | {{ event?.topic }} 
-        <div *ngFor=" let eventSpecifics">
-            eventSpecifics : {{ eventSpecifics?.event?.id }}
+    <p>The event specifics JSON </p>
+    {{ specifics | json}}
+    <div *ngIf="specifics">
+        Event: {{ specifics.events?.name }} | {{ specifics.events?.topic }}
+        Date: {{ specifics.date }}
+        City: {{ specifics.city?.name}}
         </div>
     </div>
-</div>
+
+
+
+-->

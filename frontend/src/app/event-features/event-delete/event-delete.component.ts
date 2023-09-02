@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
+import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
-import { RegistUsersService } from 'src/app/services/event-services/regist-users.service';
 
 @Component({
   selector: 'app-event-delete',
@@ -21,13 +21,13 @@ export class EventDeleteComponent implements OnInit {
 
   constructor(
     private eventService: EventsService,
-    private registerService: RegistUsersService
+    private eventSpecificsService: EventSpecificsService
   ){}
 
   alleventSpecifics: EventSpecifics[] = [];
 
   getAllSpecifics(){
-    this.registerService.getAllEventSpecifics().subscribe(
+    this.eventSpecificsService.getAllEventSpecifics().subscribe(
       data => {
         this.alleventSpecifics = data;
       }
@@ -38,7 +38,7 @@ export class EventDeleteComponent implements OnInit {
     this.selectedEvent = selectedEvent;
         for(let i = 0; i < this.alleventSpecifics.length; i++){
           if(this.alleventSpecifics[i].events?.id === selectedEvent.id){
-            this.registerService.deleteEventSpecifics(this.alleventSpecifics[i].id).subscribe(
+            this.eventSpecificsService.deleteEventSpecifics(this.alleventSpecifics[i].id).subscribe(
               () => {
                 console.log(i + " deleted");
               }

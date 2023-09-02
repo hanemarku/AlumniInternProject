@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Event } from "../Models/Event";
-import { EventSpecifics } from '../Models/EventSpecifics';
 import { EventsService } from "../services/event-services/events.service";
 
 @Component({
@@ -24,26 +23,14 @@ export class EventComponent {
   }
 
   getEvents() {
-    this.eventsService.getEvents()
-      .subscribe(e => this.event = e);
+    this.eventsService.getEvents().subscribe(
+        e =>{
+        this.event = e
+        }
+        );
   }
+
   OnSelect(event: Event) {
     this.selectedEvent = event;
-    return this.eventsService.getEventsById(this.selectedEvent.id).subscribe();
   }
-
-  eventSpecificsList: EventSpecifics[] = [];
-
-  listEventSpecifics(event: Event){
-    this.selectedEvent = event;
-    if(this.selectedEvent){
-    this.eventsService.getEventSpecificsByEventId(this.selectedEvent.id).subscribe(
-      data => {
-        console.log("im being called");
-        this.eventSpecificsList = data;
-      }
-    );
-    }
-  }
-
 }

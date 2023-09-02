@@ -25,6 +25,7 @@ import { EventEditComponent } from './event-features/event-edit/event-edit.compo
 import { EventFormComponent } from './event-features/event-form/event-form.component';
 import { EventRegisterComponent } from './event-features/event-register/event-register.component';
 import { EventSearchByComponent } from './event-features/event-search-by/event-search-by.component';
+import { EventSpecificsDetailsComponent } from './event-features/event-specifics-details/event-specifics-details.component';
 import { EventSpecificsComponent } from './event-features/event-specifics/event-specifics.component';
 import { EventComponent } from "./event/event.component";
 import { FilterPipe } from './filter.pipe';
@@ -91,6 +92,7 @@ import { SuggestionsComponent } from './user/suggestions/suggestions.component';
     EventSearchByComponent,
     EventSpecificsComponent,
     EventRegisterComponent,
+    EventSpecificsDetailsComponent,
     UpdateCityDialogComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,

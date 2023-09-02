@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface EventSpecificsRepository extends JpaRepository<EventSpecifics, UUID> {
-    void deleteEventSpecificsByEvents_Id(UUID uuid);
 }

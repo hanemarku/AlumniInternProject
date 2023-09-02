@@ -5,8 +5,8 @@ import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { CityList } from 'src/app/city/city.component';
 import { AuthenticationService } from 'src/app/services/authenication-service/authentication.service';
 import { CityDataService } from 'src/app/services/city-service/city-data.service';
+import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
-import { RegistUsersService } from 'src/app/services/event-services/regist-users.service';
 
 @Component({
   selector: 'app-event-specifics',
@@ -18,7 +18,7 @@ export class EventSpecificsComponent implements OnInit {
 /*TODO: CHECK WHY IT IS NOT ADDING THE EVENT IN DB EVENT THOUGH IS CORRECTLY CONNECTED*/
   constructor(
     private eventService: EventsService,
-    private registerService: RegistUsersService,
+    private eventSpecificsService: EventSpecificsService,
     private citiesService: CityDataService,
     private authServices: AuthenticationService,
     private route: ActivatedRoute
@@ -84,7 +84,7 @@ export class EventSpecificsComponent implements OnInit {
             this.eventSpecificsModel.city = cityData;
             console.log(this.eventSpecificsModel.city.name);
 
-            this.registerService.saveEventSpecifics(this.eventSpecificsModel).subscribe(
+            this.eventSpecificsService.saveEventSpecifics(this.eventSpecificsModel).subscribe(
               () => {
                 console.log("City ID: " + this.eventSpecificsModel.city!.name);
                 console.log("Event ID: " + this.eventSpecificsModel.events!.id);
@@ -103,7 +103,7 @@ export class EventSpecificsComponent implements OnInit {
   
     this.lastEvent = lastEventCreated.id
     if(this.lastEvent){
-    this.registerService.getAllEventSpecifics().subscribe(
+    this.eventSpecificsService.getAllEventSpecifics().subscribe(
       data => {
         this.eventSpecificsList = data;
       }

@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { error } from 'jquery';
+import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
 import { Event } from "../../Models/Event";
 import { EventsService } from "../../services/event-services/events.service";
 
@@ -8,7 +10,6 @@ import { EventsService } from "../../services/event-services/events.service";
   styleUrls: ['./event-detail.component.sass']
 })
 export class EventDetailComponent {
-  
   @Input()
   event?: Event;
   selectedEvent?: Event;
@@ -25,7 +26,7 @@ export class EventDetailComponent {
         }
       );
     }
-   return null;
+  return null;
   }
 
   deleted = true;
@@ -43,23 +44,25 @@ export class EventDetailComponent {
     }
   return null;
   }
-  registered = true;
-  onRegister(){
-    this.registered = !this.registered;
+
+  specifics = true;
+  onSpecifics(){
+    this.specifics = !this.specifics;
     this.selectedEvent = this.event;
     if(this.selectedEvent){
       console.log(this.selectedEvent.id);
-      return this.eventsService.getEventsById(this.selectedEvent.id).subscribe(
+      return this.eventSpecificService.getEventSpecificsByEventId(this.selectedEvent.id).subscribe(
         data => {
-          console.log(data);
+          console.log("event specifics data : " + data);
         }
       );
     }
-   return null;
+    return error("NO EVENT SPECIFICS RETURNED");
   }
-  
+
   constructor(
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private eventSpecificService: EventSpecificsService
   ) {
   }
 }

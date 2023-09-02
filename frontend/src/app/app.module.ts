@@ -36,9 +36,19 @@ import { HeaderComponent } from './header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
+import { MessageComponent } from './message/message.component';
+import { SettingsComponent } from './setting-folder/settings/settings.component';
+import { GeneralSettingComponent } from './setting-folder/general-setting/general-setting.component';
+import { MailServerComponent } from './setting-folder/mail-server/mail-server.component';
+import { UserVerificationTemplateComponent} from './setting-folder/email-template/user-verification-template.component';
+import { AccountVerificationComponent } from './account-verification/account-verification.component';
 import { UpdateCountryDialogComponent } from './country/update-country-dialog/update-country-dialog.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ForgotEmailTemplateComponent } from './setting-folder/forgot-email-template/forgot-email-template.component';
+import {EditorModule} from '@tinymce/tinymce-angular';
 import { PostComponent } from './post/post.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +74,16 @@ import { PostComponent } from './post/post.component';
     HomepageComponent,
     UserProfileComponent,
     FooterComponent,
+    SettingsComponent,
+    GeneralSettingComponent,
+    MailServerComponent,
+    AccountVerificationComponent,
+    MessageComponent,
     UpdateCountryDialogComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
+    UserVerificationTemplateComponent,
+    ForgotEmailTemplateComponent,
     PostComponent
 
   ],
@@ -79,7 +98,10 @@ import { PostComponent } from './post/post.component';
     BrowserAnimationsModule,
     NgbModule,
     MatDialogModule,
-    NotificationModule
+    NotificationModule,
+    AngularEditorModule,
+    EditorModule,
+    ReactiveFormsModule
   ],
   providers: [AuthenticationGuard],
   

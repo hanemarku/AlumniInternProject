@@ -256,11 +256,12 @@ export class SingupComponent implements OnInit {
     this.userDataService.createUser(userData).subscribe(
       (response) => {
         console.log('User created successfully:', response);
-        this.notificationSerivce.notify(NotificationType.SUCCESS ,'Signup successful!');
-        this.router.navigate(['/signin']);
+
+        const confirmationMessage = 'Your account has been successfully created. Please check your email to confirm your account.';
+        this.router.navigate(['/message'], { queryParams: { message: confirmationMessage } });
         
         this.messageService.showSuccessMessage('Signup successful! Now you can login.');
-        // this.router.navigate(['/success-page']);
+       
       },
       (error) => {
         console.error('Error creating user:', error);
@@ -323,10 +324,6 @@ export class SingupComponent implements OnInit {
       }, 500);
     });
   };
-  
-
-  
-
 
   onSelectedCountryChange(selectedCountry: CountryList | null) {
     this.selectedCountry = selectedCountry;

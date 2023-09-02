@@ -1,41 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from './user-service/user-data.service';
-
-export interface Post{
-  postId: number;
-  author: User;
-  content: string;
-  postCreation: Date;
-  profilePicUrl: string;
-}
+import { HttpResponse } from '@angular/common/http';
+import { Post } from '../post/post';
+import { map } from 'rxjs/operators';
+import { data } from 'jquery';
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private baseUrl = 'http://localhost8080/api/v1/posts';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  getPostsByUser(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseUrl}/user/${userId}`);
+  apiUrl = 'http//localhost:8080/api/v1/posts';
+
+  getPost(postId: string): Observable<Post | undefined>{
+    return this.http.get<Post>(`${this.apiUrl}/getPost/${postId}`);
   }
 
-  getPost(postId: number): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/getpost/${postId}`);
+  getPostsByUser(author: any): Observable<Post[]>{
+    return this.http.get<Post[]>(`${this.apiUrl}/user/${author}`);
   }
 
-  createPost(post: Post): Observable<Post> {
-    return this.http.post<Post>(`${this.baseUrl}/cratePost`, post);
+  createPost(post:Post): Observable<Post>{
+    return this.http.post<Post>(`${this.apiUrl}/createPost`, post);
   }
 
-  updatePost(postId: number, post: Post): Observable<Post> {
-    return this.http.put<Post>(`${this.baseUrl}/update/${postId}`, post);
+  updatePost(postId: string, post: Post):Observable<Post>{
+    return this.http.put<Post>(`${this.apiUrl}/update/${postId}`, post);
   }
 
-  deletePost(postId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${postId}`);
+  deletePost(postId:string):Observable<Post>{
+    return this.http.delete<Post>(`${this.apiUrl}/delete/${postId}`);
   }
-
 }

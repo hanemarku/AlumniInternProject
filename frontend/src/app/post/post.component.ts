@@ -1,70 +1,98 @@
 import { Component, OnInit } from '@angular/core';
-import { PostService, Post } from '../services/post.service';
-import { User } from '../services/user-service/user-data.service';
-import { get } from 'jquery';
-
+import { Post } from './post';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { PostService } from '../services/post.service';
+import { HttpParams } from '@angular/common/http';
+import {  data, error, post } from 'jquery';
+import { UserLogin } from '../services/authenication-service/authentication.service';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.sass']
 })
-export class PostComponent implements OnInit {
-  newPost: Post = { postId: 0, author: getUserByPost , content: '', postCreation: new Date, profilePicUrl: '' };
+export class PostComponent implements OnInit{
 
-  posts: Post[] = [];
+  postForm: any;
+  theId!: string;
+  npost!: Post;
+  content!: string;
+  profilPicUrl!:string;
 
-  constructor(private postService: PostService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private postService: PostService
+  ){
+    this.postForm = this.formBuilder.group({
+      'content': ['', [Validators.required]],
+      'profilPicUrl': [''] 
+    });
+
+    
+
+    route.params
+    .subscribe((params: Params) => this.theId = params['postId']);
+  }
 
   ngOnInit(): void {
-  }
+    if(this.theId){
+      this.postService.getPost(this.theId)
+      .subscribe((data: any) =>{
+        this.npost = data;
 
-  loadPost(postId:number): void {
-    this.postService.getPost(postId).subscribe(posts => {
-      this.posts;
-    });
-  }
+      }, error =>{
 
-  createPost(post: Post): void {
-    this.postService.createPost(post).subscribe(newPost => {
-      this.posts.push(newPost);
-    });
-  }
-
-  getPostByUser(author: number){
-    this.postService.getPostsByUser(author).subscribe(posts => {
-      console.log(posts);
+      }
+      )
     }
+
+  }
+
+  postFormSubmit(content:string, profilPicUrl: string) {
+    content;
+    profilPicUrl;
+
+    this.postService.createPost().subscribe(post => 
+      data = post;
+      )
+  }
+  
+  //this.postService.deletePost(this.theId).subscribe();
+
+  //this.postService.updatePost(this.theId, this.postForm).subscribe();
+  
+
+  createPost(){
+    if(this.postForm.valid){
+       let fPost: any  = {
+        content: this.postForm.get('content').value,
+        profilPicUrl: this.postForm.get('profilPicUrl').value
+      };
+
+      this.postService.createPost(fPost).subscribe(
+        (response: any) => {
+          console.log('Post created succesfully:', response);
+        },
+        (error: any) => {
+          console.error('Error creating post: ', error);
+        }
       );
     }
-
-  updatePost(postId:number, post:Post){
-    this.postService.updatePost(postId, post).subscribe(updatedPost => {
-      // Handle the updated post here
-      console.log('Updated post:', updatedPost);
-  
-      // Update the post in the component's posts array if needed
-      const index = this.posts.findIndex(p => p.postId === postId);
-      if (index !== -1) {
-        this.posts[index] = updatedPost;
-      }
-
   }
-    )
-}
 
-  deletePost(postId:number){
-    this.postService.deletePost(postId).subscribe(() => {
-      // Handle successful deletion here
-      console.log(`Post with ID ${postId} deleted`);
-  
-      // Remove the deleted post from the component's posts array if needed
-      this.posts = this.posts.filter(post => post.postId !== postId);
+  updatePost(postId:string, post:Post){
+    let cont = this.postForm.value;
+    this.postService.updatePost(postId, cont)
+    .subscribe(
+      data => {
     }
     )
   }
-}
-function getUserByPost(post:Post): User {
-  return post.author;
-}
 
+
+  onSubmit(post:any){
+  }
+}

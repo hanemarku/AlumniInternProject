@@ -1,9 +1,17 @@
-<p>Post works</p>
-
-<div *ngIf="posts">
-    <h3>
-        {{newPost.author}}    
-    </h3>
+<div class="conteiner">
+    <h3>Create Post</h3>
+    <form #post="ngForm" (ngSubmit)="postFormSubmit(content, profilPicUrl)">
+        <div class="form-group">
+          <label for="content">Content</label>
+          <input type="text" name="content" class="form-control" ngModel>
+        </div>
+      
+        <div class="form-group">
+          <label for="profilPicUrl">Profile Pic URL</label>
+          <input type="text" name="profilPicUrl" class="form-control" ngModel>
+        </div>
+      
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+      
 </div>
-    
-  

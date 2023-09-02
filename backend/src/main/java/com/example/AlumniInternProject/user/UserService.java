@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface UserService {
     UserGetDto save(UserDTO userDto) throws UserNotFoundException, EmailExistException;
     List<UsersListingDTO> findAll();
-    User findById(UUID id);
+
     UserGetDto update(UUID id, UserDTO dto) throws UserNotFoundException;
     void delete(UUID id) throws UserNotFoundException;
     List<Country> listAllCountries();
@@ -30,6 +30,10 @@ public interface UserService {
     String fixProfileImagePath(String profileImagePath);
 
     UsersListingDTO findByEmail(String email) throws UserNotFoundException;
+    UsersListingDTO findByID(UUID id) throws UserNotFoundException;
+
+   boolean resetPassword(String token, String newPassword) throws UserNotFoundException;
+    String encodePassword(String password);
 
 
 

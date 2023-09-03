@@ -1,13 +1,13 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UserList } from 'src/app/user/list-users/list-users.component';
 import { Education } from '../education-service/education-data.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
 import { Employment } from '../employment-service/employment-data.service';
-import { HttpParams } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserDto } from '../connection-request/connection-request.service';
 
 
 export interface User{
@@ -36,6 +36,8 @@ export interface UserTest {
   bio: string;
   phoneNumber: string;
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -119,6 +121,40 @@ export class UserDataService {
     return this.http.post<any>(url, resetPass, { observe: 'response' });
   }
 
+  getAllUsers(): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${this.apiUrl}/all`);
+  }
+
+  getUserByUsername(username: string): Observable<any> {
+    const url = `${this.baseUrl}/getByUsername/${username}`;
+    return this.http.get(url);
+  }
+
+  searchInChat(keyword: string): Observable<any> {
+    const url = `${this.baseUrl}/search?keyword=${keyword}`; 
+    return this.http.get(url);
+  }
+  
+  fetchProfilePictures(users: any[]): void {
+    if (users.length === 0) {
+      return;
+    }
+
+    const profilePicRequests = users.map(user =>
+      this.getUserProfilePic(user.email)
+    );
+
+    forkJoin(profilePicRequests).subscribe(
+      (profilePicUrls: SafeUrl[]) => {
+        users.forEach((friend, index) => {
+          friend.profilePicUrl = profilePicUrls[index];
+        });
+      },
+      (error) => {
+        console.error('Error fetching friends:', error);
+      }
+    );
+  }
 }
 
 

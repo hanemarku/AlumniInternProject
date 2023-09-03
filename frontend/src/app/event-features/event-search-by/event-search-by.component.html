@@ -1,0 +1,14 @@
+<input type="text" placeholder="keyword" #keyword [(ngModel)]="theKeyword"/>
+<button class="primary" type="button" (click)="search(); eventsToDisplay();" >Search</button>
+
+<div *ngIf="filteredEvents.length == 0" >
+  <p>NO EVENTS TO DISPLAY!</p>
+</div>
+
+<ul *ngIf="filteredEvents.length > 0">
+  <!--TODO: WHEN CLICKING TO CHECK FOR ANOTHER KEYWORD SHOULD CLEAR THE LIST
+    TO DISPLAY ONLY THE NEW VALID ONES --->
+    <li *ngFor="let e of filteredEvents">
+      <app-event-detail [event]="e"></app-event-detail>
+    </li>
+</ul>

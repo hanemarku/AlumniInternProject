@@ -1,6 +1,7 @@
 package com.example.AlumniInternProject.connectionRequest;
 
 import com.example.AlumniInternProject.entity.ConnectionRequest;
+import com.example.AlumniInternProject.entity.ConnectionRequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,5 @@ public interface ConnectionRequestRepository extends JpaRepository<ConnectionReq
     Optional<ConnectionRequest> findByRequesterIdAndRequesteeId(UUID senderId, UUID receiverId);
     Optional<ConnectionRequest> findByIdAndRequesterId(UUID id, UUID senderId);
     Optional<ConnectionRequest> findByIdAndRequesteeId(UUID id, UUID receiverId);
-    ConnectionRequest save(ConnectionRequest connectionRequest);
+    List<ConnectionRequest> findByStatus(ConnectionRequestStatus status);
 }

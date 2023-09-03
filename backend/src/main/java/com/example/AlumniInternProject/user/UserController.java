@@ -3,6 +3,7 @@ package com.example.AlumniInternProject.user;
 import com.example.AlumniInternProject.FileUploadUtil;
 import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
 import com.example.AlumniInternProject.Verfication.VerificationTokenService;
+import com.example.AlumniInternProject.chat.models.UserChatDTO;
 import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.VerificationToken;
@@ -67,7 +68,8 @@ public class UserController extends ExceptionHandling {
             User loginUser = userService.findUserByEmail(user.getEmail());
             ALumniUserDetails userDetails = new ALumniUserDetails(loginUser);
             HttpHeaders jwtHeader = getJwtHeader(userDetails);
-            return ResponseEntity.ok().headers(jwtHeader).body(loginUser);
+            UsersListingDTO userForLogin = userService.mapForListing(loginUser);
+            return ResponseEntity.ok().headers(jwtHeader).body(userForLogin);
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
@@ -106,20 +108,19 @@ public class UserController extends ExceptionHandling {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<String> getAllUsers() {
-//        int savedUsers = userService.findAll().size();
-//        if (savedUsers != 0) {
-//            return ResponseEntity.status(HttpStatus.CREATED).body("there are " + savedUsers + " users in the database" );
-//        } else {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to list users");
-//        }
-//    }
-
     @GetMapping
     public List<UsersListingDTO> getAllUsers() {
-
         return userService.findAll();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ConnectUserDTO>> getUsers() {
+        List<UsersListingDTO> allUsers = userService.findAll();
+        List<ConnectUserDTO> userDtos = allUsers.stream()
+                .map(user -> new ConnectUserDTO(user.getId() ,user.getEmail(), user.getFirstname(), user.getLastname(), user.getProfilePicUrl()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDtos);
     }
 
 
@@ -149,17 +150,6 @@ public class UserController extends ExceptionHandling {
 //    }
 
 
-//    @PostMapping("/verify")
-//    public ResponseEntity<String> verifyUser(@RequestBody VerificationRequest request) {
-//        User user = userRepository.findByVerificationCode(request.getVerificationCode());
-//        if (user != null) {
-//            user.setEnabled(true);
-//            userRepository.save(user);
-//            return ResponseEntity.ok("User verified successfully");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification code");
-//        }
-//    }
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> save(@RequestBody UserDTO dto) throws UserNotFoundException, EmailExistException {
@@ -316,11 +306,30 @@ public class UserController extends ExceptionHandling {
     }
 
 
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String username) throws UserNotFoundException {
+        return new ResponseEntity<User>(userService.getUserByFirstname(username), HttpStatus.OK);
+    }
 
     @GetMapping("/email")
     public UsersListingDTO getUserByEmail(@RequestParam("email") String email) throws UserNotFoundException {
         return userService.findByEmail(email);
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserChatDTO>> search(@RequestParam(value = "keyword", required = false) String keyword) {
+        List<UserChatDTO> users;
+
+        if (keyword == null || keyword.isEmpty()) {
+            users = userService.findAllUsers();
+        } else {
+            users = userService.searchInChat(keyword);
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
 
 
     private void authenticate(String email, String password) {

@@ -14,12 +14,12 @@ public class PostController {
     PostService postService;
 
     @GetMapping("user/{id}")
-    public List<PostGetDto> getPostsByUser(@PathVariable @RequestBody UUID id){
+    public List<PostGetDto> getPostsByUser(@PathVariable UUID id){
         return postService.findPostsByUser(id);
     }
 
     @GetMapping("getpost/{id}")
-    public PostGetDto getPost(@PathVariable @RequestBody UUID id){
+    public PostGetDto getPost(@PathVariable UUID id){
         return postService.findById(id);
     }
 
@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @DeleteMapping("delete/{id}")
-    void delet(UUID id){
+    void delet(@PathVariable UUID id){
         postService.delete(id);
     }
 }

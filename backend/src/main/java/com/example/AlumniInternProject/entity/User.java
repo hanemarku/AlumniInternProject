@@ -1,11 +1,14 @@
 package com.example.AlumniInternProject.entity;
 
+import com.example.AlumniInternProject.chat.models.Chat;
 import com.example.AlumniInternProject.enumerations.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -117,6 +120,11 @@ public class User extends IdBaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "userLikes")
     private Collection<Like> like;
+
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Chat> chats = new HashSet<>();
+
 
 
     @Transient

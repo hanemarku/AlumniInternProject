@@ -62,19 +62,10 @@ export class SigninComponent implements OnInit, OnDestroy {
           if (jwtTokenHeader !== null) {
             this.authenticationService.saveToken(jwtTokenHeader);
             this.authenticationService.addUserToLocalStorage(user);
-            if(user.enabled !== false){
-              // this.router.navigateByUrl('/settings');
-              this.showLoading = false;
-              const userLoggedIn = this.authenticationService.getUserFromLocalStorage();
-              this.notificationService.notify(NotificationType.SUCCESS, `Welcome ${userLoggedIn.firstname} ${userLoggedIn.lastname}`);
-              this.router.navigateByUrl('/users').then(() => {
-                window.location.reload();
-              });
-            } else {
-              this.authenticationService.logout();
-              this.showLoading = false;
-              this.notificationService.notify(NotificationType.ERROR, 'Please verify your account. If you have verified it but still cannot access your account, it may be disabled. Please contact your administrator.');
-            }
+            this.router.navigateByUrl('/users');
+            this.showLoading = false;
+            const userLoggedIn = this.authenticationService.getUserFromLocalStorage();
+            this.notificationService.notify(NotificationType.SUCCESS, `Welcome ${userLoggedIn.firstname} ${userLoggedIn.lastname}`);
           } else {
             this.showLoading = false;
             this.notificationService.notify(NotificationType.ERROR, 'An error occurred. Please try again.');

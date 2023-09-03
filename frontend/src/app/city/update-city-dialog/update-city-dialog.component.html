@@ -1,0 +1,56 @@
+<div mat-dialog-content>
+    <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+        <div class="field">
+            <h1 class="title">Update City</h1>
+            <div class="input-container">
+                <div class="control">
+                    <input type="text" class="input" [(ngModel)]="updatedCity.name" name="name" required maxlength="45" placeholder="Type city name here...">
+                </div>
+                <div class="control">
+                    <div class="select is-normal" style="margin-right: 12px">
+                        <!-- <select [(ngModel)]="updatedCity.country" name="selectedCountryName">
+                            <option value="" disabled selected>Select Country</option>
+                            <option *ngFor="let country of countries" [value]="country.id">
+                                {{ country.name }}
+                            </option>
+                        </select> -->
+
+                        <select [(ngModel)]="updatedCity.countryId" name="selectedCountryName">
+                            <option value="" disabled>Select Country</option>
+                            <option *ngFor="let country of countries" [value]="country.id">
+                              {{ country.name }}
+                            </option>
+                          </select>
+                    </div>
+                </div>
+
+                
+            </div>
+            <div *ngIf="form.controls['name'].invalid">
+                <p class="help is-danger" *ngIf="form.controls['name'].errors?.['required']">Please enter city name.
+                </p>
+                <p class="help is-danger" *ngIf="form.controls['name'].errors?.['maxlength']">City name must not be
+                    more than 45 characters long.</p>
+            </div>
+            <!-- <div *ngIf="form.controls['country'].invalid">
+                <p class="help is-danger" *ngIf="form.controls['country'].errors?.['required']">Please enter country name.
+                </p>
+                <p class="help is-danger" *ngIf="form.controls['country'].errors?.['maxlength']">Country name must not be
+                    more than 45 characters long.</p>
+            </div> -->
+        </div>
+        <br>
+
+        <div class="field is-grouped is-grouped-right">
+            <div class="control">
+                <button type="button" class="button is-light" (click)="close()">Cancel</button>
+            </div>
+            <div class="control">
+                <button type="submit" class="button alt-gradient-button">
+                    <i class="material-icons">save</i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

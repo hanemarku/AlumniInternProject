@@ -49,9 +49,18 @@ export class EventRegisterComponent implements OnInit{
   }
 
   registerUserToEvent(){
+    console.log('Button clicked' + 'Also the registered obj to be used' + this.registUserEventModel.status);
     this.registUserEventModel.user = this.currentUser;
     this.registUserEventModel.eventSpecifics = this.eventSpecifics;
-    this.registerService.register(this.registUserEventModel);
+    
+    this.registerService.register(this.registUserEventModel).subscribe(
+      (data: UserEvents) => {
+        console.log('Registration successful:', data);
+      },
+      (error: any) => {
+        console.error('Error during registration:', error);
+      }
+    );
   }
   /**
    *

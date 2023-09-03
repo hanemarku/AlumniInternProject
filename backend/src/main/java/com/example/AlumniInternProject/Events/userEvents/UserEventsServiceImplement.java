@@ -21,7 +21,10 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,8 +47,8 @@ public class UserEventsServiceImplement implements UserEventsService{
     private UserEventGetDto mapUserEvent(UserEvents userEvents){
         var dto = new UserEventGetDto();
         dto.setId(userEvents.getId());
-        dto.setUserId(userEvents.getUser().getId());
-        dto.setEventSpecificsId(userEvents.getEventSpecifics().getId());
+        dto.setUser(userEvents.getUser());
+        dto.setEventSpecifics(userEvents.getEventSpecifics());
         return dto;
     }
     public ConfirmationToken map(ConfirmationToken confirmationToken){
@@ -59,8 +62,8 @@ public class UserEventsServiceImplement implements UserEventsService{
     public UserEventGetDto mapUserEvents(UserEvents userEvents){
         var obj = new UserEventGetDto();
         obj.setMembershipRole(userEvents.getMembershipRole());
-        obj.setUserId(userEvents.getUser().getId());
-        obj.setEventSpecificsId(userEvents.getEventSpecifics().getId());
+        obj.setUser(userEvents.getUser());
+        obj.setEventSpecifics(userEvents.getEventSpecifics());
         obj.setStatus(userEvents.getStatus());
         return obj;
     }
@@ -81,11 +84,11 @@ public class UserEventsServiceImplement implements UserEventsService{
     public UserEventGetDto save(UserEventDto userEventDto) {
         /*Needs to be changed the way that we get the user id
         * Should get the user that is loged in*/
-        User user = userRepository.findById(userEventDto.getUserId()).orElseThrow(() ->
-                new IllegalArgumentException("User not found with ID: "+ userEventDto.getUserId()));
+        User user = userRepository.findById(userEventDto.getUser().getId()).orElseThrow(() ->
+                new IllegalArgumentException("User not found with ID: "+ userEventDto.getUser().getId()));
 
-        EventSpecifics eventSpecifics = eventSpecificsRepository.findById(userEventDto.getEventSpecificsId()).
-                orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "+ userEventDto.getEventSpecificsId()));
+        EventSpecifics eventSpecifics = eventSpecificsRepository.findById(userEventDto.getEventSpecifics().getId()).
+                orElseThrow(() -> new IllegalArgumentException("Event not found with ID: "+ userEventDto.getEventSpecifics().getId()));
 
         if(eventSpecifics.getEvents().getMaxParticipants() == 0){
             throw new IllegalArgumentException("The limit is already reached!");
@@ -103,13 +106,13 @@ public class UserEventsServiceImplement implements UserEventsService{
             confirmationToken,
             LocalDateTime.now(),
             LocalDateTime.now().plusMinutes(45),
-            userRepository.findById(userEventDto.getUserId()).
+            userRepository.findById(userEventDto.getUser().getId()).
                     orElseThrow(() -> new IllegalArgumentException
-                            ("User not found with ID: "+ userEventDto.getUserId()))
+                            ("User not found with ID: "+ userEventDto.getUser().getId()))
         );
        confirmationTokenService.saveConfirmationToken(token);
        /*Sending the email with the generated token*/
-       emailService.sendSimpleMail(user.getEmail(),link);
+        emailService.sendSimpleMail(user.getEmail(),link);
 
        UserEvents userEvents = new UserEvents(MembershipRole.Member, user, eventSpecifics, Status.PENDING);
 

@@ -24,8 +24,8 @@ export class RegisterUsersService {
     return this.http.get<User[]>(url);
   }
 
-  register(toRegister: UserEvents){
-    this.http.post(this.BASE_URL, toRegister);
+  register(toRegister: UserEvents): Observable<UserEvents>{
+    return  this.http.post<UserEvents>(this.BASE_URL, toRegister);
   }
 
   getUsersByStatus(status: string): Observable<User[]>{

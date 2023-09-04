@@ -30,11 +30,11 @@ export class EventFormComponent implements OnInit{
     id:'',
     createdBy: '',
     eventSpecifics:[],
-    name: 'hardcoded',
-    topic: 'hardcoded',
-    description: 'hardcoded',
-    imgUrl: 'hardcoded',
-    maxParticipants: 0
+    name: '',
+    topic: '',
+    description: '',
+    imgUrl: '',
+    maxParticipants: 1
   };
 
   @ViewChild('eventForm', { static: false }) eventForm!: NgForm;
@@ -87,5 +87,14 @@ export class EventFormComponent implements OnInit{
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  validateMaxParticipants(){
+    const maxParticipantsValue = this.eventModel.maxParticipants;
+    if (maxParticipantsValue <= 1) {
+    this.eventForm.controls['maxParticipants'].setErrors({ 'invalidValue': true });
+     } else {
+    this.eventForm.controls['maxParticipants'].setErrors(null);
+   }
   }
 }

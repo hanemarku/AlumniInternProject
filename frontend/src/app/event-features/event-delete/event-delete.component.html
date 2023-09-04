@@ -1,12 +1,16 @@
-<div *ngIf="event">
-    <p>Are you sure you want to delete:</p>
-    <h2>{{event.name | uppercase}} </h2>
-    <div >
-      <p>Name: {{event.name}}</p>
-      <p>Topic: {{event.topic}}</p>
-      <p>Description: {{event.description}}</p>
-      <p>Img url: {{event.imgUrl}}</p>
-      <p>Members: {{event.maxParticipants}}</p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <p>Are you sure you want to delete:</p>
+      <h2>{{ event.name | uppercase }}</h2>
+      <div class="mt-3">
+        <p><strong>Name:</strong> {{ event.name }}</p>
+        <p><strong>Topic:</strong> {{ event.topic }}</p>
+        <p><strong>Description:</strong> {{ event.description }}</p>
+        <p><strong>Img url:</strong> {{ event.imgUrl }}</p>
+        <p><strong>Members:</strong> {{ event.maxParticipants }}</p>
+      </div>
+      <button type="button" class="btn btn-danger mt-3" (click)="delete()">Delete</button>
     </div>
-    <button type="submit" (click)="delete(event)">delete</button>
+  </div>
 </div>

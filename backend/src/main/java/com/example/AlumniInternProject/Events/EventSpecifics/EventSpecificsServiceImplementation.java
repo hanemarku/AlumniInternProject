@@ -111,7 +111,7 @@ public class EventSpecificsServiceImplementation implements
                 collect(Collectors.toList());
         return order;
     }
-    /*Find by keyword*/
+
     @Override
     public Set<EventSpecificGetDto> findByKeyword(String keyWord,
                                                   Set<EventSpecificGetDto> eventSDtos) {

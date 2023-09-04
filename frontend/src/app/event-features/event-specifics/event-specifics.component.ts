@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { CityList } from 'src/app/city/city.component';
@@ -15,13 +15,12 @@ import { EventsService } from 'src/app/services/event-services/events.service';
 })
 export class EventSpecificsComponent implements OnInit {
   
-/*TODO: CHECK WHY IT IS NOT ADDING THE EVENT IN DB EVENT THOUGH IS CORRECTLY CONNECTED*/
   constructor(
     private eventService: EventsService,
     private eventSpecificsService: EventSpecificsService,
     private citiesService: CityDataService,
     private authServices: AuthenticationService,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +28,7 @@ export class EventSpecificsComponent implements OnInit {
     this.listEvents();
     console.log(this.authServices.getUserFromLocalStorage().email);
   }
+
 
   cities: CityList[] = [];
   selectedCityId: string = '';
@@ -60,11 +60,23 @@ export class EventSpecificsComponent implements OnInit {
     );
   }
 
+  showSuccessMessage = false;
+
   submitted = false;
 
   onSubmit() {
     this.submitted = true;
+    this.router.navigate(
+      ['/event'],
+      {
+        queryParams: {
+          refresh: 'true'
+        }
+      }
+      );
   }
+
+  eventSpecificsList: EventSpecifics[] = [];
 
   addSpecifics() {
     this.submitted = true;
@@ -83,31 +95,30 @@ export class EventSpecificsComponent implements OnInit {
           cityData => {
             this.eventSpecificsModel.city = cityData;
             console.log(this.eventSpecificsModel.city.name);
-
             this.eventSpecificsService.saveEventSpecifics(this.eventSpecificsModel).subscribe(
-              () => {
+              (data) => {
                 console.log("City ID: " + this.eventSpecificsModel.city!.name);
                 console.log("Event ID: " + this.eventSpecificsModel.events!.id);
+                this.eventSpecificsList = data;
+                console.log(this.eventSpecificsList);
               }
             );
+            this.showSuccessMessage = true;
+            setTimeout(() => {
+              this.showSuccessMessage = false;
+            }, 5000);
           }
         );
       }
     );
   }
-  eventSpecificsList: EventSpecifics[] = [];
-  
-  findAllEventSpecifics(){
-    const lastIndex = this.events.length - 1;
-    const lastEventCreated = this.events[lastIndex];
-  
-    this.lastEvent = lastEventCreated.id
-    if(this.lastEvent){
-    this.eventSpecificsService.getAllEventSpecifics().subscribe(
-      data => {
-        this.eventSpecificsList = data;
-      }
-    );
-    }
+
+  getCurrentDate(): string {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
+
 }

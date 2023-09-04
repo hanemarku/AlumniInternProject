@@ -48,7 +48,10 @@ export class EventRegisterComponent implements OnInit{
     );
   }
 
+  clicked = false;
+
   registerUserToEvent(){
+    this.clicked = !this.clicked;
     console.log('Button clicked' + 'Also the registered obj to be used' + this.registUserEventModel.status);
     this.registUserEventModel.user = this.currentUser;
     this.registUserEventModel.eventSpecifics = this.eventSpecifics;
@@ -62,33 +65,4 @@ export class EventRegisterComponent implements OnInit{
       }
     );
   }
-  /**
-   *
-  searchForEmail = this.authService.getUserFromLocalStorage().email;
-  theCurrentLoggedUser!: string;
-  User! : UserList;
-
-  registerModel : UserEvents ={
-    id:'',
-    user: this.User,
-    eventSpecifics: this.specifics,
-    membershipRole: MembershipRole.Member,
-    status: Status.PENDING
-  }
-
-
-  findUser(){
-    this.userDataService.getUserByEmail(this.searchForEmail).subscribe(
-      (data: UserList) => {
-        this.theCurrentLoggedUser = data.id;
-        this.User = data;
-        console.log("Inside find user. Consoling data.id : " + data.id);
-      }
-    );
-  }
-
-  register(){
-    this.eventService.register(this.registerModel);
-  }
-  */
 }

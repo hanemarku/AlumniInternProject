@@ -15,4 +15,23 @@
   </div>
   <app-event-register [hidden]="revealRegistration" [eventSpecifics]="selectedEventSpec"></app-event-register>
 </ng-container>
+<div class="container my-5">
+  <ng-container *ngIf="selectedEvent">
+    <h2 class="mb-4">Event Specifics for {{ selectedEvent.name }}</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div *ngFor="let e of eventSpecifics" class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ e.city?.name }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ e.date }}</p>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-primary" (click)="OnSelect(e)">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-event-register [hidden]="revealRegistration" [eventSpecifics]="selectedEventSpec"></app-event-register>
+  </ng-container>
+</div>
 

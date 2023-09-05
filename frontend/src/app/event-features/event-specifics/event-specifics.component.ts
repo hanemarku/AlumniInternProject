@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
@@ -29,6 +29,8 @@ export class EventSpecificsComponent implements OnInit {
     console.log(this.authServices.getUserFromLocalStorage().email);
   }
 
+  @Input()
+  event!: Event;
 
   cities: CityList[] = [];
   selectedCityId: string = '';
@@ -38,7 +40,7 @@ export class EventSpecificsComponent implements OnInit {
   eventSpecificsModel: EventSpecifics = {
     id: '',
     date: '',
-    events: null,
+    events: this.event,
     city: null
   };
 

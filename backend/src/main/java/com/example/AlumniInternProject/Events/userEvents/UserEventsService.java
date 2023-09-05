@@ -18,4 +18,5 @@ public interface UserEventsService {
     List<UserEventGetDto> findAll();
     List<UserEvents> getUsersByStatus(Status status);
     void deleteAllByEventSpecificsId(UUID uuid);
+    void delete(UUID uuid);
 }

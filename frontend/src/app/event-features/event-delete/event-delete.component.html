@@ -10,6 +10,10 @@
         <p><strong>Img url:</strong> {{ event.imgUrl }}</p>
         <p><strong>Members:</strong> {{ event.maxParticipants }}</p>
       </div>
+      <h2>This list of event specifics will also be deleted!</h2>
+      <div *ngFor="let es of alleventSpecifics">
+        <p><span>{{ es.city?.name }} </span> <span>| {{es.date}}</span> </p>
+      </div>
       <button type="button" class="btn btn-danger mt-3" (click)="delete()">Delete</button>
     </div>
   </div>

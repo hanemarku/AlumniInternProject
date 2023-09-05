@@ -81,9 +81,8 @@ public class EventSpecificsServiceImplementation implements
     }
 
     @Override
-    @Transactional
     public void delete(UUID id) {
-        userEventsRepository.deleteUserEventsByEventSpecifics_Id(id);
+       // userEventsRepository.deleteUserEventsByEventSpecifics_Id(id);
         eventSpecificsRepository.deleteById(id);
     }
 

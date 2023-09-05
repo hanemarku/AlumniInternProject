@@ -2,10 +2,7 @@ package com.example.AlumniInternProject.entity;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +36,7 @@ public class Events extends IdBaseEntity {
     /*One event can have many specifics.
     * Such as date , city that is held.
     * So we establish the relationship one to many*/
-    @OneToMany(mappedBy = "events")
+    @OneToMany(mappedBy = "events",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<EventSpecifics> eventSpecifics;
 

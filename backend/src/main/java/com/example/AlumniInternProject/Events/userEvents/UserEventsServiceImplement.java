@@ -193,6 +193,11 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     }
 
+    @Override
+    public void delete(UUID uuid) {
+        userEventsRepository.deleteById(uuid);
+    }
+
     /* TODO: CHECK TO SET EXPIRED STATUS*/
     private boolean isExpired(String token){
         ConfirmationToken toBeChecked = confirmationTokenRepository.findByToken(token);

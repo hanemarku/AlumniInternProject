@@ -2,8 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
+import { UserEvents } from 'src/app/Models/UserEvents';
 import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
 import { EventsService } from 'src/app/services/event-services/events.service';
+import { RegisterUsersService } from 'src/app/services/event-services/register-users.service';
 
 @Component({
   selector: 'app-event-delete',
@@ -15,6 +17,7 @@ export class EventDeleteComponent implements OnInit {
   constructor(
     private eventSpecificsService: EventSpecificsService,
     private eventService: EventsService,
+    private userEventsService: RegisterUsersService,
     private activatedRoute: ActivatedRoute
   ){}
 
@@ -33,14 +36,13 @@ export class EventDeleteComponent implements OnInit {
       });
     }
     this.getEventById();
-    console.log(this.theEvent);
     this.getAllEventSpecifics();
-    console.log(this.alleventSpecifics);
   }
   
   thePassedEventId: string | null | undefined;
   theEvent!: Event;
   alleventSpecifics: EventSpecifics[] = [];
+  allUsersRegistered: UserEvents[] = [];
 
   getEventById(){
     if(this.thePassedEventId)
@@ -61,9 +63,9 @@ export class EventDeleteComponent implements OnInit {
     );
   }
 
+
   delete() {
     console.log("Selected event " + this.theEvent.id);
-
         for(let i = 0; i < this.alleventSpecifics.length; i++){
           if(this.alleventSpecifics[i].events?.id === this.thePassedEventId){
             this.eventSpecificsService.deleteEventSpecifics(this.alleventSpecifics[i].id).subscribe(
@@ -72,11 +74,16 @@ export class EventDeleteComponent implements OnInit {
               }
             )
           }
-          if(i === this.alleventSpecifics.length-1){
+/**
+ *           if(i === this.alleventSpecifics.length-1){
             console.log("inside the last i interation" + i);
             if(this.thePassedEventId)
             this.eventService.deleteDetails(this.thePassedEventId).subscribe();
           }
+*/
         }
+        if(this.thePassedEventId)
+        this.eventService.deleteDetails(this.thePassedEventId).subscribe();
+  
   }
 }

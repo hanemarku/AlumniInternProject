@@ -18,6 +18,10 @@ export class RegisterUsersService {
 
   private BASE_URL: string= 'http://localhost:8080/api/v1/eventsAndUsers';
 
+  getAllUsersRegistered(): Observable<UserEvents[]>{
+    const url = `${this.BASE_URL}/listAll`;
+    return this.http.get<UserEvents[]>(url);
+  }
 
   getUsersByEventId(eventId: string): Observable<User[]>{
     const url = `${this.BASE_URL}/events/${eventId}/users`;
@@ -33,8 +37,15 @@ export class RegisterUsersService {
     return this.http.get<User[]>(url);
   }
 
-  deleteAllByEventSpecificsId(id: string){
+  deleteRegistration(id: string){
+    const url =`${this.BASE_URL}/${id}`;
+    this.http.delete(url);
+  }
+
+/**
+ *   deleteAllByEventSpecificsId(id: string){
     const url = `${this.BASE_URL}/${id}`;
     this.http.delete<UserEvents>(url);
   }
+*/
 }

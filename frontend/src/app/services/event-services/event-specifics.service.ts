@@ -1,7 +1,7 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {EventSpecifics} from "../../Models/EventSpecifics";
-import {catchError, Observable} from "rxjs";
+import { Observable, catchError } from "rxjs";
+import { EventSpecifics } from "../../Models/EventSpecifics";
 
 @Injectable({
   providedIn: 'root'

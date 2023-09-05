@@ -66,14 +66,6 @@ export class EventSpecificsComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.router.navigate(
-      ['/event'],
-      {
-        queryParams: {
-          refresh: 'true'
-        }
-      }
-      );
   }
 
   eventSpecificsList: EventSpecifics[] = [];
@@ -112,11 +104,11 @@ export class EventSpecificsComponent implements OnInit {
       }
     );
   }
-
+  
   getCurrentDate(): string {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }

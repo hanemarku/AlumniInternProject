@@ -33,4 +33,8 @@ export class RegisterUsersService {
     return this.http.get<User[]>(url);
   }
 
+  deleteAllByEventSpecificsId(id: string){
+    const url = `${this.BASE_URL}/${id}`;
+    this.http.delete<UserEvents>(url);
+  }
 }

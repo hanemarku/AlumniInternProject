@@ -14,9 +14,7 @@ export class EventsService{
     headers:new HttpHeaders({'Content-Type': 'application/json'})
   }
 
-
   private BASE_URL: string = 'http://localhost:8080/api/v1/events';
-
 
   getEvents(): Observable<Event[]>{
     return this.http.get<Event[]>(this.BASE_URL);

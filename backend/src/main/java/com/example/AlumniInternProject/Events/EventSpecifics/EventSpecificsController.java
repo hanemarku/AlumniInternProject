@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/specifics")
-@CrossOrigin("http://localhost:4200/event")
+@CrossOrigin("http://localhost:4200")
 public class EventSpecificsController {
     private final EventSpecificsService eventSpecificsService;
     @PostMapping

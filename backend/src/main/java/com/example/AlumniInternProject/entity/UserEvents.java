@@ -30,7 +30,7 @@ public class UserEvents extends IdBaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "eventSpecifics")
     private EventSpecifics eventSpecifics;
 

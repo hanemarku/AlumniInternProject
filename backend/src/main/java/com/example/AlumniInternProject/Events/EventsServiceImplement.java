@@ -5,6 +5,7 @@ import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,6 +73,7 @@ public class EventsServiceImplement implements EventsService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         eventsRepository.deleteById(id);
     }

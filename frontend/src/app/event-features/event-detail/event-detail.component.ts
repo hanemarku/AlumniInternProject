@@ -1,9 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { error } from 'jquery';
-import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
 import { Event } from "../../Models/Event";
-import { EventsService } from "../../services/event-services/events.service";
 
 @Component({
   selector: 'app-event-detail',
@@ -13,8 +10,6 @@ import { EventsService } from "../../services/event-services/events.service";
 export class EventDetailComponent {
 
   constructor(
-    private eventsService: EventsService,
-    private eventSpecificService: EventSpecificsService,
     private router: Router
   ) {
   }
@@ -30,7 +25,7 @@ export class EventDetailComponent {
   
     if (this.selectedEvent) {
       console.log(this.selectedEvent.id);
-      this.router.navigate(['/event-edit', eventId]); // No colon in the route path
+      this.router.navigate(['/event-edit', eventId]);
     }
   }
 
@@ -49,15 +44,12 @@ export class EventDetailComponent {
   onSpecifics(){
     this.specifics = !this.specifics;
     this.selectedEvent = this.event;
-    if(this.selectedEvent){
+    const eventId = this.selectedEvent?.id;
+  
+    if (this.selectedEvent) {
       console.log(this.selectedEvent.id);
-      return this.eventSpecificService.getEventSpecificsByEventId(this.selectedEvent.id).subscribe(
-        data => {
-          console.log("event specifics data : " + data);
-        }
-      );
+      this.router.navigate(['/event-specifics-details', eventId]);
     }
-    return error("NO EVENT SPECIFICS RETURNED");
   }
 
 }

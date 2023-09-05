@@ -69,6 +69,12 @@ public class UserEventsController {
     public List<UserEvents> getUsersByStatus(@PathVariable("status") Status status){
         return userEventsService.getUsersByStatus(status);
     }
+    /*
+        @DeleteMapping("/{uuid}")
+    public void deleteAllByEventSpecificsId(@PathVariable("uuid") UUID uuid){
+        userEventsService.deleteAllByEventSpecificsId(uuid);
+    }
+    * **/
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();
         dto.setFirstname(user.getFirstname());

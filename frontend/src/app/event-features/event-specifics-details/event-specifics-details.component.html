@@ -1,23 +1,6 @@
-<ng-container *ngIf="selectedEvent">
-  <div>
-    <h2>Event Specifics for {{ selectedEvent.name }}</h2>
-    <ul>
-      <li *ngFor="let e of eventSpecifics">
-        <button type="submit" (click)="OnSelect(e)">
-          <strong>City:</strong> {{ e.city?.name }}
-          <br/>
-          <strong>Date:</strong> {{ e.date }}
-        </button>
-        <br>
-        <hr>
-      </li>
-    </ul>
-  </div>
-  <app-event-register [hidden]="revealRegistration" [eventSpecifics]="selectedEventSpec"></app-event-register>
-</ng-container>
 <div class="container my-5">
-  <ng-container *ngIf="selectedEvent">
-    <h2 class="mb-4">Event Specifics for {{ selectedEvent.name }}</h2>
+  <ng-container>
+    <h2 class="mb-4">Event Specifics for {{ selectedEvent?.name }}</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div *ngFor="let e of eventSpecifics" class="col">
         <div class="card h-100">
@@ -26,12 +9,11 @@
             <p class="card-text"><strong>Date:</strong> {{ e.date }}</p>
           </div>
           <div class="card-footer">
-            <button type="button" class="btn btn-primary" (click)="OnSelect(e)">View Details</button>
+            <button type="button" class="btn-primary btn" (click)="OnSelect(e)">Register now</button>
           </div>
         </div>
       </div>
     </div>
-    <app-event-register [hidden]="revealRegistration" [eventSpecifics]="selectedEventSpec"></app-event-register>
   </ng-container>
 </div>
 

@@ -36,7 +36,7 @@ public class EventSpecifics extends IdBaseEntity {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "eventSpecifics")
+    @OneToMany(mappedBy = "eventSpecifics", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<UserEvents> userEvents;
 

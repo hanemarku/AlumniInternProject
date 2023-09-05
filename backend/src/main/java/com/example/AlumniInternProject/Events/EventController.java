@@ -13,10 +13,11 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/events")
-@CrossOrigin("http://localhost:4200/events")
+@CrossOrigin("http://localhost:4200")
 public class EventController {
     private final EventsService eventsService;
     private final EventsRepository eventsRepository;
+
 
     @PostMapping
     public EventGetDto save(@RequestBody EventDto eventDto){

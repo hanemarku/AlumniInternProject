@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { AuthenticationService } from 'src/app/services/authenication-service/authentication.service';
 import { EventSpecificsService } from 'src/app/services/event-services/event-specifics.service';
-import { EventsService } from 'src/app/services/event-services/events.service';
 import { RegisterUsersService } from 'src/app/services/event-services/register-users.service';
 import { UserDataService } from 'src/app/services/user-service/user-data.service';
 import { UserEvents } from "../../Models/UserEvents";
@@ -16,16 +16,34 @@ import { UserList } from "../../user/list-users/list-users.component";
   styleUrls: ['./event-register.component.sass']
 })
 export class EventRegisterComponent implements OnInit{
+  
   ngOnInit(): void {
     this.findTheUserLogged();
+    const eventSpecId = this.activatedRoute.snapshot.paramMap.get('eventSpecificsId');
+    this.eventSpecId = eventSpecId;
+    if(this.eventSpecId){
+      this.getEventSpec();
+    }
   }
   constructor(
-    private eventService: EventsService,
     private eventSpecificsService: EventSpecificsService,
+    private activatedRoute: ActivatedRoute,
     private registerService: RegisterUsersService,
     private authService: AuthenticationService,
     private userDataService: UserDataService
   ){}
+
+  eventSpec!: EventSpecifics;
+  eventSpecId!: string | null;
+
+  getEventSpec(){
+    if(this.eventSpecId)
+    this.eventSpecificsService.getEventSpecificsById(this.eventSpecId).subscribe(
+      data => {
+        this.eventSpec = data;
+      }
+    );
+  }
 
   @Input()
   eventSpecifics!: EventSpecifics;
@@ -54,7 +72,7 @@ export class EventRegisterComponent implements OnInit{
     this.clicked = !this.clicked;
     console.log('Button clicked' + 'Also the registered obj to be used' + this.registUserEventModel.status);
     this.registUserEventModel.user = this.currentUser;
-    this.registUserEventModel.eventSpecifics = this.eventSpecifics;
+    this.registUserEventModel.eventSpecifics = this.eventSpec;
     
     this.registerService.register(this.registUserEventModel).subscribe(
       (data: UserEvents) => {

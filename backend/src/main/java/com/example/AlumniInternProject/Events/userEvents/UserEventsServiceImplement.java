@@ -182,6 +182,17 @@ public class UserEventsServiceImplement implements UserEventsService{
         return matched;
     }
 
+    @Override
+    public void deleteAllByEventSpecificsId(UUID uuid) {
+        List<UserEvents> userEvents = userEventsRepository.findAll();
+        for(UserEvents ue : userEvents){
+            if(ue.getEventSpecifics().getId() == uuid){
+                userEventsRepository.delete(ue);
+            }
+        }
+
+    }
+
     /* TODO: CHECK TO SET EXPIRED STATUS*/
     private boolean isExpired(String token){
         ConfirmationToken toBeChecked = confirmationTokenRepository.findByToken(token);

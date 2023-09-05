@@ -2,6 +2,7 @@ package com.example.AlumniInternProject.Events.EventSpecifics;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificDto;
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
+import com.example.AlumniInternProject.Events.userEvents.UserEventsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ public class EventSpecificsServiceImplementation implements
                     EventSpecificsService{
 
     private final EventSpecificsRepository eventSpecificsRepository;
+    private final UserEventsRepository userEventsRepository;
     private EventSpecificGetDto map(EventSpecifics e){
         var dto = new EventSpecificGetDto();
         dto.setId(e.getId());
@@ -79,7 +81,9 @@ public class EventSpecificsServiceImplementation implements
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
+        userEventsRepository.deleteUserEventsByEventSpecifics_Id(id);
         eventSpecificsRepository.deleteById(id);
     }
 
@@ -89,11 +93,10 @@ public class EventSpecificsServiceImplementation implements
         List<EventSpecifics> listOfEventSpecifics = eventSpecificsRepository.findAll();
         for(EventSpecifics es : listOfEventSpecifics){
             if (es.getId().toString().toLowerCase().contains(id.toString().toLowerCase(Locale.ROOT))){
+                //userEventsRepository.deleteUserEventsByEventSpecifics_Id(es.getId());
                 delete(es.getId());
             }
         }
-
-      //  eventSpecificsRepository.deleteEventSpecificsByEvents_Id(id);
     }
 
     @Override

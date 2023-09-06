@@ -28,6 +28,7 @@ import { ResetPasswordComponent } from './user/reset-password/reset-password.com
 import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import {SearchUsersComponent} from "./user/search-users/search-users.component";
 
 
 const routes: Routes = [
@@ -57,6 +58,7 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'profileSlider', component: ProfileSliderComponent},
   {path: 'profilesSwiper', component: ProfilesSwiperComponent},
+  {path: 'search-users', component: SearchUsersComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

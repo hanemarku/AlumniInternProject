@@ -38,15 +38,20 @@ export class EventSpecificsDetailsComponent implements OnInit {
   ) {
   }
 
-  selectedEvent?: Event;
-
+;
   @Input()
   events!: Event;
+  selectedEvent!: Event;
   theSelectedEventId!: string | null;
-
 
   eventSpecifics: EventSpecifics[] = [];
   selectedEventSpec!: EventSpecifics;
+
+  searchForEmail = this.authService.getUserFromLocalStorage().email;
+
+  revealRegistration = true;
+
+  add = true;
 
   getEventById() {
     if (this.theSelectedEventId)
@@ -66,8 +71,6 @@ export class EventSpecificsDetailsComponent implements OnInit {
         }
       );
   }
-
-  revealRegistration = true;
 
   OnSelect(e: EventSpecifics) {
     this.selectedEventSpec = e;
@@ -90,10 +93,9 @@ export class EventSpecificsDetailsComponent implements OnInit {
     );
     location.reload();
   }
-
-
-  searchForEmail = this.authService.getUserFromLocalStorage().email;
-
+  addSpecificsToEvent(){
+    this.add = !this.add;
+  }
   onAccess(): boolean {
     if (this.selectedEvent) {
       if (this.selectedEvent.createdBy === this.searchForEmail) {

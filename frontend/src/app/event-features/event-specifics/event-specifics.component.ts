@@ -14,7 +14,7 @@ import { EventsService } from 'src/app/services/event-services/events.service';
   styleUrls: ['./event-specifics.component.sass']
 })
 export class EventSpecificsComponent implements OnInit {
-  
+/*TODO: CHECK IF AN EVENT IS BEING HELD TWICE IN THE SAME PLACE AND TIME*/
   constructor(
     private eventService: EventsService,
     private eventSpecificsService: EventSpecificsService,
@@ -27,6 +27,7 @@ export class EventSpecificsComponent implements OnInit {
     this.listCities();
     this.listEvents();
     console.log(this.authServices.getUserFromLocalStorage().email);
+    this.getEventSpecifics();
   }
 
   @Input()
@@ -36,6 +37,10 @@ export class EventSpecificsComponent implements OnInit {
   selectedCityId: string = '';
   events: Event[] = [];
   lastEvent: string = '';
+
+  showSuccessMessage = false;
+  submitted = false;
+  eventSpecificsList: EventSpecifics[] = [];
 
   eventSpecificsModel: EventSpecifics = {
     id: '',
@@ -62,29 +67,15 @@ export class EventSpecificsComponent implements OnInit {
     );
   }
 
-  showSuccessMessage = false;
-
-  submitted = false;
-
-  onSubmit() {
-    this.submitted = true;
-  }
-
-  eventSpecificsList: EventSpecifics[] = [];
-
   addSpecifics() {
-    this.submitted = true;
-  
-    const lastIndex = this.events.length - 1;
-    const lastEventCreated = this.events[lastIndex];
-  
-    this.lastEvent = lastEventCreated.id;
-    
+      this.submitted = true;
+      this.lastEvent = this.event.id;
+
     this.eventService.getEventsById(this.lastEvent).subscribe(
       eventData => {
         this.eventSpecificsModel.events = eventData;
         console.log(this.eventSpecificsModel.events.name);
-        
+
         this.citiesService.getCityById(this.selectedCityId).subscribe(
           cityData => {
             this.eventSpecificsModel.city = cityData;
@@ -106,13 +97,31 @@ export class EventSpecificsComponent implements OnInit {
       }
     );
   }
-  
+
   getCurrentDate(): string {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+  onSubmit() {
+    this.submitted = true;
+  }
+  done(){
+    this.router.navigate(['/event']);
+  }
+  getEventSpecifics(){
+    const lastIndex = this.events.length - 1;
+    const lastEventCreated = this.events[lastIndex];
+
+    this.lastEvent = lastEventCreated.id;
+    this.eventSpecificsService.getEventSpecificsByEventId(this.lastEvent).subscribe(
+      data => {
+        this.eventSpecificsList = data;
+        console.log("The event specifics data list in the function" + data);
+      }
+    )
   }
 
 }

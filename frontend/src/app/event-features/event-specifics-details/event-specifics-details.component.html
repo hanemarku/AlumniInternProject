@@ -1,4 +1,9 @@
-<div class="container my-5">
+<div class="circle-link mt-4">
+<button *ngIf="onAccess()" type="submit"
+        (click)="addSpecificsToEvent()"
+        class="circle circle-container">Add Specifics</button>
+</div>
+  <div class="container my-5">
   <ng-container>
     <h2 class="mb-4">Event Specifics for {{ selectedEvent?.name }}</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -15,6 +20,7 @@
         </div>
       </div>
     </div>
+    <app-event-specifics [hidden]="add" [event]="selectedEvent"></app-event-specifics>
   </ng-container>
 </div>
 

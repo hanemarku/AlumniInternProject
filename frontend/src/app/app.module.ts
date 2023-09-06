@@ -57,6 +57,7 @@ import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
 import { SuggestionsComponent } from './user/suggestions/suggestions.component';
+import {SearchUsersComponent} from "./user/search-users/search-users.component";
 
 @NgModule({
   declarations: [
@@ -106,7 +107,7 @@ import { SuggestionsComponent } from './user/suggestions/suggestions.component';
     GeneralSettingComponent,
     MailServerComponent,
     AccountVerificationComponent,
-
+    SearchUsersComponent
   ],
   imports: [
     BrowserModule,

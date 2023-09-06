@@ -15,8 +15,7 @@ export class EventFormComponent implements OnInit{
     constructor(
         private eventService: EventsService,
         private router: Router,
-        private authService: AuthenticationService,
-        private userService: UserDataService
+        private authService: AuthenticationService
     ){}
 
 
@@ -42,7 +41,7 @@ export class EventFormComponent implements OnInit{
   submitted = false;
   OnSelect(event: Event) {
     this.router.navigate(
-      ['/event-specifics']);
+      ['/event']);
   }
 
   onSubmit() {
@@ -55,14 +54,7 @@ export class EventFormComponent implements OnInit{
       (createdEvent: Event) => {
         this.eventModel.imgUrl = '';
         this.router.navigate(
-          ['/event-specifics'],
-          {
-            queryParams: {
-              refresh: 'true',
-              eventId: createdEvent.id
-            }
-          }
-          );
+          ['/event']);
       }
     );
   }

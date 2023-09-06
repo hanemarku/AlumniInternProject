@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Event } from 'src/app/Models/Event';
 import { EventSpecifics } from 'src/app/Models/EventSpecifics';
 import { UserEvents } from 'src/app/Models/UserEvents';
@@ -17,13 +17,13 @@ export class EventDeleteComponent implements OnInit {
   constructor(
     private eventSpecificsService: EventSpecificsService,
     private eventService: EventsService,
-    private userEventsService: RegisterUsersService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ){}
 
   @Input()
   event!: Event;
-  
+
   ngOnInit(): void {
     const eventId = this.activatedRoute.snapshot.paramMap.get('eventId');
     console.log("the event id being taken:" + eventId)
@@ -38,7 +38,7 @@ export class EventDeleteComponent implements OnInit {
     this.getEventById();
     this.getAllEventSpecifics();
   }
-  
+
   thePassedEventId: string | null | undefined;
   theEvent!: Event;
   alleventSpecifics: EventSpecifics[] = [];
@@ -63,7 +63,6 @@ export class EventDeleteComponent implements OnInit {
     );
   }
 
-
   delete() {
     console.log("Selected event " + this.theEvent.id);
         for(let i = 0; i < this.alleventSpecifics.length; i++){
@@ -74,16 +73,13 @@ export class EventDeleteComponent implements OnInit {
               }
             )
           }
-/**
- *           if(i === this.alleventSpecifics.length-1){
-            console.log("inside the last i interation" + i);
-            if(this.thePassedEventId)
-            this.eventService.deleteDetails(this.thePassedEventId).subscribe();
-          }
-*/
         }
         if(this.thePassedEventId)
         this.eventService.deleteDetails(this.thePassedEventId).subscribe();
-  
   }
+
+  redirect(){
+    this.router.navigate(['/event'])
+  }
+
 }

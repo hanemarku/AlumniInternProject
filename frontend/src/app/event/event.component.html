@@ -1,6 +1,5 @@
 <app-event-search-by></app-event-search-by>
-
-<div class="container mt-4">
+<div class="container custom-margin-top">
   <div class="row">
     <div class="col-md-9">
       <div class="card">
@@ -16,7 +15,6 @@
                     <div class="card-body">
                       <h5 class="card-title mb-3">{{e.name}}</h5>
                       <p class="card-text mb-2"><strong>Topic:</strong> {{e.topic}}</p>
-                      <p class="card-text mb-2"><strong>Description:</strong> {{e.description}}</p>
                     </div>
                   </button>
                 </div>
@@ -26,6 +24,8 @@
         </div>
       </div>
     </div>
-    <app-event-detail [event]="selectedEvent" class="col-md-3"></app-event-detail>
   </div>
 </div>
+<a routerLink="/event-form" class="circle-link">
+<div class="circle circle-container">NEW EVENT</div>
+</a>

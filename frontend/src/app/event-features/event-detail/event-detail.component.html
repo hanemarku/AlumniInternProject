@@ -6,12 +6,13 @@
     <h5 class="card-title">Name: {{ event.name }}</h5>
     <p class="card-text">Created by: {{ event.createdBy }}</p>
     <p class="card-text">Topic: {{ event.topic }}</p>
+    <img [src]="event.imgUrl">
     <p class="card-text">Description: {{ event.description }}</p>
     <p class="card-text">Members: {{ event.maxParticipants }}</p>
 
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary mt-3" (click)="onUpdateded()">Update</button>
-      <button type="submit" class="btn btn-danger mt-2" (click)="onDeleted()">Delete</button>
+      <button *ngIf="onAccess()" type="submit" class="btn btn-primary mt-3" (click)="onUpdateded()">Update</button>
+      <button *ngIf="onAccess()" type="submit" class="btn btn-danger mt-2" (click)="onDeleted()">Delete</button>
       <button type="submit" class="btn btn-secondary mt-2" (click)="onSpecifics()">Show Specifics</button>
     </div>
   </div>

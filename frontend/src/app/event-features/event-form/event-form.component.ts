@@ -24,7 +24,7 @@ export class EventFormComponent implements OnInit{
     this.eventModel.createdBy = this.authService.getUserFromLocalStorage().email;
     console.log(this.authService.getUserFromLocalStorage().email);
     }
-    
+
 
     eventModel: Event = {
     id:'',
@@ -42,14 +42,7 @@ export class EventFormComponent implements OnInit{
   submitted = false;
   OnSelect(event: Event) {
     this.router.navigate(
-      ['/event-specifics'],
-      {
-        queryParams: {
-          //refresh: 'true'
-          //,eventData: JSON.stringify(event)
-        }
-      }
-      );
+      ['/event-specifics']);
   }
 
   onSubmit() {
@@ -73,7 +66,7 @@ export class EventFormComponent implements OnInit{
       }
     );
   }
-  
+
   fullUrl : string | undefined;
   onSelectFile(imgFile: any) {
     if(imgFile.target.files && imgFile.target.files.length > 0){

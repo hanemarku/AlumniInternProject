@@ -36,13 +36,6 @@ public class UserEvents extends IdBaseEntity {
 
     public UserEvents(MembershipRole membershipRole,
                       User user,
-                      EventSpecifics eventSpecifics) {
-        this.membershipRole = membershipRole;
-        this.user = user;
-        this.eventSpecifics = eventSpecifics;
-    }
-    public UserEvents(MembershipRole membershipRole,
-                      User user,
                       EventSpecifics eventSpecifics,
                       Status status) {
         this.membershipRole = membershipRole;

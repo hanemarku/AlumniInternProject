@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Event } from "../Models/Event";
 import { EventsService } from "../services/event-services/events.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event',
@@ -8,13 +9,11 @@ import { EventsService } from "../services/event-services/events.service";
   styleUrls: ['./event.component.sass']
 })
 export class EventComponent {
-  /*TODO: REGISTER USERS*/
-  /*TODO: LIST BY CONFIRMATION STATUS*/
   selectedEvent?: Event;
   event: Event[] = [];
-
   constructor(
-    private eventsService : EventsService
+    private eventsService : EventsService,
+    private router: Router
   ){
 
   }
@@ -32,5 +31,7 @@ export class EventComponent {
 
   OnSelect(event: Event) {
     this.selectedEvent = event;
+    const eventId = this.selectedEvent?.id;
+    this.router.navigate(['/event-detail', eventId]);
   }
 }

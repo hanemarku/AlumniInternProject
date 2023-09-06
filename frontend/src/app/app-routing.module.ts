@@ -42,7 +42,7 @@ const routes: Routes = [
   {path: 'header', component: HeaderComponent},
   {path: 'countries', component: CountryComponent, canActivate: [AuthenticationGuard]},
   {path: 'event', component: EventComponent, canActivate: [AuthenticationGuard]},
-  {path:'event-detail', component: EventDetailComponent, canActivate: [AuthenticationGuard]},
+  {path:'event-detail/:eventId', component: EventDetailComponent, canActivate: [AuthenticationGuard]},
   {path:'event-form', component: EventFormComponent, canActivate: [AuthenticationGuard]},
   {path:'event-edit/:eventId', component:EventEditComponent, canActivate: [AuthenticationGuard]},
   {path:'event-delete/:eventId', component:EventDeleteComponent, canActivate: [AuthenticationGuard]},

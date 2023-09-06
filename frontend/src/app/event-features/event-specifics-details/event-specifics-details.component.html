@@ -10,6 +10,7 @@
           </div>
           <div class="card-footer">
             <button type="button" class="btn-primary btn" (click)="OnSelect(e)">Register now</button>
+            <button *ngIf="onAccess()" type="submit" class="btn btn-danger mt-2" (click)="onDeleted(e)">Delete</button>
           </div>
         </div>
       </div>

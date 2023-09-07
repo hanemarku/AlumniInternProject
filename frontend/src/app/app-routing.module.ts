@@ -31,6 +31,7 @@ import { RoomComponent } from './room/room.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessageComponent } from './message/message.component';
 import { SettingsComponent } from './setting-folder/settings/settings.component';
+import { AdminSettingComponent } from './admin-setting/admin-setting.component';
 
 
 const routes: Routes = [
@@ -63,6 +64,7 @@ const routes: Routes = [
   {path: 'room', component: RoomComponent},
   {path: 'test', component: ChatComponent},
   {path: 'settings', component: SettingsComponent},
+  {path: 'admin-settings', component: AdminSettingComponent},
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

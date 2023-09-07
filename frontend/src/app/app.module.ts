@@ -63,6 +63,8 @@ import { UserListComponent } from './user-list/user-list.component';
 import { PrivateChatWindowComponent } from './private-chat-window/private-chat-window.component';
 import { RoomComponent } from './room/room.component';
 import { ReversePipe } from './services/ReversePipe';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { AdminSettingComponent } from './admin-setting/admin-setting.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +116,9 @@ import { ReversePipe } from './services/ReversePipe';
     UserListComponent,
     PrivateChatWindowComponent,
     RoomComponent,
-    ReversePipe
+    ReversePipe,
+    SidenavComponent,
+    AdminSettingComponent,
   ],
   imports: [
     BrowserModule,

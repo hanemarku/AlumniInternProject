@@ -1,17 +1,16 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
+<div class="sidenav">
     <div class="logo-container">
-        <button class="logo" (click)="toggleCollapse()">A</button>
-        <div class="logo-text" *ngIf="collapsed">Angular</div>
-        <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()">
-            <i class="fal fa-times close-icon"></i>
+        <button class="logo">
+            <i class="fa-solid fa-gear"></i>
         </button>
+        <div class="logo-text">Admin Settings</div>
     </div>
 
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
             <a class="sidenav-nav-link" [routerLink]="[data.routeLink]">
                 <i class="sidenav-link-icon" [class]="data.icon"></i>
-                <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+                <span class="sidenav-link-text">{{data.label}}</span>
             </a>
         </li>
     </ul>

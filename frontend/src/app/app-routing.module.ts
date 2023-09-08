@@ -36,7 +36,6 @@ import { AdminSettingComponent } from './admin-setting/admin-setting.component';
 
 const routes: Routes = [
   {path: 'users', component: ListUsersComponent, canActivate: [AuthenticationGuard]},
-  {path: 'skills', component: SkillListComponent, canActivate: [AuthenticationGuard] },
   {path: 'interests', component: InterestListComponent, canActivate: [AuthenticationGuard]},
   {path: 'signup', component: SingupComponent, canActivate: [NotLoggedInGuard]},
   {path: 'homepage', component: HomepageComponent, canActivate: [AuthenticationGuard]},
@@ -64,7 +63,17 @@ const routes: Routes = [
   {path: 'room', component: RoomComponent},
   {path: 'test', component: ChatComponent},
   {path: 'settings', component: SettingsComponent},
-  {path: 'admin-settings', component: AdminSettingComponent},
+  {path: 'admin-settings',
+    component: AdminSettingComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
+      { path: '', redirectTo: 'skills', pathMatch: 'full' },
+      { path: 'skills', component: SkillListComponent },
+      { path: 'interests', component: InterestListComponent },
+      { path: 'countries', component: CountryComponent },
+      { path: 'cities', component: CityComponent },
+    ],
+  },
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
 
 ]

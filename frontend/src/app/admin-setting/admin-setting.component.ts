@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-setting.component.sass']
 })
 export class AdminSettingComponent {
+  title = 'Admin Settings';
 
 }

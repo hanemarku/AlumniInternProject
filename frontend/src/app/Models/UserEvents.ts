@@ -1,7 +1,13 @@
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+//import { User } from "../services/user-service/user-data.service";
+import { MembershipRole } from "../enum/membership-role.enum";
+import { Status } from "../enum/status.enum";
+import { UserList } from "../user/list-users/list-users.component";
+import { EventSpecifics } from "./EventSpecifics";
 
 export interface UserEvents{
- //miguht also be needed as number and by number show the role, thats how it is saved in the db
-    membershipRole: string;
-    user: UserProfileComponent;
+    id:string;
+    user: UserList;
+    eventSpecifics: EventSpecifics;
+    membershipRole: MembershipRole;
+    status: Status;
 }

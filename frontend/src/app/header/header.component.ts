@@ -24,10 +24,10 @@ export class UserHeader{
 
 export class HeaderComponent implements OnInit , OnDestroy{
   private profilePicSubscription: Subscription | undefined;
-  
+
   public loggedIn = false;
   profilePicUrl: SafeUrl | string = '';
-  userEmail: string = ''; 
+  userEmail: string = '';
   firstname: string = '';
   lastname: string = '';
 
@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit , OnDestroy{
       this.lastname = JSON.parse(localStorage.getItem('user') || '{}').lastname;
       console.log("email + " + this.userEmail)
       var email = this.userEmail;
-  
+
       this.userService.getUserProfilePic(email).subscribe(
         (url: SafeUrl) => {
           this.profilePicUrl = url;
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit , OnDestroy{
           console.error('Error fetching profile picture:', error);
         }
       );
-      
+
     } else {
       console.log("User is not logged in");
       this.loggedIn = false;
@@ -72,17 +72,12 @@ export class HeaderComponent implements OnInit , OnDestroy{
     this.firstname = '';
     this.lastname = '';
   }
-  
+
   ngOnDestroy(): void {
     if (this.profilePicSubscription) {
       this.profilePicSubscription.unsubscribe();
     }
   }
 
-  
-  
-  
-  
-  
 
 }

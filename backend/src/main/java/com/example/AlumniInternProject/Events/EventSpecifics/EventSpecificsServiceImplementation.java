@@ -2,9 +2,10 @@ package com.example.AlumniInternProject.Events.EventSpecifics;
 
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificDto;
 import com.example.AlumniInternProject.Events.EventSpecifics.dto.EventSpecificGetDto;
-import com.example.AlumniInternProject.Events.dto.EventGetDto;
+import com.example.AlumniInternProject.Events.userEvents.UserEventsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class EventSpecificsServiceImplementation implements
                     EventSpecificsService{
 
     private final EventSpecificsRepository eventSpecificsRepository;
+    private final UserEventsRepository userEventsRepository;
     private EventSpecificGetDto map(EventSpecifics e){
         var dto = new EventSpecificGetDto();
         dto.setId(e.getId());
@@ -63,9 +65,37 @@ public class EventSpecificsServiceImplementation implements
 
         throw new RuntimeException("Event specific with this id does not exist!");
     }
+
+    @Override
+    public List<EventSpecifics> findByEventId(String id) {
+        List<EventSpecifics> allEventSpecifics = eventSpecificsRepository.findAll();
+        List<EventSpecifics> matched = new ArrayList<>();
+
+        for(EventSpecifics es : allEventSpecifics){
+            String toCompare = es.getEvents().getId().toString();
+            if(toCompare.contains(id)){
+                matched.add(es);
+            }
+        }
+        return matched;
+    }
+
     @Override
     public void delete(UUID id) {
+       // userEventsRepository.deleteUserEventsByEventSpecifics_Id(id);
         eventSpecificsRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEventSpecificsByEvents_Id(UUID id) {
+        List<EventSpecifics> listOfEventSpecifics = eventSpecificsRepository.findAll();
+        for(EventSpecifics es : listOfEventSpecifics){
+            if (es.getId().toString().toLowerCase().contains(id.toString().toLowerCase(Locale.ROOT))){
+                //userEventsRepository.deleteUserEventsByEventSpecifics_Id(es.getId());
+                delete(es.getId());
+            }
+        }
     }
 
     @Override
@@ -83,7 +113,7 @@ public class EventSpecificsServiceImplementation implements
                 collect(Collectors.toList());
         return order;
     }
-    /*Find by keyword*/
+
     @Override
     public Set<EventSpecificGetDto> findByKeyword(String keyWord,
                                                   Set<EventSpecificGetDto> eventSDtos) {

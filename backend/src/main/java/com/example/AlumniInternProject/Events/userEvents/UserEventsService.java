@@ -17,4 +17,6 @@ public interface UserEventsService {
     String confirmParticipation(String confirmationToken);
     List<UserEventGetDto> findAll();
     List<UserEvents> getUsersByStatus(Status status);
+    void deleteAllByEventSpecificsId(UUID uuid);
+    void delete(UUID uuid);
 }

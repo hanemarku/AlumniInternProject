@@ -1,0 +1,26 @@
+<div class="circle-link mt-4">
+<button *ngIf="onAccess()" type="submit"
+        (click)="addSpecificsToEvent()"
+        class="circle circle-container">Add Specifics</button>
+</div>
+  <div class="container my-5">
+  <ng-container>
+    <h2 class="mb-4">Event Specifics for {{ selectedEvent?.name }}</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div *ngFor="let e of eventSpecifics" class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ e.city?.name }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ e.date }}</p>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn-primary btn" (click)="OnSelect(e)">Register now</button>
+            <button *ngIf="onAccess()" type="submit" class="btn btn-danger mt-2" (click)="onDeleted(e)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-event-specifics [hidden]="add" [event]="selectedEvent"></app-event-specifics>
+  </ng-container>
+</div>
+

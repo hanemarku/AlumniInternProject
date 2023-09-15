@@ -3,14 +3,13 @@ package com.example.AlumniInternProject.Events.EventSpecifics.dto;
 import com.example.AlumniInternProject.Events.EventSpecifics.EventSpecifics;
 import com.example.AlumniInternProject.entity.City;
 import com.example.AlumniInternProject.entity.Events;
-import com.example.AlumniInternProject.entity.UserEvents;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Setter
@@ -18,13 +17,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventSpecificDto extends EventSpecifics {
-    private LocalDateTime date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
     private Events events;
     private City city;
 
-    public EventSpecificDto(LocalDateTime date,
-                          UUID eventId,
-                          UUID cityId) {
+    public Events getEvents() {
+        return this.events;
+    }
+
+    public EventSpecificDto(LocalDate date,
+                            UUID eventId,
+                            UUID cityId) {
         this.date = date;
         this.events.setId(eventId);
         this.city.setId(cityId);

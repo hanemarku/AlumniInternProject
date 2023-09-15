@@ -6,7 +6,6 @@ import com.example.AlumniInternProject.Events.export.EventPdfExporter;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.DTOs.UserGetDto;
-import com.example.AlumniInternProject.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 public class UserEventsController {
     private final UserEventsService userEventsService;
     private final UserEventsRepository userEventsRepository;
-    private final UserRepository userRepository;
 
     @GetMapping("/events/{eventId}/users")
     public List<UserGetDto> getUsersByEventId(@PathVariable UUID eventId) {
@@ -69,6 +67,16 @@ public class UserEventsController {
     public List<UserEvents> getUsersByStatus(@PathVariable("status") Status status){
         return userEventsService.getUsersByStatus(status);
     }
+    @DeleteMapping("/{uuid}")
+    public void delete(@PathVariable("uuid") UUID uuid){
+        userEventsService.delete(uuid);
+    }
+    /*
+        @DeleteMapping("/{uuid}")
+    public void deleteAllByEventSpecificsId(@PathVariable("uuid") UUID uuid){
+        userEventsService.deleteAllByEventSpecificsId(uuid);
+    }
+    * **/
     private UserGetDto mapUser(User user) {
         UserGetDto dto = new UserGetDto();
         dto.setFirstname(user.getFirstname());

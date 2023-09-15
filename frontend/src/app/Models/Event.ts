@@ -1,10 +1,12 @@
+import { EventSpecifics } from "./EventSpecifics";
+
 export interface Event{
   id: string;
-  createdby: string;
- // eventSpecifics[]
   name: string;
   topic: string;
   description: string;
-  imgUrl: string;
   maxParticipants: number;
+  imgUrl: string;
+  eventSpecifics: EventSpecifics[];
+  createdBy: string;
 }

@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Confrim Your Reservation</title>
+    <title>Confirm Your Reservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f2ef;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0077B5;
+        }
+        p {
+            color: #333333;
+        }
+        a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0077B5;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #005684;
+        }
+    </style>
 </head>
 <body>
-<p>This email is sent to confirm the request of being part of our event.</p>
-<p>Please click the link below to confirm. The reservation will not be saved if you do not confirm within 45 minutes.</p>
-<a th:href="${LINK}" href="SuccesfullySaved.html"><button type="button">Confirm Reservation</button></a>
+<div class="container">
+    <h1>Confirm Your Reservation</h1>
+    <p>This email is sent to confirm the request to be a part of our event.</p>
+    <p>Please click the link below to confirm. The reservation will not be saved if you do not confirm within 45 minutes.</p>
+    <a th:href="${LINK}" href="SuccesfullySaved.html" class="button">Confirm Reservation</a>
+</div>
 </body>
 </html>

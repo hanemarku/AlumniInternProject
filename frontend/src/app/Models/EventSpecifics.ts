@@ -1,10 +1,9 @@
-import { CityList } from "../city/city.component";
-import { Event } from "./Event";
-import { UserEvents } from "./UserEvents";
+import { Event } from 'src/app/Models/Event';
+import { City } from "../city/city.component";
 
 export interface EventSpecifics{
-    date: Date;
-    events: Event[];
-    cities: CityList[];
-    userEvents: UserEvents[];
+    id: string;
+    date: string;
+    events: Event | null;
+    city: City | null;
 }

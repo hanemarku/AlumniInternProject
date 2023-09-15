@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/cities")
+//@CrossOrigin("http://localhost:4200/events")
 public class CityController {
 
     private final CityRepository cityRepository;
@@ -44,5 +45,9 @@ public class CityController {
     @GetMapping("/countries/{id}")
     public List<City> findByCountryIdOrderByNameAsc(@PathVariable("id") UUID id) {
         return cityRepository.findByCountryIdOrderByNameAsc(id);
+    }
+    @GetMapping("/{id}")
+    public City findCityById(@PathVariable("id") UUID id){
+        return cityRepository.findCityByIdIs(id);
     }
 }

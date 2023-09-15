@@ -4,8 +4,8 @@ import com.example.AlumniInternProject.Events.dto.EventDto;
 import com.example.AlumniInternProject.Events.dto.EventGetDto;
 import com.example.AlumniInternProject.entity.Events;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,19 +33,11 @@ public class EventsServiceImplement implements EventsService {
                 edto.getName(),
                 edto.getTopic(),
                 edto.getDescription(),
-                edto.getImgUrl(),
                 edto.getMaxParticipants(),
-                edto.getEventSpecifics()
+                edto.getImgUrl(),
+                edto.getEventSpecifics(),
+                edto.getCreatedBy()
         );
-
-        String auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        eDto.setCreatedBy(auth);
-       /*
-       *  if(auth != null && auth.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            String eventCreator = userDetails.getUsername();
-            eDto.setCreatedBy(eventCreator);
-        }*/
         var saved = eventsRepository.save(eDto);
         return map(saved);
     }
@@ -64,7 +56,6 @@ public class EventsServiceImplement implements EventsService {
         if(event.isPresent()){
             return map(event.get());
         }
-
         throw new RuntimeException("Nuk ekziston eventi me kete id!");
     }
 
@@ -82,6 +73,7 @@ public class EventsServiceImplement implements EventsService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         eventsRepository.deleteById(id);
     }

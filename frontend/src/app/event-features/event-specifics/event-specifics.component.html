@@ -1,13 +1,63 @@
-<h1>Update the event</h1>
-<button (click)="listCities()">list cities</button>
-<div>
-    <form (ngSubmit)="onSubmit()" #citySelect="ngForm" >
-        <div>
-            <label for="cars">Choose a car:</label>
-
-            <select name="cars" id="cars">
-                <option value="volvo">Volvo</option>
-            </select>
+<hr>
+<div class="container my-5">
+  <div class="alert alert-success mt-2" *ngIf="showSuccessMessage">
+    Event specifics added successfully!
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center">Event Specifics</h2>
+          <form (ngSubmit)="onSubmit()" #eventForm="ngForm">
+            <div class="mb-3">
+              <label for="date" class="form-label">Choose a date:</label>
+              <input
+                type="date"
+                class="form-control"
+                id="date"
+                name="date"
+                [(ngModel)]="eventSpecificsModel.date"
+                #dateInput="ngModel"
+                [min]="getCurrentDate()"
+                required />
+                <div [hidden]="dateInput.valid || dateInput.pristine" class="alert alert-danger mt-2">
+                  Date is reuired!
+                </div>
+            </div>
+            <div class="mb-3">
+              <label for="cities" class="form-label">Choose a city:</label>
+              <select
+                class="form-select"
+                id="cities"
+                name="selectedCityId"
+                [(ngModel)]="selectedCityId"
+                required>
+                <option value="" disabled>Select a city</option>
+                <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+              </select>
+              <div *ngIf="!selectedCityId" class="alert alert-danger mt-2">
+                City is required.
+              </div>
+            </div>
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="addSpecifics()"
+                [disabled]="!eventForm.form.valid">
+                Submit
+              </button>
+              <button
+              type="submit"
+              class="btn btn-success done-button"
+              (click)="done()"
+              >
+              Done
+            </button>
+            </div>
+          </form>
         </div>
-    </form>
+      </div>
+    </div>
+  </div>
 </div>

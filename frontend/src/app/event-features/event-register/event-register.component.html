@@ -1,0 +1,20 @@
+<div class="card mb-3">
+  <div class="card-header bg-primary text-white">
+    <h1>Register</h1>
+  </div>
+  <div class="card-body">
+    <div>
+      <h2>Event Specifics for {{ eventSpec.events?.name }}</h2>
+      <p><strong>City:</strong> {{ eventSpec.city?.name }}</p>
+      <p><strong>Date:</strong> {{ eventSpec.date }}</p>
+    </div>
+    <div>
+      <p><strong>Name:</strong> {{ currentUser.firstname }}</p>
+      <p><strong>Lastname:</strong> {{ currentUser.lastname }}</p>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="registerUserToEvent()" [ngClass]="{'btn-success': clicked}">
+      Confirm participation
+    </button>
+  </div>
+</div>
+

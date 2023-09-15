@@ -1,52 +1,56 @@
-  <h1>Create a new event</h1>
-{{eventModel | json}}
-<div [hidden]="submitted">
-<form (ngSubmit)="onSubmit()" #eventForm="ngForm" >
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name"
-        required
-        [(ngModel)]="eventModel.name" name="name" #name="ngModel" />
-        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-            <span>Name field is required</span>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="card-title mb-0">Create a New Event</h5>
         </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #eventForm="ngForm">
+            <div class="mb-3">
+              <label for="name" class="form-label">Event Name:</label>
+              <input type="text" class="form-control" id="name" required [(ngModel)]="eventModel.name" name="name" #name="ngModel" placeholder="name"/>
+              <div [hidden]="name.valid || name.pristine" class="alert alert-danger mt-2">
+                Event Name is required
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="topic" class="form-label">Event Topic:</label>
+              <input type="text" class="form-control" id="topic" required [(ngModel)]="eventModel.topic" name="topic" #topic="ngModel" placeholder="topic">
+              <div [hidden]="topic.valid || topic.pristine" class="alert alert-danger mt-2">
+                Event Topic is required
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Event Description:</label>
+              <textarea class="form-control" id="description" required [(ngModel)]="eventModel.description" name="description" placeholder="description" #description="ngModel"></textarea>
+              <div [hidden]="description.valid || description.pristine" class="alert alert-danger mt-2">
+                Event Description is required
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="imgUrl" class="form-label">Event Image URL:</label>
+              <input type="file" class="form-control" id="imgUrl" required (change)="onSelectFile($event)"
+              [(ngModel)]="eventModel.imgUrl" name="imgUrl" #imgUrl="ngModel">
+              <img *ngIf="eventModel.imgUrl" [src]="fullUrl" class="mb-3"/>
+              <div [hidden]="imgUrl.valid || imgUrl.pristine" class="alert alert-danger mt-2">
+                Event Image URL is required
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="maxParticipants" class="form-label" placeholder="Number of participants">Max Participants:</label>
+              <input type="number" class="form-control" id="maxParticipants" required
+              [(ngModel)]="eventModel.maxParticipants" name="maxParticipants"
+              #maxParticipants="ngModel" (input)="validateMaxParticipants()">
+              <div [hidden]="maxParticipants.valid || maxParticipants.pristine" class="alert alert-danger mt-2">
+                The event should have at least one member!
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!eventForm.form.valid" (click)="newEvent(); OnSelect(eventModel)">Create Event</button>
+          </form>
+        </div>
+      </div>
     </div>
-
-      <div>
-        <label for="topic">Topic:</label>
-        <input type="text" class="form-control" id="topic" required [(ngModel)]="eventModel.topic" name="topic" #topic="ngModel">
-        <div [hidden]="topic.valid || topic.pristine" class="alert alert-danger">
-          <span>Topic field is required</span>
-      </div>
-      </div>
-      <div>
-        <label for="description">Description:</label>
-        <textarea type="text" class="form-control" id="description"
-        required
-        [(ngModel)]="eventModel.description" name="description" #description="ngModel"></textarea>
-        <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
-          <span>Description field is required</span>
-      </div>
-      </div>
-      <div>
-        <label for="imgUrl">Image URL:</label>
-        <input type="file" class="form-control" id="imgUrl"
-        required (change)="onSelectFile($event)"
-        [(ngModel)]="eventModel.imgUrl" name="imgUrl" #imgUrl="ngModel" >
-        <img *ngIf="eventModel.imgUrl" [src]="fullUrl"/>
-        <div [hidden]="imgUrl.valid || imgUrl.pristine" class="alert alert-danger">
-          <span>Image Path is required</span>
-      </div>
-      </div>
-      <app-event-specifics></app-event-specifics>
-      <div>
-        <label for="maxParticipants">Max Participants:</label>
-        <input type="number" class="form-control" id="maxParticipants"
-        required
-        [(ngModel)]="eventModel.maxParticipants" name="maxParticipants" #maxParticipants="ngModel">
-        <div [hidden]="maxParticipants.valid || maxParticipants.pristine" class="alert alert-danger">
-          <span>The maximum of participants field is required</span>
-      </div>
-      </div>
-      <button type="submit" class="btn btn-default" [disabled]="!eventForm.form.valid" (click)="newEvent()">New Event</button>
-
+  </div>
+</div>
+<app-event-specifics [hidden]="true" [event]="eventModel"></app-event-specifics>

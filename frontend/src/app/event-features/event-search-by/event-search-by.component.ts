@@ -28,13 +28,12 @@ export class EventSearchByComponent implements OnInit {
       }
     );
   }
-
-  clearMatched(){
-    this.matchedEventId = [];
+  clear(){
+    location.reload();
   }
-
+  
   search(): string[]{
-    this.clearMatched();
+    this.matchedEventId.length = 0;
     
     for (const event of this.theEvents) {
       if(event.name.toLowerCase().includes(this.theKeyword)
@@ -46,7 +45,6 @@ export class EventSearchByComponent implements OnInit {
     console.log(this.matchedEventId);
     return this.matchedEventId;
   }
-
   eventsToDisplay(): Event[]{
     if(this.matchedEventId.length === 0){
       throw new Error("No events to display;")

@@ -8,7 +8,7 @@ import { EventsService } from 'src/app/services/event-services/events.service';
   templateUrl: './event-edit.component.html',
   styleUrls: ['./event-edit.component.sass']
 })
-export class EventEditComponent  implements OnInit{
+export class EventEditComponent  implements OnInit {
 
   @Input()
   event!: Event;
@@ -24,36 +24,40 @@ export class EventEditComponent  implements OnInit{
       });
     }
   }
-  
+
   constructor(
     private eventService: EventsService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ){
+  ) {
   }
 
-  onSubmit(){
+  onSubmit() {
     this.submitted = true;
   }
-updateEvent() {
-  if (this.event) {
-    this.eventService.updateDetails(this.event.id, this.event).subscribe(
-      (data: any) => {
-        console.log(data);
-      }
-    );
-  } else {
-    console.error('Event is undefined.');
+
+  updateEvent() {
+    if (this.event) {
+      this.eventService.updateDetails(this.event.id, this.event).subscribe(
+        (data: any) => {
+          console.log(data);
+        }
+      );
+    } else {
+      console.error('Event is undefined.');
+    }
+    location.reload();
+  //  this.addSpecifics();
   }
-}
 
   addSpecifics() {
-    if (this.selectedEvent) {
-      this.router.navigate(['/event-specifics']);
-      return this.eventService.getEventsById(this.selectedEvent.id).subscribe();
-    } else {
-    return console.error('SelectedEvent is undefined.');
-    }
-  }
+    this.selectedEvent = this.event;
+    const eventId = this.selectedEvent?.id;
 
+    if (this.selectedEvent) {
+      console.log(this.selectedEvent.id);
+      this.router.navigate(['/event-specifics-details', eventId]);
+    }
+
+  }
 }

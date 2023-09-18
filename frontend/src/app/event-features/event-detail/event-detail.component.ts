@@ -2,8 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Event } from "../../Models/Event";
 import {EventsService} from "../../services/event-services/events.service";
-import {UserList} from "../../user/list-users/list-users.component";
-import {UserDataService} from "../../services/user-service/user-data.service";
 import {AuthenticationService} from "../../services/authenication-service/authentication.service";
 
 @Component({

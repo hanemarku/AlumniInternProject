@@ -455,4 +455,12 @@ public class UserServiceImpl implements UserService{
 //        return null;
 //    }
 
+    @Override
+    public UsersListingDTO getUserById(UUID id) throws UserNotFoundException {
+        var optional = userRepository.findById(id);
+        if (optional.isPresent()){
+            return mapForListing(optional.get());
+        }
+        throw new RuntimeException("Skill not found");
+    }
 }

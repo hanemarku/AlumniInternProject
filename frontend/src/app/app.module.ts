@@ -65,6 +65,12 @@ import { RoomComponent } from './room/room.component';
 import { ReversePipe } from './services/ReversePipe';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { AdminSettingComponent } from './admin-setting/admin-setting.component';
+import { RecommendationComponent } from './recommendation/recommendation.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { EditRecommendationDialogComponent } from './recommendation/edit-recommendation-dialog/edit-recommendation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +125,8 @@ import { AdminSettingComponent } from './admin-setting/admin-setting.component';
     ReversePipe,
     SidenavComponent,
     AdminSettingComponent,
+    RecommendationComponent,
+    EditRecommendationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -133,19 +141,23 @@ import { AdminSettingComponent } from './admin-setting/admin-setting.component';
     MatDialogModule,
     NotificationModule,
     CommonModule,
-    AngularEditorModule
+    AngularEditorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   providers: [NotificationService ,AuthenticationGuard,
     AuthenticationService, UserDataService
   ],
-  
+
   // providers: [NotificationService ,AuthenticationGuard,
-  //   AuthenticationService, UserDataService, 
+  //   AuthenticationService, UserDataService,
   //   {
   //     provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
-  //   } 
+  //   }
   // ],
-  
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

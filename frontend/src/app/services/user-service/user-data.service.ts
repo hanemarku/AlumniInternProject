@@ -55,14 +55,14 @@ export class UserDataService {
   }
 
   getUserByEmail(email: string) {
-    const params = new HttpParams().set('email', email); 
+    const params = new HttpParams().set('email', email);
     return this.http.get<UserList>(`http://localhost:8080/api/v1/users/email`, { params });
   }
 
   updateEnabledStatus(id: string, status: boolean): Observable<any> {
     return this.http.get<any>(`http://localhost:8080/api/v1/users/${id}/enabled/${status}`);
   }
-  
+
 
   deleteUser(userId: string): Observable<any> {
     const url = `http://localhost:8080/api/v1/users/${userId}`;
@@ -75,7 +75,7 @@ export class UserDataService {
   uploadFile(fileData: FormData): Observable<any> {
     return this.http.post(this.apiUrl + '/upload', fileData, {responseType: 'text'});
   }
-  
+
   createUser(userData: User): Observable<any> {
     return this.http.post(this.apiUrl + '/signup', userData);
   }
@@ -83,7 +83,7 @@ export class UserDataService {
   checkEmailAvailability(email: string): Observable<any> {
     return this.http.get(this.apiUrl + `/check-email?email=${email}`);
   }
-  
+
   getUserProfilePic(email: string): Observable<SafeUrl> {
     const backendImageUrl = `${this.baseUrl}/get-profile-pic?email=${email}`;
     return this.http.get(backendImageUrl, { responseType: 'blob' }).pipe(
@@ -93,7 +93,7 @@ export class UserDataService {
       })
     );
   }
-  
+
   verifyEmail(token: string): Observable<any> {
     const url = `${this.baseUrl}/verify?token=${token}`;
     return this.http.get(url);
@@ -116,7 +116,7 @@ export class UserDataService {
 
   resetPassword(token: string , newPassword: string): Observable<any> {
     const url = `${this.apiUrl}/reset-password`;
-    const resetPass = {token, newPassword }; 
+    const resetPass = {token, newPassword };
     return this.http.post<any>(url, resetPass, { observe: 'response' });
   }
 
@@ -130,10 +130,10 @@ export class UserDataService {
   }
 
   searchInChat(keyword: string): Observable<any> {
-    const url = `${this.baseUrl}/search?keyword=${keyword}`; 
+    const url = `${this.baseUrl}/search?keyword=${keyword}`;
     return this.http.get(url);
   }
-  
+
   fetchProfilePictures(users: any[]): void {
     if (users.length === 0) {
       return;
@@ -154,16 +154,17 @@ export class UserDataService {
       }
     );
   }
-
-
+  getUserById(id: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8080/api/v1/users/${id}`);
+  }
 }
 
 
-  
+
   // createUser(formData: FormData): Observable<any> {
   //   const headers = new HttpHeaders().set('Content-Type', 'application/json');
   //   return this.http.post(this.apiUrl, JSON.stringify(formData), { headers });
   // }
-  
-  
+
+
 

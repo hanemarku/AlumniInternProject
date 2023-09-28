@@ -117,6 +117,10 @@ export class UserDataService {
     return this.http.post<any>(url, resetPass, { observe: 'response' });
   }
 
+  getUserById(id: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8080/api/v1/users/${id}`);
+  }
+
 }
 
 

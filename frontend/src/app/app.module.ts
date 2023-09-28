@@ -42,6 +42,12 @@ import { SigninComponent } from './user/signin/signin.component';
 import { SingupComponent } from './user/singup/singup.component';
 import { SuccessPageComponent } from './user/success-page/success-page.component';
 import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city-dialog.component';
+import { RecommendationComponent } from './recommendation/recommendation.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { EditRecommendationDialogComponent } from './recommendation/edit-recommendation-dialog/edit-recommendation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +83,8 @@ import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city
     EventSearchByComponent,
     EventSpecificsComponent,
     UpdateCityDialogComponent,
+    RecommendationComponent,
+    EditRecommendationDialogComponent,
 
   ],
   imports: [
@@ -91,7 +99,12 @@ import { UpdateCityDialogComponent } from './city/update-city-dialog/update-city
     NgbModule,
     MatDialogModule,
     NotificationModule,
-    CommonModule
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+
   ],
   providers: [AuthenticationGuard],
 

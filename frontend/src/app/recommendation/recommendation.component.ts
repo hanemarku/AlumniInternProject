@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ListUsersComponent, UserList } from '../user/list-users/list-users.component';
 import { UserDataService } from '../services/user-service/user-data.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { AuthenticationService } from '../services/authenication-service/authentication.service';
+import { User } from '../services/authenication-service/authentication.service';
 
 export class RecommendationList {
   constructor(
@@ -15,9 +17,11 @@ export class RecommendationList {
     public timestamp: Date,
     public recommender: string,
     public recommendedUser: string,
-    public profilePicUrl: SafeUrl
+    public profilePicUrl: SafeUrl,
+    public User: UserList | undefined | null,
+    public RecommendedUser: UserList | undefined | null
 
-  ){}
+  ) { }
 }
 
 @Component({
@@ -28,22 +32,29 @@ export class RecommendationList {
 export class RecommendationComponent implements OnInit {
 
   receivedRecommendations: RecommendationList[] = [];
+  recommendations: RecommendationList[] = [];
   givenRecommendations: RecommendationList[] = [];
   recommendedUserId: string = '';
   recommenderId: string = '';
   showValidationErrors: boolean = false;
   showReceived: boolean = true;
   showGiven: boolean = false;
+  userName: string = '';
+  user: UserList | undefined | null = null;
+  loggedInUser: User | null = null;
+  loggedInUserEmail: string | null = null;
 
 
   constructor(
     private recommendationDataService: RecommendationDataService,
     private userService: UserDataService,
+    private authService: AuthenticationService,
     private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.refreshRecommendations();
+    this.loadLoggedInUser();
 
   }
 
@@ -60,18 +71,53 @@ export class RecommendationComponent implements OnInit {
   //   );
   // }
 
+
   refreshRecommendations() {
-    console.log('refresh recommendations');
-    if (this.showReceived) {
-        this.listReceivedRecommendations(this.recommenderId); // Corrected parameter name
-        console.log('received recommendations', this.receivedRecommendations);
-    } else {
-        this.listGivenRecommendations(this.recommendedUserId);
-        console.log('given recommendations', this.givenRecommendations);
-    }
-}
+    this.recommendationDataService.listAllRecommendations().subscribe(
+      (response: any[]) => {
+        console.log(response);
+        this.receivedRecommendations = response;
+        this.fetchUserInformation(this.receivedRecommendations);
+      },
+      (error: any) => {
+        console.error('Error fetching recommendations:', error);
+      }
+    );
+  }
+
+  fetchUserInformation(recommendations: RecommendationList[]) {
+    recommendations.forEach(recommendation => {
+      this.fetchRecommenderInformation(recommendation);
+      this.fetchRecommendedUserInformation(recommendation);
+    });
+  }
+
+  fetchRecommenderInformation(recommendation: RecommendationList) {
+    this.userService.getUserById(recommendation.recommender).subscribe(
+      (user: UserList) => {
+        recommendation.User = user;
+      },
+      (error: any) => {
+        console.error(`Error fetching recommender information for user ID ${recommendation.recommender}:`, error);
+      }
+    );
+  }
+
+  fetchRecommendedUserInformation(recommendation: RecommendationList) {
+    this.userService.getUserById(recommendation.recommendedUser).subscribe(
+      (user: UserList) => {
+        recommendation.RecommendedUser = user;
+      },
+      (error: any) => {
+        console.error(`Error fetching recommendedUser information for user ID ${recommendation.recommendedUser}:`, error);
+      }
+    );
+  }
 
 
+  loadLoggedInUser() {
+    this.loggedInUserEmail = this.authService.getUserFromLocalStorage()?.email || null;
+  }
 
   deleteRecommendation(recommendationId: string) {
     console.log(`delete recommendation ${recommendationId}`);
@@ -110,27 +156,57 @@ export class RecommendationComponent implements OnInit {
   }
 
   onEditClicked(recommendation: RecommendationList) {
-    console.log(`edit recommendation ${recommendation.id}`);
-    const dialogRef = this.dialog.open(EditRecommendationDialogComponent, {
-      width: '700px',
-      data: recommendation
-    });
+    if (this.loggedInUserEmail === recommendation.User?.email) {
+      const dialogRef = this.dialog.open(EditRecommendationDialogComponent, {
+        width: '700px',
+        data: recommendation
+      });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        console.log('Updated Recommendation Data:', result);
-        this.recommendationDataService.updateRecommendation(recommendation.id, result).subscribe(
-          response => {
-            console.log('Recommendation Updated:', response);
-            this.refreshRecommendations();
-          },
-          error => {
-            console.error('Error updating recommendation:', error);
-          }
-        );
-      }
-    });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          console.log('Updated Recommendation Data:', result);
+          this.recommendationDataService.updateRecommendation(recommendation.id, result).subscribe(
+            response => {
+              console.log('Recommendation Updated:', response);
+              this.refreshRecommendations();
+            },
+            error => {
+              console.error('Error updating recommendation:', error);
+            }
+          );
+        }
+      });
+    }
   }
+
+  // onLeaveRecommendationClicked() {
+  //   const dialogRef = this.dialog.open(SaveRecommendationDialogComponent, {
+  //     width: '700px',
+  //     data: null, // You can pass any initial data needed for creating a new recommendation
+  //   });
+  
+  //   dialogRef.afterClosed().subscribe((result: any) => {
+  //     if (result) {
+  //       // Handle the result (new recommendation data) here
+  //       console.log('New Recommendation Data:', result);
+  //       // Call the service to save the new recommendation
+  //       this.recommendationDataService.saveRecommendation(result).subscribe(
+  //         (response) => {
+  //           console.log('Recommendation Saved:', response);
+  //           this.refreshRecommendations();
+  //         },
+  //         (error) => {
+  //           console.error('Error saving recommendation:', error);
+  //         }
+  //       );
+  //     }
+  //   });
+  // }
+
+
+
+
+
 
 
   openConfirmationDialog(recommendationId: string) {
@@ -147,7 +223,7 @@ export class RecommendationComponent implements OnInit {
         const recommendationToDelete = this.showReceived
           ? this.receivedRecommendations.find(recommendation => recommendation.id === recommendationId)
           : this.givenRecommendations.find(recommendation => recommendation.id === recommendationId);
-  
+
         if (recommendationToDelete) {
           this.deleteRecommendation(recommendationToDelete.id);
         }
@@ -159,40 +235,40 @@ export class RecommendationComponent implements OnInit {
       }
     });
   }
-  
+
 
   listGivenRecommendations(recommendedUserId: string) {
     console.log(`list given recommendations for ${recommendedUserId}`);
     this.recommendationDataService.listGivenRecommendations(recommendedUserId).subscribe(
-        (response: any[]) => {
-            console.log(response);
-            this.givenRecommendations = response;
-            this.recommendedUserId = response[0].recommendedUser.toString(); // Convert UUID to string
-        },
-        (error: any) => {
-            console.error('Error fetching given recommendations:', error);
-        }
+      (response: any[]) => {
+        console.log(response);
+        this.givenRecommendations = response;
+        this.recommendedUserId = response[0].recommendedUser.toString(); // Convert UUID to string
+      },
+      (error: any) => {
+        console.error('Error fetching given recommendations:', error);
+      }
     );
-}
+  }
 
-listReceivedRecommendations(recommendedUserId: string) {
-    this.recommendationDataService.listReceivedRecommendations(recommendedUserId).subscribe(
-        (response: RecommendationList[]) => {
-            console.log(response);
-            this.receivedRecommendations = response;
-        },
-        (error: any) => {
-            console.error('Error fetching received recommendations:', error);
-        }
+  listReceivedRecommendations(recommendedUserId: string) {
+    this.recommendationDataService.listReceived(recommendedUserId).subscribe(
+      (response: RecommendationList[]) => {
+        console.log(response);
+        this.receivedRecommendations = response;
+      },
+      (error: any) => {
+        console.error('Error fetching received recommendations:', error);
+      }
     );
-}
+  }
 
   showReceivedRecommendations() {
     this.showReceived = true;
     this.showGiven = false;
     this.refreshRecommendations();
   }
-  
+
   showGivenRecommendations() {
     this.showReceived = false;
     this.showGiven = true;

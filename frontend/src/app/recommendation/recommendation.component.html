@@ -1,69 +1,68 @@
 <div class="container">
 
-    <h5>Recommendations</h5>
-    <ul class="nav nav-underline">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" (click)="showReceivedRecommendations()" >Received</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" (click)="showGivenRecommendations()">Given</a>
-        </li>
-    </ul>
-
-
-    <div class="recommendation-list">
-      <div class="recommendation-item" *ngFor="let recommendation of (showReceived ? receivedRecommendations : givenRecommendations)">
-
-    
-        <div class="recommendation-recommender" *ngIf="showReceived && !showGiven">
-          <img [src]="recommendation.profilePicUrl" alt="Profile Picture" class="profile-pic">
-          {{ recommendation.recommender }} <!-- Updated property name -->
-      </div>
-      
-      <div class="recommendation-recommender" *ngIf="showGiven && !showReceived">
-          <img [src]="recommendation.profilePicUrl" alt="Profile Picture" class="profile-pic">
-          {{ recommendation.recommendedUser }} <!-- Updated property name -->
-      </div>
-      
-    
-        <div class="recommendation-comment">
-          {{recommendation.comment}}
-        </div>
-
-
-          <div class="recommendation-controls-box">
-            <div class="recommendation-control-button" (click)="onEditClicked(recommendation)">
-              <i class="material-icons">edit</i>
-            </div>
-            <div class="recommendation-control-button is-danger" (click)="openConfirmationDialog(recommendation.id)">
-              <i class="material-icons">delete</i>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-
-    <div class="container rec">
-
-        <div class="rating-system">
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="mb-0">Leave a recommendation</p>
-                <button class="btn btn-primary btn-sm" type="button">Submit</button>
-            </div>
-        </div>
-
-
-
-        <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a recommendation here" id="floatingTextarea2"
-                style="height: 100px"></textarea>
-            <label for="floatingTextarea2">Write recommendation</label>
-        </div>
-
-
-
+  <h5>Recommendations</h5>
+  <ul class="nav nav-underline">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page">All Recommendations</a>
+    </li>
+    <div class="leave-recommendation-container">
+      <p>+ Leave a recommendation</p>
     </div>
+
+  </ul>
+
+
+  <div class="recommendation-list">
+    <div class="recommendation-item"
+      *ngFor="let recommendation of (showReceived ? receivedRecommendations : givenRecommendations)">
+
+
+      <div class="recommendation-recommender">
+        <span class="user-info">{{ recommendation.User?.firstname }} {{ recommendation.User?.lastname }}</span>
+        <i class="fa-solid fa-caret-right"></i>
+        &nbsp;
+        <span class="user-info">{{ recommendation.RecommendedUser?.firstname }}
+          {{recommendation.RecommendedUser?.lastname }}</span>
+        <div class="recommendation-comment">
+          {{ recommendation.comment }}
+        </div>
+      </div>
+
+      <div class="recommendation-controls-box">
+        <div *ngIf="loggedInUserEmail === recommendation.User?.email" class="recommendation-control-button" (click)="onEditClicked(recommendation)">
+          <i class="material-icons">edit</i>
+        </div>
+        <div class="recommendation-control-button is-danger" (click)="openConfirmationDialog(recommendation.id)">
+          <i class="material-icons">delete</i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- <div class="container rec">
+
+      <div class="rating-system">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="mb-0">Leave a recommendation</p>
+          <button class="btn btn-primary btn-sm" type="button">Submit</button>
+        </div>
+      </div>
+
+
+
+      <div class="form-floating">
+        <textarea class="form-control" placeholder="Leave a recommendation here" id="floatingTextarea2"
+          style="height: 100px"></textarea>
+        <label for="floatingTextarea2">Write recommendation</label>
+      </div>
+
+
+
+    </div> -->
 
 </div>
 

@@ -30,8 +30,8 @@ export class RecommendationDataService {
     return this.http.get<any>(`http://localhost:8080/api/v1/recommendations/${recommendedUserId}`);
   }
 
-  listReceivedRecommendations(recommendedUserId:string){
-    return this.http.get<any>(`http://localhost:8080/api/v1/recommendations/recommendedUser/${recommendedUserId}/received`);
+  listReceived(recommendedUserId:string){
+    return this.http.get<any>(`http://localhost:8080/api/v1/recommendations/recommendedUser/${recommendedUserId}`);
   }
 
 

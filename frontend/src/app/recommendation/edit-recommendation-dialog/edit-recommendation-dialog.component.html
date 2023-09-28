@@ -1,1 +1,26 @@
-<p>edit-recommendation-dialog works!</p>
+<div mat-dialog-content>
+    <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+      <div class="field">
+        <h1 class="title">Edit Recommendation</h1>
+        <div class="input-container">
+          <div class="control">
+                    <input type="text" class="input" [(ngModel)]="updatedRecommendation.comment" name="name" required maxlength="45" placeholder="Type city name here...">
+                </div>
+        </div>
+        <div *ngIf="form.controls['comment'].invalid">
+          <p class="help is-danger" *ngIf="form.controls['comment'].errors?.['required']">Please enter a comment.</p>
+          <p class="help is-danger" *ngIf="form.controls['comment'].errors?.['maxlength']">Comment must not be more than 255 characters long.</p>
+        </div>
+      </div>
+      <br>
+      <div class="field is-grouped is-grouped-right">
+        <div class="control">
+          <button type="button" class="button is-light" (click)="close()">Cancel</button>
+        </div>
+        <div class="control">
+          <button type="submit" class="button alt-gradient-button">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  

@@ -1,31 +1,28 @@
 package com.example.AlumniInternProject.user;
 
 import com.example.AlumniInternProject.FileUploadUtil;
-import com.example.AlumniInternProject.Verfication.VerificationTokenRepository;
 import com.example.AlumniInternProject.Verfication.VerificationTokenService;
-import com.example.AlumniInternProject.entity.EducationHistory;
 import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.VerificationToken;
 import com.example.AlumniInternProject.entity.VerificationType;
 import com.example.AlumniInternProject.exceptions.EmailExistException;
 import com.example.AlumniInternProject.exceptions.ExceptionHandling;
 import com.example.AlumniInternProject.exceptions.UserNotFoundException;
-import com.example.AlumniInternProject.user.DTOs.*;
+import com.example.AlumniInternProject.user.DTOs.ForgotPassDTO;
+import com.example.AlumniInternProject.user.DTOs.UserDTO;
+import com.example.AlumniInternProject.user.DTOs.UserGetDto;
+import com.example.AlumniInternProject.user.DTOs.UsersListingDTO;
 import com.example.AlumniInternProject.user.security.ALumniUserDetails;
 import com.example.AlumniInternProject.user.security.AlumniAuthenticationProvider;
 import com.example.AlumniInternProject.user.utility.JWTTokenProvider;
 import com.example.AlumniInternProject.user.utility.UserLoginDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +32,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static com.example.AlumniInternProject.constants.FileConstants.*;
 import static com.example.AlumniInternProject.constants.SecurityConstants.JWT_TOKEN_HEADER;
@@ -327,5 +326,9 @@ public class UserController extends ExceptionHandling {
         authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(email, password));
     }
 
+    @GetMapping("{id}")
+    public UsersListingDTO getUserById(@PathVariable("id") UUID id) throws UserNotFoundException {
+        return userService.findByID(id);
+    }
 
 }

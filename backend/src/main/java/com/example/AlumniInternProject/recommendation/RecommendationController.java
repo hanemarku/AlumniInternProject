@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping("api/v1/recommendation")
+@RequestMapping("api/v1/recommendations")
 @RequiredArgsConstructor
 
 public class RecommendationController  {
@@ -47,5 +48,7 @@ public class RecommendationController  {
     public RecommendationGetDto getRecommendationByRecommendedUserID(@PathVariable UUID recommendedUserId){
         return recommendationService.getRecommendationByRecommendedUserID(recommendedUserId);
     }
+
+
 
 }

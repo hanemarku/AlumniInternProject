@@ -38,4 +38,6 @@ public interface UserService {
 
 
     UserDetails loadUserByUsername(String email) throws UserNotFoundException;
+
+    UsersListingDTO getUserById(UUID id) throws UserNotFoundException;
 }

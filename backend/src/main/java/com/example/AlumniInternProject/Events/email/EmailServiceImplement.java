@@ -2,7 +2,6 @@ package com.example.AlumniInternProject.Events.email;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,10 +13,10 @@ import org.thymeleaf.context.Context;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImplement implements EmailService{
-    @Autowired
+
     private final JavaMailSender emailSender;
-    @Autowired
     private final TemplateEngine templateEngine;
+
     @Value("alumniproject4@gmail.com")
     private final String sender = "alumniproject4@gmail.com";
     private final String SUBJ_TEST = "Confrim your reservation";

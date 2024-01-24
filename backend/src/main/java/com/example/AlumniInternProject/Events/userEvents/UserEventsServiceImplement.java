@@ -13,7 +13,6 @@ import com.example.AlumniInternProject.entity.User;
 import com.example.AlumniInternProject.entity.UserEvents;
 import com.example.AlumniInternProject.user.DTOs.UserGetDto;
 import com.example.AlumniInternProject.user.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -122,7 +121,6 @@ public class UserEventsServiceImplement implements UserEventsService{
 
     /*TODO: MAKE THE STATUS BE CHANGED TO EXPIRED ALSO**/
     @Override
-    @Transactional
     @Async
     public String confirmParticipation(String confirmationToken) {
         /*THE USER WHO NEEDS THE STATUS CHANGED*/

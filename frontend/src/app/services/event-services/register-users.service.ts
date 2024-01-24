@@ -42,10 +42,4 @@ export class RegisterUsersService {
     this.http.delete(url);
   }
 
-/**
- *   deleteAllByEventSpecificsId(id: string){
-    const url = `${this.BASE_URL}/${id}`;
-    this.http.delete<UserEvents>(url);
-  }
-*/
 }
